@@ -46,7 +46,7 @@
         .btn-scan-top:hover { background: #3a56d4; }
 
         .search-result-box { position: absolute; top: 100%; left: 0; right: 50px; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-top: 10px; display: none; z-index: 1000; max-height: 350px; overflow-y: auto; border: 1px solid #eee; }
-        .search-item { padding: 12px 15px; border-bottom: 1px solid #f1f1f1; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .search-item { padding: 12px 15px; border-bottom: 1px solid #f1f1f1; display: flex; justify-content: space-between; align-items: center; }
         .search-item:hover { background: #f9fafb; }
         .search-item:last-child { border-bottom: none; }
         .item-left { display: flex; align-items: center; gap: 12px; }
@@ -435,8 +435,8 @@
                 let infoBarcode = item.barcode ? item.barcode : "Tanpa barcode";
                 let warnaStok = item.stok <= 3 ? "color: red;" : "color: green;";
                 html += `
-                <div class="search-item" onclick="pilihBarangEdit(${index})">
-                    <div class="item-left">
+                <div class="search-item">
+                    <div class="item-left" onclick="pilihBarangEdit(${index})" style="cursor:pointer; flex:1;">
                         <img src="${formatGambarDrive(item.foto)}" class="item-img">
                         <div class="item-info">
                             <h5>${item.nama} <span style="font-size:10px; background:#e0e7ff; color:#4361ee; padding:2px 6px; border-radius:4px; margin-left:5px;">${item.kategori}</span></h5>
@@ -444,7 +444,10 @@
                             <p style="${warnaStok}">Stok: <b>${item.stok}</b> pcs | Jual: ${formatRp(item.hargaJual)}</p>
                         </div>
                     </div>
-                    <div><i class="fas fa-edit" style="color:var(--primary-color);"></i> Edit</div>
+                    <div style="display:flex; flex-direction:column; gap:8px; text-align:right;">
+                        <div onclick="pilihBarangEdit(${index})" style="cursor:pointer; font-size:13px; color:var(--primary-color);"><i class="fas fa-edit"></i> Edit</div>
+                        <div onclick="hapusBarang(event, ${item.row})" style="cursor:pointer; font-size:13px; color:red;"><i class="fas fa-trash"></i> Hapus</div>
+                    </div>
                 </div>`;
             });
             resultList.innerHTML = html;
@@ -518,6 +521,24 @@
                     document.getElementById("statusEdit").innerText = "Gagal memperbarui data.";
                     btn.disabled = false; btn.innerHTML = "<i class='fas fa-check'></i> Simpan Perubahan";
                 });
+        }
+
+        function hapusBarang(event, rowNum) {
+            if(event) event.stopPropagation();
+            if (confirm("Peringatan: Apakah Anda yakin ingin menghapus barang ini secara permanen dari database?")) {
+                let formData = new URLSearchParams();
+                formData.append("tipeForm", "hapus_barang");
+                formData.append("rowHapus", rowNum);
+
+                fetch(scriptURL, { method: "POST", body: formData })
+                    .then(response => response.text())
+                    .then(result => {
+                        alert(result);
+                        muatSemuaBarangUntukEdit(); 
+                        muatDataDashboard();
+                    })
+                    .catch(error => alert("Gagal menghapus: " + error));
+            }
         }
 
         function bukaScannerTop() {
