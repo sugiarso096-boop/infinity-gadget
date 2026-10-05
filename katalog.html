@@ -52,7 +52,6 @@
         .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 10px 20px; }
         .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor: pointer; position: relative; }
         
-        /* UPDATE: WRAPPER GAMBAR UNTUK BADGE STOK */
         .product-img-wrapper { position: relative; width: 100%; height: 160px; }
         .product-img { width: 100%; height: 100%; object-fit: cover; background: #f9f9f9; }
         .stok-badge { position: absolute; top: 8px; left: 8px; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; color: white; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
@@ -60,7 +59,6 @@
         .stok-habis { background-color: rgba(239, 68, 68, 0.9); backdrop-filter: blur(4px); }
         
         .product-info { padding: 12px; }
-        /* UPDATE: HURUF KAPITAL OTOMATIS (text-transform: capitalize) */
         .p-title { font-size: 13px; font-weight: 500; line-height: 1.3; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 34px; color: var(--text-dark); text-transform: capitalize; }
         .p-price { font-size: 15px; font-weight: 700; color: var(--red-main); margin-bottom: 5px; }
         
@@ -69,7 +67,7 @@
         
         .btn-cart-small { position: absolute; bottom: 10px; right: 10px; background: var(--red-main); color: white; width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; border: none; cursor: pointer; }
 
-        /* UPDATE: INFO TOKO DI FOOTER */
+        /* INFO TOKO */
         .store-info { text-align: center; padding: 25px 20px 40px; margin-bottom: 10px; border-top: 1px dashed #ddd; margin-top: 20px; }
         .store-info h4 { font-size: 15px; color: var(--text-dark); margin-bottom: 5px; font-weight: 700; }
         .store-info p { font-size: 11px; color: var(--text-gray); display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px; }
@@ -94,7 +92,6 @@
         
         .detail-info { padding: 0 20px; }
         .d-price { font-size: 24px; font-weight: 800; color: var(--red-main); margin-bottom: 5px; }
-        /* UPDATE: HURUF KAPITAL OTOMATIS */
         .d-title { font-size: 18px; font-weight: 600; color: var(--text-dark); line-height: 1.3; margin-bottom: 15px; text-transform: capitalize; }
         
         .d-specs { background: var(--bg-gray); padding: 15px; border-radius: 12px; margin-bottom: 20px; }
@@ -164,7 +161,6 @@
             <div class="loading"><i class="fas fa-spinner fa-spin fa-2x"></i><br><br>Memuat Produk...</div>
         </div>
 
-        <!-- UPDATE: TAMBAHAN INFO TOKO -->
         <div class="store-info">
             <h4>Infinity Gadget</h4>
             <p><i class="fas fa-map-marker-alt"></i> Melayani area Manado & Sekitarnya (Ambil / Kurir)</p>
@@ -216,17 +212,19 @@
     </div>
 
     <script>
-        // ⚠ PENTING: Ganti angka ini dengan Nomor WhatsApp Anda 
+        // ⚠ PASTIKAN TANDA KUTIP " TIDAK TERHAPUS SAAT MENGGANTI NOMOR WA
         const NOMOR_WA_TOKO = "6281234567890"; 
+        
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxBXAryBPE81DmRCFtliQmGIq2Xx3K4olGOQurn_GQL7K2cBvkYqFL2lxenx3X4Jy9s/exec';
         
         let dataKatalog = [];
         let currentData = [];
         let itemAktif = null;
 
-        const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+        const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
+        
         function formatGambarDrive(url) {
-            if(!url || url === "") return "https://via.placeholder.com/300x300/f5f5f5/cccccc?text=No+Image";
+            if(!url || typeof url !== 'string' || url.trim() === "") return "https://via.placeholder.com/300x300/f5f5f5/cccccc?text=No+Image";
             let match = url.match(/\/d\/(.+?)\//);
             if(match && match[1]) { return "https://lh3.googleusercontent.com/d/" + match[1]; }
             return url;
@@ -236,28 +234,37 @@
             fetch(scriptURL + "?action=search&keyword=")
                 .then(response => response.json())
                 .then(data => {
-                    dataKatalog = data.filter(item => Number(String(item.hargaJual).replace(/[^0-9]/g, '')) > 0);
+                    dataKatalog = data.filter(item => {
+                        if (!item || !item.hargaJual) return false;
+                        let hg = Number(String(item.hargaJual).replace(/[^0-9]/g, ''));
+                        return hg > 0;
+                    });
                     currentData = dataKatalog;
                     renderGrid(currentData);
                 })
                 .catch(err => {
-                    document.getElementById("katalogGrid").innerHTML = `<div class="loading">Gagal memuat data.</div>`;
+                    console.error("Error loading data:", err);
+                    document.getElementById("katalogGrid").innerHTML = `<div class="loading"><i class="fas fa-exclamation-triangle fa-2x"></i><br><br>Gagal memuat produk. Silakan refresh halaman.</div>`;
                 });
         };
 
         function renderGrid(dataArray) {
             let grid = document.getElementById("katalogGrid");
-            if(dataArray.length === 0) {
-                grid.innerHTML = `<div class="loading">Produk tidak ditemukan.</div>`; return;
+            if(!dataArray || dataArray.length === 0) {
+                grid.innerHTML = `<div class="loading"><i class="fas fa-box-open fa-2x"></i><br><br>Produk tidak ditemukan.</div>`; 
+                return;
             }
+            
             let html = "";
             dataArray.forEach((item, index) => {
-                let harga = Number(String(item.hargaJual).replace(/[^0-9]/g, ''));
-                let namaSplit = item.nama.split("|");
+                let harga = Number(String(item.hargaJual || "0").replace(/[^0-9]/g, ''));
+                
+                // Mencegah error jika nama kosong
+                let rawNama = item.nama ? String(item.nama) : "Produk Baru";
+                let namaSplit = rawNama.split("|");
                 let namaAsli = namaSplit[0].trim();
                 
-                // Cek Stok untuk Label dan Tombol Keranjang
-                let isReady = item.stok > 0;
+                let isReady = (item.stok && Number(item.stok) > 0) ? true : false;
                 let badgeHtml = isReady ? `<div class="stok-badge stok-ready">Tersedia</div>` : `<div class="stok-badge stok-habis">Habis</div>`;
                 let cartBtn = isReady 
                     ? `<button class="btn-cart-small" onclick="event.stopPropagation(); bukaDetail(${index})"><i class="fas fa-shopping-cart"></i></button>`
@@ -282,7 +289,11 @@
 
         function filterKatalog() {
             let keyword = document.getElementById("searchInput").value.toLowerCase();
-            currentData = dataKatalog.filter(item => item.nama.toLowerCase().includes(keyword) || item.kategori.toLowerCase().includes(keyword));
+            currentData = dataKatalog.filter(item => {
+                let nama = item.nama ? String(item.nama).toLowerCase() : "";
+                let kategori = item.kategori ? String(item.kategori).toLowerCase() : "";
+                return nama.includes(keyword) || kategori.includes(keyword);
+            });
             renderGrid(currentData);
         }
 
@@ -293,15 +304,59 @@
 
         function bukaDetail(index) {
             itemAktif = currentData[index];
-            let namaSplit = itemAktif.nama.split("|");
+            if(!itemAktif) return;
+            
+            let rawNama = itemAktif.nama ? String(itemAktif.nama) : "Produk Baru";
+            let namaSplit = rawNama.split("|");
             let namaAsli = namaSplit[0].trim();
             let spesifikasi = namaSplit[1] ? namaSplit[1].trim() : "Produk Original Berkualitas dari Infinity Gadget.";
-            let harga = Number(String(itemAktif.hargaJual).replace(/[^0-9]/g, ''));
-            let isReady = itemAktif.stok > 0;
+            let harga = Number(String(itemAktif.hargaJual || "0").replace(/[^0-9]/g, ''));
+            let isReady = (itemAktif.stok && Number(itemAktif.stok) > 0) ? true : false;
 
             document.getElementById("d-foto").src = formatGambarDrive(itemAktif.foto);
             document.getElementById("d-nama").innerText = namaAsli;
             document.getElementById("d-harga").innerText = formatRp(harga);
 
             let spekHtml = "";
-            let spekItems = spesifikasi.split(",");
+            let spekItems = spesifikasi.split(","); 
+            spekItems.forEach(s => {
+                if(s.trim() !== "") {
+                    spekHtml += `<p><i class="fas fa-check-circle"></i> ${s.trim()}</p>`;
+                }
+            });
+            document.getElementById("d-spek-box").innerHTML = spekHtml;
+
+            let btnBeli = document.getElementById("btn-beli");
+            if(!isReady) {
+                btnBeli.innerText = "Stok Habis";
+                btnBeli.style.background = "#cbd5e1";
+                btnBeli.onclick = null;
+            } else {
+                btnBeli.innerText = "Beli Sekarang";
+                btnBeli.style.background = "var(--red-main)";
+                btnBeli.onclick = beliSekarang;
+            }
+
+            document.getElementById("detailModal").style.display = "flex";
+        }
+
+        function tutupDetail() {
+            document.getElementById("detailModal").style.display = "none";
+            itemAktif = null;
+        }
+
+        function prosesWA(teksTambahan) {
+            if(!itemAktif) return;
+            let rawNama = itemAktif.nama ? String(itemAktif.nama) : "Produk";
+            let namaSplit = rawNama.split("|")[0].trim();
+            let harga = formatRp(Number(String(itemAktif.hargaJual || "0").replace(/[^0-9]/g, '')));
+            let pesan = encodeURIComponent(`Halo Infinity Gadget, ${teksTambahan}\n\nBarang: ${namaSplit}\nHarga: ${harga}`);
+            window.open(`https://wa.me/${NOMOR_WA_TOKO}?text=${pesan}`, '_blank');
+        }
+
+        function tanyaStok() { prosesWA("apakah barang ini masih tersedia?"); }
+        function beliSekarang() { prosesWA("saya ingin memesan barang ini."); }
+
+    </script>
+</body>
+</html>
