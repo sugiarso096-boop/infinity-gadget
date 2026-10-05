@@ -114,7 +114,7 @@
         .icon-purple { background: #faf5ff; color: #a855f7; }
         .icon-orange { background: #fff7ed; color: #f97316; }
         .icon-green { background: #f0fdf4; color: #22c55e; }
-        .icon-red { background: #fef2f2; color: #ef4444; } /* Warna Ikon Peringatan Baru */
+        .icon-red { background: #fef2f2; color: #ef4444; }
         
         .stat-title { font-size: 13.5px; font-weight: 500; color: var(--text-muted); pointer-events: none; }
         .stat-value { font-size: 28px; font-weight: 700; color: var(--text-main); pointer-events: none; letter-spacing: -0.5px; }
@@ -239,7 +239,6 @@
                     <div class="stat-value" id="angka-kategori">Memuat...</div>
                 </div>
                 
-                <!-- KARTU BARU: HARGA BELUM DISET -->
                 <div class="stat-card" onclick="aksesMenuEdit()" title="Klik untuk cek barang">
                     <div class="stat-header"><div class="icon-box icon-red"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-title">Harga Belum Diset</div></div>
                     <div class="stat-value" id="angka-belum-set">Memuat...</div>
@@ -464,9 +463,7 @@
             }
         }
 
-        /* PERUBAHAN: Fungsi muatDataDashboard sekarang juga menghitung jumlah barang yang harganya 0 atau kosong */
         function muatDataDashboard() {
-            // Fetch 1: Load data ringkasan utama
             fetch(scriptURL)
                 .then(response => response.json())
                 .then(data => {
@@ -477,7 +474,6 @@
                 })
                 .catch(error => console.log(error));
             
-            // Fetch 2: Load data barang khusus untuk cek harga belum di-set
             fetch(scriptURL + "?action=search&keyword=")
                 .then(response => response.json())
                 .then(data => {
@@ -508,14 +504,24 @@
             data.forEach((item, index) => {
                 let infoBarcode = item.barcode ? item.barcode : "Tanpa barcode";
                 let warnaStok = item.stok <= 3 ? "color: #ef4444;" : "color: #10b981;";
+                
+                /* ---- LOGIKA WARNA HARGA KOSONG ---- */
+                let hargaBersih = String(item.hargaJual).replace(/[^0-9]/g, '');
+                let isHargaKosong = !item.hargaJual || Number(hargaBersih) === 0;
+                let bgCard = isHargaKosong ? "background: #fef2f2; border: 1px dashed #ef4444;" : "";
+                let badgePeringatan = isHargaKosong ? `<span style="background:#ef4444; color:white; font-size:10px; padding:3px 8px; border-radius:6px; margin-left:6px; font-weight:bold; display:inline-block; margin-top:4px;"><i class="fas fa-exclamation-triangle"></i> HARGA KOSONG</span>` : "";
+                let warnaHarga = isHargaKosong ? "color: #ef4444; font-weight: 700;" : "";
+                /* ----------------------------------- */
+
                 html += `
-                <div class="search-item">
+                <div class="search-item" style="${bgCard}">
                     <div class="item-left" onclick="pilihBarangEdit(${index})" style="cursor:pointer; flex:1;">
                         <img src="${formatGambarDrive(item.foto)}" class="item-img">
                         <div class="item-info">
                             <h5>${item.nama} <span style="font-size:10px; background:#eff6ff; color:#3b82f6; padding:3px 8px; border-radius:6px; margin-left:6px; font-weight:500;">${item.kategori}</span></h5>
+                            ${badgePeringatan}
                             <p style="color: #64748b; font-size:11px; margin-top:4px;"><i class="fas fa-barcode"></i> ${infoBarcode}</p>
-                            <p style="${warnaStok} font-size:11px; margin-top:2px;">Stok: <b style="font-size:12px;">${item.stok}</b> pcs | Jual: ${formatRp(item.hargaJual)}</p>
+                            <p style="font-size:11px; margin-top:2px;"><span style="${warnaStok}">Stok: <b style="font-size:12px;">${item.stok}</b> pcs</span> | <span style="${warnaHarga}">Jual: ${formatRp(item.hargaJual)}</span></p>
                         </div>
                     </div>
                     <div style="display:flex; flex-direction:column; gap:10px; text-align:right;">
@@ -674,17 +680,24 @@
                         let hargaBersih = String(item.hargaJual).replace(/[^0-9]/g, ''); 
                         let infoBarcode = item.barcode ? item.barcode : "Tanpa barcode";
                         
+                        /* ---- LOGIKA WARNA HARGA KOSONG UNTUK PENCARIAN ---- */
+                        let isHargaKosong = !item.hargaJual || Number(hargaBersih) === 0;
+                        let bgCard = isHargaKosong ? "background: #fef2f2; border: 1px dashed #ef4444;" : "";
+                        let badgePeringatan = isHargaKosong ? `<span style="background:#ef4444; color:white; font-size:9px; padding:2px 6px; border-radius:4px; margin-left:6px; font-weight:bold;"><i class="fas fa-exclamation-triangle"></i></span>` : "";
+                        let warnaHarga = isHargaKosong ? "color: #ef4444;" : "color: var(--primary-color);";
+                        /* --------------------------------------------------- */
+
                         html += `
-                        <div class="search-item">
+                        <div class="search-item" style="${bgCard}">
                             <div class="item-left">
                                 <img src="${urlGambar}" class="item-img" alt="Foto">
                                 <div class="item-info">
-                                    <h5>${item.nama}</h5>
+                                    <h5>${item.nama} ${badgePeringatan}</h5>
                                     <p style="color: #64748b; font-size:10px;"><i class="fas fa-barcode"></i> ${infoBarcode}</p>
                                     <p style="${warnaStok} font-weight:500;">Stok: <b>${item.stok}</b> pcs</p>
                                 </div>
                             </div>
-                            <div class="item-price">${formatRp(Number(hargaBersih) || 0)}</div>
+                            <div class="item-price" style="${warnaHarga}">${formatRp(Number(hargaBersih) || 0)}</div>
                         </div>`;
                     });
                     resultBox.innerHTML = html;
