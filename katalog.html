@@ -107,9 +107,7 @@
 
         .loading { text-align: center; padding: 50px 20px; color: var(--text-gray); }
 
-        /* =========================================
-           TAMPILAN KHUSUS LAPTOP / PC (RESPONSIVE)
-           ========================================= */
+        /* TAMPILAN KHUSUS LAPTOP / PC (RESPONSIVE) */
         @media (min-width: 768px) {
             .app-container { max-width: 1100px; margin: 30px auto; border-radius: 20px; padding-bottom: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
             .header-bg { border-radius: 20px 20px 30px 30px; padding: 30px 40px; }
@@ -124,10 +122,8 @@
             .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 10px 40px 40px; }
             .product-img-wrapper { height: 200px; }
             
-            /* Sembunyikan Menu Bawah di PC karena aneh */
-            .bottom-nav { display: none; }
+            .bottom-nav { display: none; } /* Sembunyikan menu HP di PC */
             
-            /* Modal Detail ala PC (Muncul di tengah, foto di kiri, teks di kanan) */
             .modal-overlay { align-items: center; }
             .modal-content { max-width: 850px; height: auto; max-height: 85vh; border-radius: 20px; animation: scaleUp 0.3s ease-out; }
             @keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -205,7 +201,6 @@
             <p><i class="fas fa-headset"></i> Fast Respon via WhatsApp</p>
         </div>
 
-        <!-- Menu Bawah ini Otomatis Hilang Jika Dibuka di Laptop -->
         <div class="bottom-nav">
             <div class="nav-item active"><i class="fas fa-home"></i> Beranda</div>
             <div class="nav-item" onclick="filterByKategori('')"><i class="fas fa-th-large"></i> Kategori</div>
@@ -250,8 +245,8 @@
     </div>
 
     <script>
-        // ⚠ PASTIKAN TANDA KUTIP " TIDAK TERHAPUS SAAT MENGGANTI NOMOR WA
-        const NOMOR_WA_TOKO = "6281234567890"; 
+        // WA SUDAH OTOMATIS TERPASANG DENGAN AMAN
+        const NOMOR_WA_TOKO = "6285824859368"; 
         
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxBXAryBPE81DmRCFtliQmGIq2Xx3K4olGOQurn_GQL7K2cBvkYqFL2lxenx3X4Jy9s/exec';
         
@@ -388,5 +383,13 @@
             let rawNama = itemAktif.nama ? String(itemAktif.nama) : "Produk";
             let namaSplit = rawNama.split("|")[0].trim();
             let harga = formatRp(Number(String(itemAktif.hargaJual || "0").replace(/[^0-9]/g, '')));
-            let pesan = encodeURIComponent(`Halo Infinity Gadget, ${teksTambahan}\n\nBarang: ${namaSplit}\nHarga:${harga}`);
-            window.open(`
+            let pesan = encodeURIComponent(`Halo Infinity Gadget, ${teksTambahan}\n\nBarang: ${namaSplit}\nHarga: ${harga}`);
+            window.open(`https://wa.me/${NOMOR_WA_TOKO}?text=${pesan}`, '_blank');
+        }
+
+        function tanyaStok() { prosesWA("apakah barang ini masih tersedia?"); }
+        function beliSekarang() { prosesWA("saya ingin memesan barang ini."); }
+
+    </script>
+</body>
+</html>
