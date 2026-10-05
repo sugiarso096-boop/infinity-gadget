@@ -36,7 +36,7 @@
         /* SIDEBAR DENGAN BACKGROUND GAMBAR */
         .sidebar { 
             width: 260px; 
-            background: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.95)), url('Modern Phone Accessories Showcase.png');
+            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), url('Modern Phone Accessories Showcase.png');
             background-size: cover;
             background-position: left center;
             color: #fff; 
@@ -50,7 +50,7 @@
         .logo-area { text-align: center; margin-bottom: 35px; }
         .logo-area h2 { color: #fff; font-weight: 800; letter-spacing: 1.5px; font-size: 22px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         .logo-area h2 span { color: var(--primary-color); }
-        .menu-title { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.5px; margin: 15px 25px 10px; font-weight: 600; }
+        .menu-title { font-size: 11px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 1.5px; margin: 15px 25px 10px; font-weight: 600; }
         .nav-item { padding: 12px 25px; cursor: pointer; display: flex; align-items: center; color: #cbd5e1; font-size: 14px; transition: all 0.2s ease; margin: 4px 15px; border-radius: var(--radius-btn); font-weight: 500; }
         .nav-item i { width: 28px; font-size: 16px; transition: transform 0.2s; }
         .nav-item:hover { color: #f8fafc; background-color: rgba(255,255,255,0.15); transform: translateX(5px); }
@@ -210,13 +210,16 @@
                     <div class="search-result-box" id="searchResultBox"></div>
                 </div>
             </div>
-            <div class="user-profile">
+            
+            <!-- PROFIL BISA DIKLIK -->
+            <div class="user-profile" onclick="bukaMenuLogin()" style="cursor: pointer; padding: 5px 10px; border-radius: 10px; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(0,0,0,0.05)'" onmouseout="this.style.backgroundColor='transparent'" title="Klik untuk Ganti Akun / Keluar">
                 <div class="avatar" id="userAvatar">AD</div>
                 <div class="user-info">
                     <h4 id="userName">Admin / Kasir</h4>
                     <p id="userRole">Infinity Gadget</p>
                 </div>
             </div>
+
         </div>
 
         <!-- DASHBOARD -->
@@ -379,10 +382,22 @@
         let cacheDataEdit = [];
         let html5QrScannerTop = null;
 
+        /* FUNGSI LOGOUT / GANTI AKUN */
+        function bukaMenuLogin() {
+            if(confirm("Apakah Anda ingin keluar / ganti peran login?")) {
+                document.getElementById('loginModal').style.display = 'flex';
+                document.getElementById('inputPin').value = ''; 
+                document.getElementById('loginError').innerText = ''; 
+            }
+        }
+
         function loginSebagaiKaryawan() {
             statusRole = 'karyawan';
             document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('userName').innerText = 'Admin / Kasir';
             document.getElementById('userRole').innerText = 'Karyawan / Kasir';
+            document.getElementById('userAvatar').innerText = 'AD';
+            document.getElementById('userAvatar').style.background = 'linear-gradient(135deg, #1e293b, #334155)';
             document.getElementById('cardAset').style.display = 'none';
             document.getElementById('titleOwner').style.display = 'none';
             document.getElementById('menuEditBarang').style.display = 'none';
@@ -393,7 +408,9 @@
             if(pinInput === PIN_RAHASIA) {
                 statusRole = 'owner';
                 document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('userName').innerText = 'Infinity Owner';
                 document.getElementById('userRole').innerText = 'Owner / Admin';
+                document.getElementById('userAvatar').innerText = 'OW';
                 document.getElementById('userAvatar').style.background = 'linear-gradient(135deg, #16a34a, #22c55e)';
                 document.getElementById('cardAset').style.display = 'flex';
                 document.getElementById('titleOwner').style.display = 'block';
