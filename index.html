@@ -1,4 +1,14 @@
-<style>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Gadget System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    
+    <style>
         :root { 
             --bg-color: #f8fafc; 
             --sidebar-bg: #0f172a; /* Dark Slate / Navy */
@@ -140,3 +150,596 @@
             .search-container { max-width: 100%; }
         }
     </style>
+</head>
+<body>
+
+    <div id="loginModal">
+        <div class="login-card">
+            <h3>Infinity Gadget Access</h3>
+            <p>Pilih peran Anda untuk masuk ke sistem</p>
+            <button class="btn btn-primary" onclick="loginSebagaiKaryawan()" style="margin-bottom: 10px;">
+                <i class="fas fa-user"></i> Masuk Sebagai Karyawan (Kasir)
+            </button>
+            <hr style="margin: 15px 0; border:0; border-top:1px solid rgba(0,0,0,0.05);">
+            <div class="form-group" style="text-align: left;">
+                <label>PIN Owner (Khusus Admin):</label>
+                <input type="password" id="inputPin" class="form-control" placeholder="Masukkan PIN 4 digit...">
+            </div>
+            <button class="btn btn-warning" onclick="loginSebagaiOwner()">
+                <i class="fas fa-lock"></i> Masuk Sebagai Owner
+            </button>
+            <p id="loginError" style="color: #ef4444; font-size: 13px; margin-top: 10px; font-weight: 500;"></p>
+        </div>
+    </div>
+
+    <div id="scannerModal">
+        <div class="scanner-card">
+            <h4 style="margin-bottom: 15px;">Arahkan Kamera ke Barcode</h4>
+            <div id="readerTop"></div>
+            <button class="btn btn-warning" onclick="tutupScannerTop()">Tutup / Batal</button>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="logo-area"><h2>&infin; INFINITY<br><span>GADGET</span></h2></div>
+        <div class="menu-title">Menu Utama</div>
+        <div class="nav-item active" onclick="switchPage('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
+        <div class="nav-item" onclick="switchPage('kasir', this)"><i class="fas fa-shopping-cart"></i> Kasir & Input</div>
+        
+        <div class="menu-title" id="titleOwner" style="display:none;">Menu Owner</div>
+        <div class="nav-item" id="menuEditBarang" style="display:none;" onclick="switchPage('edit', this)">
+            <i class="fas fa-edit"></i> Kelola & Edit Stok
+        </div>
+
+        <div class="menu-title">Laporan & Data</div>
+        <div class="nav-item"><i class="fas fa-history"></i> Riwayat Transaksi</div>
+        <div class="nav-item"><i class="fas fa-book"></i> Laporan Buku Kas</div>
+    </div>
+
+    <div class="main-content">
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="topbar-left">
+                <i class="fas fa-bars menu-toggle" onclick="toggleSidebar()"></i>
+                <div class="search-container">
+                    <div class="search-bar">
+                        <i class="fas fa-search" style="color:#94a3b8;"></i>
+                        <input type="text" id="searchInput" placeholder="Cek Stok & Harga..." onkeyup="cariBarang(event)">
+                    </div>
+                    <button class="btn-scan-top" onclick="bukaScannerTop()" title="Scan Barcode Barang"><i class="fas fa-camera"></i></button>
+                    <div class="search-result-box" id="searchResultBox"></div>
+                </div>
+            </div>
+            <div class="user-profile">
+                <div class="avatar" id="userAvatar">AD</div>
+                <div class="user-info">
+                    <h4 id="userName">Admin / Kasir</h4>
+                    <p id="userRole">Infinity Gadget</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="page-dashboard" class="page-content active">
+            <div class="banner"></div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header"><div class="icon-box icon-blue"><i class="fas fa-shopping-bag"></i></div><div class="stat-title">Total Penjualan</div></div>
+                    <div class="stat-value" id="angka-penjualan">Memuat...</div>
+                </div>
+                <div class="stat-card" onclick="aksesMenuEdit()">
+                    <div class="stat-header"><div class="icon-box icon-purple"><i class="fas fa-box"></i></div><div class="stat-title">Total Produk</div></div>
+                    <div class="stat-value" id="angka-produk">Memuat...</div>
+                </div>
+                <div class="stat-card" onclick="aksesMenuEdit()">
+                    <div class="stat-header"><div class="icon-box icon-orange"><i class="fas fa-tags"></i></div><div class="stat-title">Kategori Barang</div></div>
+                    <div class="stat-value" id="angka-kategori">Memuat...</div>
+                </div>
+                <div class="stat-card" id="cardAset" style="display:none;">
+                    <div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset (Modal)</div></div>
+                    <div class="stat-value" id="angka-aset">Memuat...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN KASIR & INPUT -->
+        <div id="page-kasir" class="page-content">
+            <div class="form-card">
+                <h3 style="margin-bottom: 25px; color: var(--text-main); font-weight: 700;">Input Transaksi / Barang</h3>
+                <form id="formKaryawan" onsubmit="kirimData(event)">
+                    
+                    <div class="form-group">
+                        <label>Jenis Input</label>
+                        <select name="tipeForm" id="tipeForm" class="form-control" onchange="aturForm()">
+                            <option value="penjualan">Kasir - Penjualan</option>
+                            <option value="barang_masuk">Gudang - Barang Masuk</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nama Karyawan</label>
+                        <input type="text" id="kasir" name="kasir" class="form-control" placeholder="Siapa yang input?" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Barcode / IMEI Barang</label>
+                        <div id="reader" style="display: none;"></div>
+                        <button type="button" class="btn btn-warning" id="btnScan" onclick="mulaiScan()"><i class="fas fa-camera"></i> Scan Kamera HP</button>
+                        <input type="text" id="barcode" name="barcode" class="form-control" placeholder="Atau ketik manual di sini...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nama Barang / Tipe HP</label>
+                        <input type="text" id="barang" name="barang" class="form-control" placeholder="Contoh: LCD Oppo A5s" required>
+                    </div>
+
+                    <div class="form-group" id="divKategori" style="display:none;">
+                        <label>Kategori Barang</label>
+                        <input type="text" id="kategori" name="kategori" class="form-control" list="pilihanKategori" placeholder="Pilih atau ketik kategori...">
+                        <datalist id="pilihanKategori">
+                            <option value="Casing / Softcase"><option value="Headset / TWS / Earphone"><option value="Charger / Adaptor"><option value="Kabel Data"><option value="Powerbank"><option value="Tempered Glass / Anti Gores"><option value="LCD / Touchscreen"><option value="Baterai"><option value="Sparepart Dalam"><option value="HP Baru"><option value="HP Second"><option value="Jasa Service"><option value="Pulsa / Voucher Data">
+                        </datalist>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Jumlah (Qty)</label>
+                        <input type="number" id="qty" name="qty" class="form-control" value="1" required>
+                    </div>
+
+                    <div class="form-group" id="divHargaModal" style="display:none;">
+                        <label>Harga Modal (Rp)</label>
+                        <input type="number" id="hargaModal" name="hargaModal" class="form-control" value="0" placeholder="0">
+                    </div>
+
+                    <div class="form-group" id="divHargaJualInput" style="display:none;">
+                        <label>Harga Jual (Rp)</label>
+                        <input type="number" id="hargaJualInput" name="hargaJualInput" class="form-control" placeholder="0">
+                    </div>
+
+                    <div class="form-group" id="divTotalJual">
+                        <label>Total Harga Jual (Rp)</label>
+                        <input type="number" id="totalJual" name="totalJual" class="form-control" placeholder="0">
+                    </div>
+
+                    <div class="form-group" id="divFoto" style="display:none;">
+                        <label>Ambil Foto Fisik Barang</label>
+                        <input type="file" id="inputFoto" class="form-control" accept="image/*" style="background:#fff;">
+                        <img id="previewFoto" src="" alt="Preview">
+                    </div>
+
+                    <button type="submit" id="btnSubmit" class="btn btn-primary" style="margin-top: 10px;"><i class="fas fa-save"></i> Simpan Data</button>
+                </form>
+                <p id="status" style="text-align: center; margin-top: 15px; color: #10b981; font-weight: 600;"></p>
+            </div>
+        </div>
+
+        <!-- HALAMAN KELOLA & EDIT BARANG -->
+        <div id="page-edit" class="page-content">
+            <div class="form-card" style="max-width: 800px;">
+                <h3 style="margin-bottom: 5px; color: var(--text-main); font-weight: 700;">Kelola & Edit Stok Barang</h3>
+                <p style="font-size: 13.5px; color: var(--text-muted); margin-bottom: 25px;">Daftar seluruh barang di toko Anda. Klik pada salah satu barang untuk mengedit.</p>
+                
+                <div class="form-group">
+                    <input type="text" id="searchEditInput" class="form-control" placeholder="🔍 Filter / Cari nama barang di daftar..." onkeyup="filterTabelBarang()" style="background:#fff;">
+                </div>
+
+                <div id="editResultList" style="max-height: 450px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; padding: 5px;">
+                    <div style="text-align:center; padding:30px; color:#94a3b8;"><i class="fas fa-spinner fa-spin"></i> Memuat daftar barang...</div>
+                </div>
+
+                <form id="formEditBarang" onsubmit="simpanPerubahanBarang(event)" style="display:none; border-top: 2px dashed #e2e8f0; margin-top: 25px; padding-top: 25px;">
+                    <h4 style="margin-bottom: 20px; color: var(--primary-color);">Form Edit Barang</h4>
+                    <input type="hidden" id="editRow" name="rowEdit">
+                    
+                    <div class="form-group">
+                        <label>Nama Barang</label>
+                        <input type="text" id="editNama" name="barang" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <input type="text" id="editKategori" name="kategori" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sisa Stok (Qty)</label>
+                        <input type="number" id="editStok" name="qty" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Harga Jual (Rp)</label>
+                        <input type="number" id="editHargaJual" name="hargaJualInput" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Harga Modal (Rp)</label>
+                        <input type="number" id="editHargaModal" name="hargaModal" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Barcode</label>
+                        <input type="text" id="editBarcode" name="barcode" class="form-control">
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-top: 10px;">
+                        <button type="submit" id="btnUpdate" class="btn btn-primary" style="flex:2;"><i class="fas fa-check"></i> Simpan Perubahan</button>
+                        <button type="button" class="btn" style="background:#f1f5f9; color:#475569; flex:1;" onclick="batalEdit()">Batal</button>
+                    </div>
+                </form>
+                <p id="statusEdit" style="text-align: center; margin-top: 15px; color: #10b981; font-weight: 600;"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIKA -->
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxBXAryBPE81DmRCFtliQmGIq2Xx3K4olGOQurn_GQL7K2cBvkYqFL2lxenx3X4Jy9s/exec';
+        const PIN_RAHASIA = '1234';
+        let statusRole = 'karyawan';
+        let cacheDataEdit = [];
+        let html5QrScannerTop = null;
+
+        function loginSebagaiKaryawan() {
+            statusRole = 'karyawan';
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('userRole').innerText = 'Karyawan / Kasir';
+            document.getElementById('cardAset').style.display = 'none';
+            document.getElementById('titleOwner').style.display = 'none';
+            document.getElementById('menuEditBarang').style.display = 'none';
+        }
+
+        function loginSebagaiOwner() {
+            let pinInput = document.getElementById('inputPin').value;
+            if(pinInput === PIN_RAHASIA) {
+                statusRole = 'owner';
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('userRole').innerText = 'Owner / Admin';
+                document.getElementById('userAvatar').style.background = 'linear-gradient(135deg, #16a34a, #22c55e)';
+                document.getElementById('cardAset').style.display = 'flex';
+                document.getElementById('titleOwner').style.display = 'block';
+                document.getElementById('menuEditBarang').style.display = 'flex';
+            } else {
+                document.getElementById('loginError').innerText = 'PIN Salah! Coba lagi.';
+            }
+        }
+
+        function aksesMenuEdit() {
+            if(statusRole === 'owner') {
+                switchPage('edit', document.querySelector('#menuEditBarang'));
+            } else {
+                alert("Menu kelola stok khusus Owner / Admin toko.");
+            }
+        }
+
+        const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+
+        function formatGambarDrive(url) {
+            if(!url || url === "") return "https://via.placeholder.com/45x45/f1f5f9/94a3b8?text=No+Foto";
+            let match = url.match(/\/d\/(.+?)\//);
+            if(match && match[1]) { return "https://lh3.googleusercontent.com/d/" + match[1]; }
+            return url;
+        }
+
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('show');
+            document.querySelector('.sidebar-overlay').classList.toggle('show');
+        }
+
+        function switchPage(pageId, element) {
+            document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            if(element) element.classList.add('active');
+            
+            if(pageId === 'edit') {
+                muatSemuaBarangUntukEdit();
+            }
+
+            if(window.innerWidth <= 768) {
+                document.querySelector('.sidebar').classList.remove('show');
+                document.querySelector('.sidebar-overlay').classList.remove('show');
+            }
+        }
+
+        function muatDataDashboard() {
+            fetch(scriptURL)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('angka-penjualan').innerHTML = formatRp(data.penjualan);
+                    document.getElementById('angka-produk').innerHTML = data.produk + " <span style='font-size:13px; color:var(--text-muted); font-weight:500;'>Barang</span>";
+                    document.getElementById('angka-kategori').innerHTML = data.kategoriCount + " <span style='font-size:13px; color:var(--text-muted); font-weight:500;'>Jenis</span>";
+                    document.getElementById('angka-aset').innerHTML = formatRp(data.aset);
+                })
+                .catch(error => console.log(error));
+        }
+        window.onload = muatDataDashboard;
+
+        function muatSemuaBarangToTabel(data) {
+            let resultList = document.getElementById("editResultList");
+            if(data.length === 0) {
+                resultList.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Belum ada barang di database.</p>";
+                return;
+            }
+            cacheDataEdit = data;
+            let html = "";
+            data.forEach((item, index) => {
+                let infoBarcode = item.barcode ? item.barcode : "Tanpa barcode";
+                let warnaStok = item.stok <= 3 ? "color: #ef4444;" : "color: #10b981;";
+                html += `
+                <div class="search-item">
+                    <div class="item-left" onclick="pilihBarangEdit(${index})" style="cursor:pointer; flex:1;">
+                        <img src="${formatGambarDrive(item.foto)}" class="item-img">
+                        <div class="item-info">
+                            <h5>${item.nama} <span style="font-size:10px; background:#eff6ff; color:#3b82f6; padding:3px 8px; border-radius:6px; margin-left:6px; font-weight:500;">${item.kategori}</span></h5>
+                            <p style="color: #64748b; font-size:11px; margin-top:4px;"><i class="fas fa-barcode"></i> ${infoBarcode}</p>
+                            <p style="${warnaStok} font-size:11px; margin-top:2px;">Stok: <b style="font-size:12px;">${item.stok}</b> pcs | Jual: ${formatRp(item.hargaJual)}</p>
+                        </div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:10px; text-align:right;">
+                        <div onclick="pilihBarangEdit(${index})" style="cursor:pointer; font-size:13px; color:var(--primary-color); font-weight:500; background:#eff6ff; padding:5px 10px; border-radius:6px;"><i class="fas fa-edit"></i> Edit</div>
+                        <div onclick="hapusBarang(event, ${item.row})" style="cursor:pointer; font-size:13px; color:#ef4444; font-weight:500; background:#fef2f2; padding:5px 10px; border-radius:6px;"><i class="fas fa-trash"></i> Hapus</div>
+                    </div>
+                </div>`;
+            });
+            resultList.innerHTML = html;
+        }
+
+        function muatSemuaBarangUntukEdit() {
+            let resultList = document.getElementById("editResultList");
+            resultList.innerHTML = "<div style='text-align:center; padding:30px; color:#94a3b8;'><i class='fas fa-spinner fa-spin'></i> Memuat daftar barang...</div>";
+            
+            fetch(scriptURL + "?action=search&keyword=")
+                .then(response => response.json())
+                .then(data => {
+                    muatSemuaBarangToTabel(data);
+                })
+                .catch(err => {
+                    resultList.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Gagal memuat data.</p>";
+                });
+        }
+
+        function filterTabelBarang() {
+            let keyword = document.getElementById("searchEditInput").value.toLowerCase();
+            let filtered = cacheDataEdit.filter(item => 
+                item.nama.toLowerCase().includes(keyword) || 
+                String(item.barcode).toLowerCase().includes(keyword) ||
+                item.kategori.toLowerCase().includes(keyword)
+            );
+            muatSemuaBarangToTabel(filtered);
+        }
+
+        function pilihBarangEdit(index) {
+            let item = cacheDataEdit[index];
+            if(!item) return;
+
+            document.getElementById("editRow").value = item.row;
+            document.getElementById("editNama").value = item.nama;
+            document.getElementById("editKategori").value = item.kategori;
+            document.getElementById("editStok").value = item.stok;
+            document.getElementById("editHargaJual").value = item.hargaJual;
+            document.getElementById("editHargaModal").value = item.hargaModal;
+            document.getElementById("editBarcode").value = item.barcode;
+            
+            document.getElementById("formEditBarang").style.display = "block";
+            document.getElementById("statusEdit").innerText = "";
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        }
+
+        function batalEdit() {
+            document.getElementById("formEditBarang").style.display = "none";
+            document.getElementById("statusEdit").innerText = "";
+        }
+
+        function simpanPerubahanBarang(e) {
+            e.preventDefault();
+            let btn = document.getElementById("btnUpdate");
+            btn.disabled = true; btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Menyimpan...";
+            
+            let form = document.getElementById("formEditBarang");
+            let formData = new FormData(form);
+            formData.append("tipeForm", "edit_barang");
+
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => response.text())
+                .then(result => {
+                    document.getElementById("statusEdit").innerText = result;
+                    btn.disabled = false; btn.innerHTML = "<i class='fas fa-check'></i> Simpan Perubahan";
+                    document.getElementById("formEditBarang").style.display = "none";
+                    muatDataDashboard();
+                    muatSemuaBarangUntukEdit();
+                })
+                .catch(error => {
+                    document.getElementById("statusEdit").innerText = "Gagal memperbarui data.";
+                    btn.disabled = false; btn.innerHTML = "<i class='fas fa-check'></i> Simpan Perubahan";
+                });
+        }
+
+        function hapusBarang(event, rowNum) {
+            if(event) event.stopPropagation();
+            if (confirm("Peringatan: Apakah Anda yakin ingin menghapus barang ini secara permanen dari database?")) {
+                let formData = new URLSearchParams();
+                formData.append("tipeForm", "hapus_barang");
+                formData.append("rowHapus", rowNum);
+
+                fetch(scriptURL, { method: "POST", body: formData })
+                    .then(response => response.text())
+                    .then(result => {
+                        alert(result);
+                        muatSemuaBarangUntukEdit(); 
+                        muatDataDashboard();
+                    })
+                    .catch(error => alert("Gagal menghapus: " + error));
+            }
+        }
+
+        function bukaScannerTop() {
+            document.getElementById('scannerModal').style.display = 'flex';
+            html5QrScannerTop = new Html5Qrcode("readerTop");
+            
+            html5QrScannerTop.start(
+                { facingMode: "environment" },
+                { fps: 10, qrbox: { width: 250, height: 150 } },
+                (decodedText) => {
+                    tutupScannerTop();
+                    document.getElementById('searchInput').value = decodedText;
+                    jalankanPencarian(decodedText);
+                },
+                (errorMessage) => {}
+            ).catch(err => {
+                alert("Gagal membuka kamera: " + err);
+                tutupScannerTop();
+            });
+        }
+
+        function tutupScannerTop() {
+            if(html5QrScannerTop) {
+                html5QrScannerTop.stop().then(() => {
+                    document.getElementById('scannerModal').style.display = 'none';
+                }).catch(err => {
+                    document.getElementById('scannerModal').style.display = 'none';
+                });
+            } else {
+                document.getElementById('scannerModal').style.display = 'none';
+            }
+        }
+
+        function cariBarang(event) {
+            let keyword = document.getElementById("searchInput").value;
+            if(event.key === "Enter") {
+                jalankanPencarian(keyword);
+            }
+        }
+
+        function jalankanPencarian(keyword) {
+            let resultBox = document.getElementById("searchResultBox");
+            if(keyword.length < 1) { alert("Ketik atau scan barcode terlebih dahulu!"); return; }
+            
+            resultBox.style.display = "block";
+            resultBox.innerHTML = "<div style='text-align:center; padding:20px; font-size:13px; color:#64748b;'><i class='fas fa-spinner fa-spin'></i> Mencari...</div>";
+            
+            fetch(scriptURL + "?action=search&keyword=" + encodeURIComponent(keyword))
+                .then(response => response.json())
+                .then(data => {
+                    if(data.length === 0) {
+                        resultBox.innerHTML = "<div style='text-align:center; padding:20px; font-size:13px; color:#ef4444;'>Barang tidak ditemukan.</div>";
+                        return;
+                    }
+                    let html = "";
+                    data.forEach(item => {
+                        let warnaStok = item.stok <= 3 ? "color: #ef4444;" : "color: #10b981;";
+                        let urlGambar = formatGambarDrive(item.foto);
+                        let hargaBersih = String(item.hargaJual).replace(/[^0-9]/g, ''); 
+                        let infoBarcode = item.barcode ? item.barcode : "Tanpa barcode";
+                        
+                        html += `
+                        <div class="search-item">
+                            <div class="item-left">
+                                <img src="${urlGambar}" class="item-img" alt="Foto">
+                                <div class="item-info">
+                                    <h5>${item.nama}</h5>
+                                    <p style="color: #64748b; font-size:10px;"><i class="fas fa-barcode"></i> ${infoBarcode}</p>
+                                    <p style="${warnaStok} font-weight:500;">Stok: <b>${item.stok}</b> pcs</p>
+                                </div>
+                            </div>
+                            <div class="item-price">${formatRp(Number(hargaBersih) || 0)}</div>
+                        </div>`;
+                    });
+                    resultBox.innerHTML = html;
+                })
+                .catch(error => { resultBox.innerHTML = "<div style='text-align:center; padding:20px; font-size:13px; color:#ef4444;'>Gagal terhubung.</div>"; });
+        }
+        
+        document.addEventListener('click', function(event) {
+            let searchBox = document.getElementById('searchResultBox');
+            if (!event.target.closest('.search-container') && searchBox) { searchBox.style.display = 'none'; }
+        });
+
+        let html5QrcodeScanner = null;
+        let fileB64 = "", mimeType = "", namaFile = "";
+
+        function aturForm() {
+            let tipe = document.getElementById("tipeForm").value;
+            if(tipe === "barang_masuk") {
+                document.getElementById("divTotalJual").style.display = "none";
+                document.getElementById("divHargaJualInput").style.display = "block";
+                document.getElementById("divKategori").style.display = "block";
+                document.getElementById("divFoto").style.display = "block";
+                
+                if(statusRole === 'owner') {
+                    document.getElementById("divHargaModal").style.display = "block";
+                } else {
+                    document.getElementById("divHargaModal").style.display = "none";
+                }
+            } else {
+                document.getElementById("divTotalJual").style.display = "block";
+                document.getElementById("divHargaModal").style.display = "none";
+                document.getElementById("divHargaJualInput").style.display = "none";
+                document.getElementById("divKategori").style.display = "none";
+                document.getElementById("divFoto").style.display = "none";
+            }
+        }
+
+        document.getElementById("inputFoto").addEventListener("change", function(e) {
+            let file = e.target.files[0];
+            if(file) {
+                namaFile = file.name; mimeType = file.type;
+                let reader = new FileReader();
+                reader.onload = function(event) {
+                    fileB64 = event.target.result.split(',')[1];
+                    let imgPreview = document.getElementById("previewFoto");
+                    imgPreview.src = event.target.result;
+                    imgPreview.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function mulaiScan() {
+            document.getElementById("reader").style.display = "block";
+            document.getElementById("btnScan").style.display = "none";
+            html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} });
+            html5QrcodeScanner.render(function(decodedText) {
+                document.getElementById("barcode").value = decodedText;
+                html5QrcodeScanner.clear();
+                document.getElementById("reader").style.display = "none";
+                document.getElementById("btnScan").style.display = "block";
+                document.getElementById("btnScan").innerHTML = "<i class='fas fa-camera'></i> Barcode Terbaca! Ulangi Scan?";
+            });
+        }
+
+        function kirimData(e) {
+            e.preventDefault();
+            let btn = document.getElementById("btnSubmit");
+            btn.disabled = true; btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Sedang Menyimpan...";
+            document.getElementById("status").innerText = "";
+            
+            let form = document.getElementById("formKaryawan");
+            let formData = new FormData(form);
+            
+            let inputKategori = document.getElementById("kategori").value;
+            if(inputKategori.trim() === "") { formData.set("kategori", "Lainnya"); }
+
+            if(statusRole === 'karyawan') { formData.set("hargaModal", 0); }
+
+            formData.append("fotoB64", fileB64); formData.append("mimeType", mimeType); formData.append("namaFile", namaFile);
+
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => response.text())
+                .then(result => {
+                    document.getElementById("status").innerText = result;
+                    form.reset(); fileB64 = ""; aturForm();
+                    document.getElementById("previewFoto").style.display = "none";
+                    btn.disabled = false; btn.innerHTML = "<i class='fas fa-save'></i> Simpan Data";
+                    muatDataDashboard();
+                })
+                .catch(error => {
+                    document.getElementById("status").innerText = "Gagal mengirim data.";
+                    btn.disabled = false; btn.innerHTML = "<i class='fas fa-save'></i> Simpan Data";
+                });
+        }
+    </script>
+</body>
+</html>
