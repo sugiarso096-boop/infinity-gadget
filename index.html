@@ -104,7 +104,7 @@
             box-shadow: 0 15px 35px -10px rgba(0,0,0,0.15); 
         }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-bottom: 35px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; margin-bottom: 35px; }
         .stat-card { background: var(--card-bg); padding: 25px; border-radius: var(--radius-card); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03); display: flex; flex-direction: column; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(0,0,0,0.02); }
         .stat-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
         .stat-header { display: flex; align-items: center; gap: 15px; margin-bottom: 18px; pointer-events: none; }
@@ -114,6 +114,7 @@
         .icon-purple { background: #faf5ff; color: #a855f7; }
         .icon-orange { background: #fff7ed; color: #f97316; }
         .icon-green { background: #f0fdf4; color: #22c55e; }
+        .icon-red { background: #fef2f2; color: #ef4444; } /* Warna Ikon Peringatan Baru */
         
         .stat-title { font-size: 13.5px; font-weight: 500; color: var(--text-muted); pointer-events: none; }
         .stat-value { font-size: 28px; font-weight: 700; color: var(--text-main); pointer-events: none; letter-spacing: -0.5px; }
@@ -211,7 +212,6 @@
                 </div>
             </div>
             
-            <!-- PROFIL BISA DIKLIK -->
             <div class="user-profile" onclick="bukaMenuLogin()" style="cursor: pointer; padding: 5px 10px; border-radius: 10px; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(0,0,0,0.05)'" onmouseout="this.style.backgroundColor='transparent'" title="Klik untuk Ganti Akun / Keluar">
                 <div class="avatar" id="userAvatar">AD</div>
                 <div class="user-info">
@@ -238,6 +238,13 @@
                     <div class="stat-header"><div class="icon-box icon-orange"><i class="fas fa-tags"></i></div><div class="stat-title">Kategori Barang</div></div>
                     <div class="stat-value" id="angka-kategori">Memuat...</div>
                 </div>
+                
+                <!-- KARTU BARU: HARGA BELUM DISET -->
+                <div class="stat-card" onclick="aksesMenuEdit()" title="Klik untuk cek barang">
+                    <div class="stat-header"><div class="icon-box icon-red"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-title">Harga Belum Diset</div></div>
+                    <div class="stat-value" id="angka-belum-set">Memuat...</div>
+                </div>
+
                 <div class="stat-card" id="cardAset" style="display:none;">
                     <div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset (Modal)</div></div>
                     <div class="stat-value" id="angka-aset">Memuat...</div>
@@ -382,7 +389,6 @@
         let cacheDataEdit = [];
         let html5QrScannerTop = null;
 
-        /* FUNGSI LOGOUT / GANTI AKUN */
         function bukaMenuLogin() {
             if(confirm("Apakah Anda ingin keluar / ganti peran login?")) {
                 document.getElementById('loginModal').style.display = 'flex';
@@ -458,7 +464,9 @@
             }
         }
 
+        /* PERUBAHAN: Fungsi muatDataDashboard sekarang juga menghitung jumlah barang yang harganya 0 atau kosong */
         function muatDataDashboard() {
+            // Fetch 1: Load data ringkasan utama
             fetch(scriptURL)
                 .then(response => response.json())
                 .then(data => {
@@ -468,7 +476,25 @@
                     document.getElementById('angka-aset').innerHTML = formatRp(data.aset);
                 })
                 .catch(error => console.log(error));
+            
+            // Fetch 2: Load data barang khusus untuk cek harga belum di-set
+            fetch(scriptURL + "?action=search&keyword=")
+                .then(response => response.json())
+                .then(data => {
+                    let belumSetCount = 0;
+                    data.forEach(item => {
+                        let harga = String(item.hargaJual).replace(/[^0-9]/g, '');
+                        if(!item.hargaJual || Number(harga) === 0) {
+                            belumSetCount++;
+                        }
+                    });
+                    
+                    let textColor = belumSetCount > 0 ? '#ef4444' : 'var(--text-main)';
+                    document.getElementById('angka-belum-set').innerHTML = `<span style="color: ${textColor};">${belumSetCount}</span> <span style='font-size:13px; color:var(--text-muted); font-weight:500;'>Barang</span>`;
+                })
+                .catch(error => console.log(error));
         }
+        
         window.onload = muatDataDashboard;
 
         function muatSemuaBarangToTabel(data) {
