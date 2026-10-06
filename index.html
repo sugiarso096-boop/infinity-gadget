@@ -48,7 +48,7 @@
         .logo-area h2 .text-gadget { display: block; color: var(--primary-color); font-size: 15px; letter-spacing: 6px; font-weight: 600; margin-top: 4px; }
         
         .menu-title { font-size: 11px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 1.5px; margin: 15px 25px 10px; font-weight: 600; }
-        .nav-item { padding: 12px 25px; cursor: pointer; display: flex; align-items: center; color: #cbd5e1; font-size: 14px; transition: all 0.2s ease; margin: 4px 15px; border-radius: var(--radius-btn); font-weight: 500; }
+        .nav-item { padding: 12px 25px; cursor: pointer; display: flex; align-items: center; color: #cbd5e1; font-size: 14px; transition: all 0.2s ease; margin: 4px 15px; border-radius: var(--radius-btn); font-weight: 500; text-decoration: none; }
         .nav-item i { width: 28px; font-size: 16px; }
         .nav-item:hover { color: #f8fafc; background-color: rgba(255,255,255,0.15); }
         .nav-item.active { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); color: #fff; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
@@ -156,6 +156,9 @@
         
         <div class="menu-title" id="titleOwner" style="display:none;">Menu Owner</div>
         <div class="nav-item" id="menuEditBarang" style="display:none;" onclick="switchPage('edit', this)"><i class="fas fa-edit"></i> Kelola & Edit Stok</div>
+        
+        <div class="menu-title">Publik</div>
+        <a href="katalog.html" target="_blank" class="nav-item"><i class="fas fa-store"></i> Buka Web Katalog</a>
     </div>
 
     <div class="main-content">
@@ -215,7 +218,7 @@
                     <div class="form-group" id="divKategori" style="display:none;">
                         <label>Kategori Barang</label>
                         <input type="text" id="kategori" name="kategori" class="form-control" list="pilihanKategori" placeholder="Pilih kategori...">
-                        <datalist id="pilihanKategori"><option value="TWS"><option value="Powerbank"><option value="LCD / Touchscreen"><option value="Casing / Softcase"><option value="Charger / Adaptor"><option value="Kabel Data"></datalist>
+                        <datalist id="pilihanKategori"><option value="TWS"><option value="Powerbank"><option value="LCD / Touchscreen"><option value="Casing / Softcase"><option value="Charger / Adaptor"><option value="Kabel Data"><option value="Handphone"><option value="Speaker"></datalist>
                     </div>
 
                     <div class="form-group"><label>Jumlah (Qty)</label><input type="number" id="qty" name="qty" class="form-control" value="1" required></div>
@@ -273,7 +276,7 @@
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active')); 
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); 
             document.getElementById('page-' + id).classList.add('active'); 
-            if(el) el.classList.add('active'); 
+            if(el && el.classList) el.classList.add('active'); 
             if(id === 'edit') muatSemuaBarangUntukEdit();
             if(window.innerWidth <= 768) { document.querySelector('.sidebar').classList.remove('show'); document.querySelector('.sidebar-overlay').classList.remove('show'); }
         }
@@ -475,85 +478,4 @@
             } else {
                 document.getElementById("divTotalJual").style.display = "block";
                 document.getElementById("divHargaJualInput").style.display = "none";
-                document.getElementById("divKategori").style.display = "none";
-                document.getElementById("divFoto").style.display = "none";
-                document.getElementById("divHargaModal").style.display = "none";
-            }
-        }
-
-        document.getElementById("inputFoto").addEventListener("change", function(e) {
-            let file = e.target.files[0];
-            let btn = document.getElementById("btnSubmit");
-            if(file) {
-                btn.disabled = true;
-                btn.innerHTML = "Memproses Foto...";
-                namaFile = "compressed_" + file.name;
-                mimeType = "image/jpeg";
-
-                let reader = new FileReader();
-                reader.onload = function(event) {
-                    let img = new Image();
-                    img.onload = function() {
-                        let canvas = document.createElement("canvas");
-                        let ctx = canvas.getContext("2d");
-                        canvas.width = 800; canvas.height = 800;
-                        ctx.drawImage(img, 0, 0, 800, 800);
-                        let dataUrl = canvas.toDataURL("image/jpeg", 0.6);
-                        fileB64 = dataUrl.split(',')[1];
-                        
-                        document.getElementById("previewFoto").src = dataUrl;
-                        document.getElementById("previewFoto").style.display = "block";
-                        btn.disabled = false;
-                        btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data';
-                    };
-                    img.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        function kirimData(e) {
-            e.preventDefault();
-            let btn = document.getElementById("btnSubmit");
-            btn.disabled = true;
-            btn.innerHTML = "Menyimpan...";
-
-            let payload = {
-                tipeForm: document.getElementById("tipeForm").value,
-                kasir: document.getElementById("kasir").value,
-                barcode: document.getElementById("barcode").value || "-",
-                barang: document.getElementById("barang").value,
-                kategori: document.getElementById("kategori").value || "Lainnya",
-                qty: document.getElementById("qty").value,
-                hargaModal: statusRole === 'karyawan' ? 0 : document.getElementById("hargaModal").value,
-                hargaJualInput: document.getElementById("hargaJualInput").value || 0,
-                totalJual: document.getElementById("totalJual").value || 0,
-                fotoB64: fileB64,
-                mimeType: mimeType,
-                namaFile: namaFile
-            };
-
-            fetch(scriptURL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload)
-            })
-            .then(res => res.text())
-            .then(msg => {
-                document.getElementById("status").innerText = msg;
-                document.getElementById("formKaryawan").reset();
-                fileB64 = "";
-                document.getElementById("previewFoto").style.display = "none";
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data';
-                muatDashboard();
-            })
-            .catch(err => {
-                document.getElementById("status").innerText = "Gagal mengirim data.";
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data';
-            });
-        }
-    </script>
-</body>
-</html>
+                document.getElementById("divKategori
