@@ -101,6 +101,7 @@
         .btn-primary { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); }
         .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
         
+        #reader { width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 15px; display: none; background: #f1f5f9; border: 2px dashed #cbd5e1; }
         #previewFoto { width: 100%; max-height: 250px; object-fit: contain; margin-top: 15px; border-radius: 12px; display: none; background: #f1f5f9; padding: 10px; }
     </style>
 </head>
@@ -178,7 +179,14 @@
                     </div>
 
                     <div class="form-group"><label>Nama Karyawan</label><input type="text" id="kasir" name="kasir" class="form-control" placeholder="Nama Anda..." required></div>
-                    <div class="form-group"><label>Barcode / IMEI Barang</label><input type="text" id="barcode" name="barcode" class="form-control" placeholder="Barcode..."></div>
+                    
+                    <div class="form-group">
+                        <label>Barcode / IMEI Barang</label>
+                        <div id="reader"></div>
+                        <button type="button" class="btn btn-warning" id="btnScan" onclick="mulaiScan()"><i class="fas fa-camera"></i> Scan Barcode Kamera HP</button>
+                        <input type="text" id="barcode" name="barcode" class="form-control" placeholder="Barcode..." style="margin-top: 10px;">
+                    </div>
+
                     <div class="form-group"><label>Nama Barang / Tipe HP</label><input type="text" id="barang" name="barang" class="form-control" placeholder="Contoh: LCD Oppo" required></div>
                     
                     <div class="form-group" id="divKategori" style="display:none;">
@@ -230,11 +238,12 @@
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyjUYfuAtipQ4jPGXaYvo6CI7SAwiSYqKhaziTsnGCxGaBYE_PeqcUiM3N2XsWLvJnN/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxBXAryBPE81DmRCFtliQmGIq2Xx3K4olGOQurn_GQL7K2cBvkYqFL2lxenx3X4Jy9s/exec';
         const PIN_RAHASIA = '1234';
         let statusRole = 'karyawan';
         let cacheDataEdit = [];
         let fileB64 = "", mimeType = "", namaFile = "";
+        let html5QrcodeScanner = null;
 
         function toggleSidebar() { document.querySelector('.sidebar').classList.toggle('show'); document.querySelector('.sidebar-overlay').classList.toggle('show'); }
         function switchPage(id, el) { document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active')); document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); document.getElementById('page-' + id).classList.add('active'); if(el) el.classList.add('active'); if(id === 'edit') muatSemuaBarangUntukEdit(); }
@@ -246,7 +255,6 @@
 
         const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
 
-        // FUNGSI PENGERTI GAMBAR GOOGLE DRIVE YANG DISEMPURNAKAN
         function formatGambarDrive(url) {
             if(!url || url === "" || url === "-") return "https://via.placeholder.com/45x45/f1f5f9/94a3b8?text=No+Foto";
             let match = url.match(/\/d\/(.+?)\//);
@@ -280,6 +288,19 @@
                     html += `<div class="search-item"><div class="item-left"><img src="${formatGambarDrive(item.foto)}" class="item-img"><div><b>${item.nama}</b><br><small>Stok: ${item.stok} | Jual: ${formatRp(item.hargaJual)}</small></div></div></div>`;
                 });
                 box.innerHTML = html;
+            });
+        }
+
+        function mulaiScan() {
+            document.getElementById("reader").style.display = "block";
+            document.getElementById("btnScan").style.display = "none";
+            html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} });
+            html5QrcodeScanner.render(function(decodedText) {
+                document.getElementById("barcode").value = decodedText;
+                html5QrcodeScanner.clear();
+                document.getElementById("reader").style.display = "none";
+                document.getElementById("btnScan").style.display = "block";
+                document.getElementById("btnScan").innerHTML = "<i class='fas fa-camera'></i> Barcode Terbaca! Ulangi Scan?";
             });
         }
 
