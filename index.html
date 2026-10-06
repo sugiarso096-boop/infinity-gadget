@@ -48,7 +48,6 @@
             box-shadow: 4px 0 20px rgba(0,0,0,0.05); 
         }
         
-        /* LOGO BARU YANG LEBIH BESAR & PROPORSIONAL */
         .logo-area { text-align: center; margin-bottom: 45px; padding-top: 15px; }
         .logo-area h2 { color: #fff; font-weight: 800; letter-spacing: 2px; font-size: 28px; line-height: 1.1; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .logo-area h2 .icon-infin { display: block; font-size: 55px; color: #fff; margin-bottom: 0px; font-weight: 300; line-height: 0.8; }
@@ -128,13 +127,10 @@
         .form-group label { display: block; font-size: 13px; color: var(--text-main); margin-bottom: 8px; font-weight: 600; letter-spacing: 0.3px; }
         .form-control { width: 100%; padding: 14px 18px; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-btn); font-size: 14px; color: var(--text-main); outline: none; transition: all 0.2s; }
         .form-control:focus { background-color: #fff; border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
-        .form-control::placeholder { color: #94a3b8; }
         
         .btn { width: 100%; padding: 14px; border: none; border-radius: var(--radius-btn); font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .btn-primary { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); color: white; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(59, 130, 246, 0.35); }
         .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25); }
-        .btn-warning:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(245, 158, 11, 0.35); }
         
         #reader { width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 15px; border: 2px dashed #cbd5e1; background: #f8fafc; }
         #previewFoto { width: 100%; max-height: 250px; object-fit: contain; margin-top: 15px; border-radius: 12px; border: 1px solid #e2e8f0; display: none; background: #f1f5f9; padding: 10px; }
@@ -224,7 +220,7 @@
                 </div>
             </div>
             
-            <div class="user-profile" onclick="bukaMenuLogin()" style="cursor: pointer; padding: 5px 10px; border-radius: 10px; transition: 0.2s;" onmouseover="this.style.backgroundColor='rgba(0,0,0,0.05)'" onmouseout="this.style.backgroundColor='transparent'" title="Klik untuk Ganti Akun / Keluar">
+            <div class="user-profile" onclick="bukaMenuLogin()" style="cursor: pointer; padding: 5px 10px; border-radius: 10px;">
                 <div class="avatar" id="userAvatar">AD</div>
                 <div class="user-info">
                     <h4 id="userName">Admin / Kasir</h4>
@@ -250,12 +246,10 @@
                     <div class="stat-header"><div class="icon-box icon-orange"><i class="fas fa-tags"></i></div><div class="stat-title">Kategori Barang</div></div>
                     <div class="stat-value" id="angka-kategori">Memuat...</div>
                 </div>
-                
-                <div class="stat-card" onclick="aksesMenuEdit()" title="Klik untuk cek barang">
+                <div class="stat-card" onclick="aksesMenuEdit()">
                     <div class="stat-header"><div class="icon-box icon-red"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-title">Harga Belum Diset</div></div>
                     <div class="stat-value" id="angka-belum-set">Memuat...</div>
                 </div>
-
                 <div class="stat-card" id="cardAset" style="display:none;">
                     <div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset (Modal)</div></div>
                     <div class="stat-value" id="angka-aset">Memuat...</div>
@@ -516,7 +510,6 @@
             data.forEach((item, index) => {
                 let infoBarcode = item.barcode ? item.barcode : "Tanpa barcode";
                 let warnaStok = item.stok <= 3 ? "color: #ef4444;" : "color: #10b981;";
-                
                 let hargaBersih = String(item.hargaJual).replace(/[^0-9]/g, '');
                 let isHargaKosong = !item.hargaJual || Number(hargaBersih) === 0;
                 let bgCard = isHargaKosong ? "background: #fef2f2; border: 1px dashed #ef4444;" : "";
@@ -595,8 +588,8 @@
             btn.disabled = true; btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Menyimpan...";
             
             let form = document.getElementById("formEditBarang");
-            let formData = new FormData(form);
-            formData.append("tipeForm", "edit_barang");
+            let formData = new URLSearchParams(new FormData(form)); // GUNAKAN URLSearchParams
+            formData.set("tipeForm", "edit_barang");
 
             fetch(scriptURL, { method: 'POST', body: formData })
                 .then(response => response.text())
@@ -634,7 +627,6 @@
         function bukaScannerTop() {
             document.getElementById('scannerModal').style.display = 'flex';
             html5QrScannerTop = new Html5Qrcode("readerTop");
-            
             html5QrScannerTop.start(
                 { facingMode: "environment" },
                 { fps: 10, qrbox: { width: 250, height: 150 } },
@@ -689,7 +681,6 @@
                         let urlGambar = formatGambarDrive(item.foto);
                         let hargaBersih = String(item.hargaJual).replace(/[^0-9]/g, ''); 
                         let infoBarcode = item.barcode ? item.barcode : "Tanpa barcode";
-                        
                         let isHargaKosong = !item.hargaJual || Number(hargaBersih) === 0;
                         let bgCard = isHargaKosong ? "background: #fef2f2; border: 1px dashed #ef4444;" : "";
                         let badgePeringatan = isHargaKosong ? `<span style="background:#ef4444; color:white; font-size:9px; padding:2px 6px; border-radius:4px; margin-left:6px; font-weight:bold;"><i class="fas fa-exclamation-triangle"></i></span>` : "";
@@ -728,7 +719,6 @@
                 document.getElementById("divHargaJualInput").style.display = "block";
                 document.getElementById("divKategori").style.display = "block";
                 document.getElementById("divFoto").style.display = "block";
-                
                 if(statusRole === 'owner') {
                     document.getElementById("divHargaModal").style.display = "block";
                 } else {
@@ -744,12 +734,11 @@
         }
 
         // ==========================================================
-        // SCRIPT KOMPRESI FOTO OTOMATIS YANG BARU (BEBAS ERROR/TIMEOUT)
+        // SCRIPT KOMPRESI FOTO OTOMATIS
         // ==========================================================
         document.getElementById("inputFoto").addEventListener("change", function(e) {
             let file = e.target.files[0];
             if(file) {
-                // Ubah nama file dan paksa mimeType ke JPEG agar seragam dan ringan
                 namaFile = "compressed_" + file.name; 
                 mimeType = "image/jpeg"; 
 
@@ -757,7 +746,6 @@
                 reader.onload = function(event) {
                     let img = new Image();
                     img.onload = function() {
-                        // 1. Tentukan batas ukuran maksimal gambar (resolusi diturunkan ke standar web)
                         const MAX_WIDTH = 800;
                         const MAX_HEIGHT = 800;
                         let width = img.width;
@@ -775,20 +763,15 @@
                             }
                         }
 
-                        // 2. Buat kanvas virtual untuk memeras ukuran foto
                         let canvas = document.createElement("canvas");
                         canvas.width = width;
                         canvas.height = height;
                         let ctx = canvas.getContext("2d");
                         ctx.drawImage(img, 0, 0, width, height);
 
-                        // 3. Kompresi gambar menjadi JPEG dengan kualitas 60%
                         let compressedDataUrl = canvas.toDataURL("image/jpeg", 0.6);
-
-                        // 4. Pisahkan sandi Base64 untuk dikirim ke Google Apps Script
                         fileB64 = compressedDataUrl.split(',')[1];
 
-                        // Tampilkan Preview
                         let imgPreview = document.getElementById("previewFoto");
                         imgPreview.src = compressedDataUrl;
                         imgPreview.style.display = "block";
@@ -819,29 +802,46 @@
             btn.disabled = true; btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Sedang Menyimpan...";
             document.getElementById("status").innerText = "";
             
-            let form = document.getElementById("formKaryawan");
-            let formData = new FormData(form);
+            // ==========================================================
+            // KARDUS PENGIRIMAN VVIP (ANTI-GAGAL)
+            // ==========================================================
+            let urlData = new URLSearchParams();
+            urlData.append("tipeForm", document.getElementById("tipeForm").value);
+            urlData.append("kasir", document.getElementById("kasir").value);
+            urlData.append("barcode", document.getElementById("barcode").value);
+            urlData.append("barang", document.getElementById("barang").value);
             
             let inputKategori = document.getElementById("kategori").value;
-            if(inputKategori.trim() === "") { formData.set("kategori", "Lainnya"); }
+            urlData.append("kategori", inputKategori.trim() === "" ? "Lainnya" : inputKategori);
+            
+            urlData.append("qty", document.getElementById("qty").value);
+            urlData.append("hargaModal", statusRole === 'karyawan' ? 0 : document.getElementById("hargaModal").value);
+            urlData.append("hargaJualInput", document.getElementById("hargaJualInput").value);
+            urlData.append("totalJual", document.getElementById("totalJual").value);
+            
+            urlData.append("fotoB64", fileB64);
+            urlData.append("mimeType", mimeType);
+            urlData.append("namaFile", namaFile);
+            // ==========================================================
 
-            if(statusRole === 'karyawan') { formData.set("hargaModal", 0); }
-
-            formData.append("fotoB64", fileB64); formData.append("mimeType", mimeType); formData.append("namaFile", namaFile);
-
-            fetch(scriptURL, { method: 'POST', body: formData })
-                .then(response => response.text())
-                .then(result => {
-                    document.getElementById("status").innerText = result;
-                    form.reset(); fileB64 = ""; aturForm();
-                    document.getElementById("previewFoto").style.display = "none";
-                    btn.disabled = false; btn.innerHTML = "<i class='fas fa-save'></i> Simpan Data";
-                    muatDataDashboard();
-                })
-                .catch(error => {
-                    document.getElementById("status").innerText = "Gagal mengirim data.";
-                    btn.disabled = false; btn.innerHTML = "<i class='fas fa-save'></i> Simpan Data";
-                });
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: urlData // Mengirim dengan kardus yang baru
+            })
+            .then(response => response.text())
+            .then(result => {
+                document.getElementById("status").innerText = result;
+                document.getElementById("formKaryawan").reset(); 
+                fileB64 = ""; 
+                aturForm();
+                document.getElementById("previewFoto").style.display = "none";
+                btn.disabled = false; btn.innerHTML = "<i class='fas fa-save'></i> Simpan Data";
+                muatDataDashboard();
+            })
+            .catch(error => {
+                document.getElementById("status").innerText = "Gagal mengirim data.";
+                btn.disabled = false; btn.innerHTML = "<i class='fas fa-save'></i> Simpan Data";
+            });
         }
     </script>
 </body>
