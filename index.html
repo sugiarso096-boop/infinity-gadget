@@ -246,6 +246,16 @@
 
         const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
 
+        // FUNGSI PENGERTI GAMBAR GOOGLE DRIVE YANG DISEMPURNAKAN
+        function formatGambarDrive(url) {
+            if(!url || url === "" || url === "-") return "https://via.placeholder.com/45x45/f1f5f9/94a3b8?text=No+Foto";
+            let match = url.match(/\/d\/(.+?)\//);
+            if(match && match[1]) { return "https://lh3.googleusercontent.com/d/" + match[1]; }
+            let matchParam = url.match(/id=([a-zA-Z0-9_-]+)/);
+            if(matchParam && matchParam[1]) { return "https://lh3.googleusercontent.com/d/" + matchParam[1]; }
+            return url;
+        }
+
         function muatDashboard() {
             fetch(scriptURL).then(r => r.json()).then(d => {
                 document.getElementById('angka-penjualan').innerText = formatRp(d.penjualan || 0);
@@ -267,7 +277,7 @@
                 if(data.length === 0) { box.innerHTML = "<div style='padding:15px; text-align:center; color:red;'>Tidak ditemukan</div>"; return; }
                 let html = "";
                 data.forEach(item => {
-                    html += `<div class="search-item"><div class="item-left"><img src="${item.foto ? item.foto.replace('/d/', '/uc?id=').split('/view')[0] : 'https://via.placeholder.com/45'}" class="item-img"><div><b>${item.nama}</b><br><small>Stok: ${item.stok} | Jual: ${formatRp(item.hargaJual)}</small></div></div></div>`;
+                    html += `<div class="search-item"><div class="item-left"><img src="${formatGambarDrive(item.foto)}" class="item-img"><div><b>${item.nama}</b><br><small>Stok: ${item.stok} | Jual: ${formatRp(item.hargaJual)}</small></div></div></div>`;
                 });
                 box.innerHTML = html;
             });
@@ -282,7 +292,7 @@
                 html += `
                 <div class="search-item">
                     <div class="item-left" onclick="pilihBarangEdit(${index})" style="cursor:pointer; flex:1;">
-                        <img src="${item.foto ? item.foto.replace('/d/', '/uc?id=').split('/view')[0] : 'https://via.placeholder.com/45'}" class="item-img">
+                        <img src="${formatGambarDrive(item.foto)}" class="item-img">
                         <div>
                             <b>${item.nama}</b> <span style="font-size:10px; background:#eff6ff; color:#3b82f6; padding:2px 6px; border-radius:4px;">${item.kategori}</span><br>
                             <small style="color:#64748b;">Stok: <b>${item.stok}</b> pcs | Jual: ${formatRp(item.hargaJual)}</small>
