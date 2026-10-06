@@ -102,16 +102,6 @@
         .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
         
         #previewFoto { width: 100%; max-height: 250px; object-fit: contain; margin-top: 15px; border-radius: 12px; display: none; background: #f1f5f9; padding: 10px; }
-
-        @media (max-width: 768px) {
-            .menu-toggle { display: block; }
-            .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); }
-            .sidebar.show { transform: translateX(0); }
-            .topbar { padding: 15px 20px; }
-            .user-info { display: none; }
-            .page-content { padding: 20px; }
-            .banner { height: 160px; margin-bottom: 20px; }
-        }
     </style>
 </head>
 <body>
@@ -159,7 +149,7 @@
             </div>
             <div class="user-profile" onclick="bukaMenuLogin()">
                 <div class="avatar" id="userAvatar">AD</div>
-                <div class="user-info"><h4 id="userName">Admin / Kasir</h4><p id="userRole">Infinity Gadget</p></div>
+                <div class="user-info"><h4 id="userName">Admin / Kasir</h4><p id="userRole">Karyawan</p></div>
             </div>
         </div>
 
@@ -217,9 +207,24 @@
         <!-- KELOLA STOK -->
         <div id="page-edit" class="page-content">
             <div class="form-card" style="max-width: 800px;">
-                <h3 style="margin-bottom: 10px;">Kelola & Edit Stok Barang</h3>
+                <h3 style="margin-bottom: 15px; font-weight: 700;">Kelola & Edit Stok Barang</h3>
                 <div class="form-group"><input type="text" id="searchEditInput" class="form-control" placeholder="Cari barang..." onkeyup="filterTabelBarang()"></div>
-                <div id="editResultList" style="max-height: 400px; overflow-y: auto;"></div>
+                <div id="editResultList" style="max-height: 450px; overflow-y: auto; margin-top: 15px;"></div>
+                
+                <form id="formEditBarang" onsubmit="simpanPerubahanBarang(event)" style="display:none; border-top: 2px dashed #e2e8f0; margin-top: 25px; padding-top: 25px;">
+                    <input type="hidden" id="editRow" name="rowEdit">
+                    <div class="form-group"><label>Nama Barang</label><input type="text" id="editNama" name="barang" class="form-control" required></div>
+                    <div class="form-group"><label>Kategori</label><input type="text" id="editKategori" name="kategori" class="form-control" required></div>
+                    <div class="form-group"><label>Sisa Stok (Qty)</label><input type="number" id="editStok" name="qty" class="form-control" required></div>
+                    <div class="form-group"><label>Harga Jual (Rp)</label><input type="number" id="editHargaJual" name="hargaJualInput" class="form-control" required></div>
+                    <div class="form-group"><label>Harga Modal (Rp)</label><input type="number" id="editHargaModal" name="hargaModal" class="form-control" required></div>
+                    <div class="form-group"><label>Barcode</label><input type="text" id="editBarcode" name="barcode" class="form-control"></div>
+                    <div style="display: flex; gap: 12px; margin-top: 10px;">
+                        <button type="submit" id="btnUpdate" class="btn btn-primary" style="flex:2;"><i class="fas fa-check"></i> Simpan Perubahan</button>
+                        <button type="button" class="btn" style="background:#e2e8f0; color:#000; flex:1;" onclick="batalEdit()">Batal</button>
+                    </div>
+                </form>
+                <p id="statusEdit" style="text-align: center; margin-top: 15px; color: #10b981; font-weight: 600;"></p>
             </div>
         </div>
     </div>
@@ -266,6 +271,96 @@
                 });
                 box.innerHTML = html;
             });
+        }
+
+        function muatSemuaBarangToTabel(data) {
+            let resultList = document.getElementById("editResultList");
+            if(data.length === 0) { resultList.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Belum ada barang.</p>"; return; }
+            cacheDataEdit = data;
+            let html = "";
+            data.forEach((item, index) => {
+                html += `
+                <div class="search-item">
+                    <div class="item-left" onclick="pilihBarangEdit(${index})" style="cursor:pointer; flex:1;">
+                        <img src="${item.foto ? item.foto.replace('/d/', '/uc?id=').split('/view')[0] : 'https://via.placeholder.com/45'}" class="item-img">
+                        <div>
+                            <b>${item.nama}</b> <span style="font-size:10px; background:#eff6ff; color:#3b82f6; padding:2px 6px; border-radius:4px;">${item.kategori}</span><br>
+                            <small style="color:#64748b;">Stok: <b>${item.stok}</b> pcs | Jual: ${formatRp(item.hargaJual)}</small>
+                        </div>
+                    </div>
+                    <div>
+                        <div onclick="pilihBarangEdit(${index})" style="cursor:pointer; font-size:12px; color:blue; background:#eff6ff; padding:5px 10px; border-radius:6px; margin-bottom:4px;"><i class="fas fa-edit"></i> Edit</div>
+                        <div onclick="hapusBarang(event, ${item.row})" style="cursor:pointer; font-size:12px; color:red; background:#fef2f2; padding:5px 10px; border-radius:6px;"><i class="fas fa-trash"></i> Hapus</div>
+                    </div>
+                </div>`;
+            });
+            resultList.innerHTML = html;
+        }
+
+        function muatSemuaBarangUntukEdit() {
+            let resultList = document.getElementById("editResultList");
+            resultList.innerHTML = "<div style='text-align:center; padding:20px;'><i class='fas fa-spinner fa-spin'></i> Memuat daftar barang...</div>";
+            fetch(scriptURL + "?action=search&keyword=").then(r => r.json()).then(data => muatSemuaBarangToTabel(data)).catch(err => resultList.innerHTML = "<p style='color:red; text-align:center;'>Gagal memuat data.</p>");
+        }
+
+        function filterTabelBarang() {
+            let kw = document.getElementById("searchEditInput").value.toLowerCase();
+            let filtered = cacheDataEdit.filter(item => item.nama.toLowerCase().includes(kw) || String(item.barcode).toLowerCase().includes(kw));
+            muatSemuaBarangToTabel(filtered);
+        }
+
+        function pilihBarangEdit(index) {
+            let item = cacheDataEdit[index];
+            document.getElementById("editRow").value = item.row;
+            document.getElementById("editNama").value = item.nama;
+            document.getElementById("editKategori").value = item.kategori;
+            document.getElementById("editStok").value = item.stok;
+            document.getElementById("editHargaJual").value = item.hargaJual;
+            document.getElementById("editHargaModal").value = item.hargaModal;
+            document.getElementById("editBarcode").value = item.barcode;
+            document.getElementById("formEditBarang").style.display = "block";
+            window.scrollTo({ top: 400, behavior: 'smooth' });
+        }
+
+        function batalEdit() { document.getElementById("formEditBarang").style.display = "none"; }
+
+        function simpanPerubahanBarang(e) {
+            e.preventDefault();
+            let btn = document.getElementById("btnUpdate");
+            btn.innerHTML = "Menyimpan...";
+            
+            let payload = {
+                tipeForm: "edit_barang",
+                rowEdit: document.getElementById("editRow").value,
+                barang: document.getElementById("editNama").value,
+                kategori: document.getElementById("editKategori").value,
+                qty: document.getElementById("editStok").value,
+                hargaJualInput: document.getElementById("editHargaJual").value,
+                hargaModal: document.getElementById("editHargaModal").value,
+                barcode: document.getElementById("editBarcode").value
+            };
+
+            fetch(scriptURL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+            .then(res => res.text()).then(msg => {
+                document.getElementById("statusEdit").innerText = msg;
+                document.getElementById("formEditBarang").style.display = "none";
+                btn.innerHTML = "Simpan Perubahan";
+                muatSemuaBarangUntukEdit();
+                muatDashboard();
+            });
+        }
+
+        function hapusBarang(event, rowNum) {
+            if(event) event.stopPropagation();
+            if(confirm("Yakin ingin menghapus barang ini secara permanen?")) {
+                let payload = { tipeForm: "hapus_barang", rowHapus: rowNum };
+                fetch(scriptURL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+                .then(res => res.text()).then(msg => {
+                    alert(msg);
+                    muatSemuaBarangUntukEdit();
+                    muatDashboard();
+                });
+            }
         }
 
         function aturForm() {
