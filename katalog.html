@@ -27,13 +27,13 @@
         .logo-box { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 18px; letter-spacing: 1px; color: var(--text-dark); }
         .logo-box i { font-size: 24px; color: var(--red-main); }
         .header-icons { display: flex; gap: 15px; font-size: 20px; color: var(--text-dark); cursor: pointer; }
+        .header-icons i:hover { color: var(--red-main); }
         
         .search-bar { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 10px; color: var(--text-dark); }
         .search-bar input { border: none; outline: none; background: transparent; width: 100%; font-size: 14px; color: var(--text-dark); }
         .search-bar i { color: var(--text-gray); }
 
         .banner-container { padding: 0 20px; margin-top: -15px; position: relative; z-index: 11; }
-        /* BANNER BARU PASTEL */
         .banner { width: 100%; height: 150px; background: url('Pastel Phone Accessories Online Shop Banner.png') center/cover; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid white; }
 
         .category-section { padding: 25px 20px 10px; display: flex; justify-content: space-between; text-align: center; overflow-x: auto; scrollbar-width: none; }
@@ -62,7 +62,7 @@
         .p-rating { font-size: 10px; color: #f59e0b; display: flex; align-items: center; gap: 3px; margin-bottom: 5px; }
         .p-rating span { color: var(--text-gray); margin-left: 2px; }
         
-        .btn-cart-small { position: absolute; bottom: 10px; right: 10px; background: var(--red-main); color: white; width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; border: none; cursor: pointer; }
+        .btn-cart-small { position: absolute; bottom: 10px; right: 10px; background: var(--red-main); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; border: none; cursor: pointer; z-index: 5; }
 
         .store-info { text-align: center; padding: 25px 20px 40px; border-top: 1px dashed #ddd; margin-top: 20px; }
         .store-info h4 { font-size: 16px; color: var(--text-dark); margin-bottom: 10px; font-weight: 700; text-transform: uppercase; }
@@ -130,8 +130,8 @@
                     <i class="fas fa-infinity"></i> INFINITY GADGET
                 </div>
                 <div class="header-icons">
-                    <i class="fas fa-shopping-cart"></i>
-                    <i class="fas fa-bell"></i>
+                    <!-- Ikon keranjang kanan atas sudah dihapus agar lebih bersih -->
+                    <i class="fas fa-bell" onclick="alert('Infinity Gadget - Toko Aksesoris & Handphone Terpercaya.')" title="Info Toko"></i>
                 </div>
             </div>
             <div class="search-bar">
@@ -189,9 +189,9 @@
         <div class="bottom-nav">
             <div class="nav-item active"><i class="fas fa-home"></i> Beranda</div>
             <div class="nav-item" onclick="filterByKategori('')"><i class="fas fa-th-large"></i> Kategori</div>
-            <div class="nav-item"><i class="fas fa-shopping-bag"></i> Keranjang</div>
-            <div class="nav-item"><i class="fas fa-clipboard-list"></i> Pesanan</div>
-            <div class="nav-item"><i class="fas fa-user"></i> Akun</div>
+            <div class="nav-item" onclick="bukaKeranjangWA()"><i class="fas fa-shopping-bag"></i> Pesan</div>
+            <div class="nav-item" onclick="bukaKeranjangWA()"><i class="fas fa-clipboard-list"></i> Info</div>
+            <div class="nav-item" onclick="alert('Infinity Gadget - Admin Store')"><i class="fas fa-user"></i> Akun</div>
         </div>
 
     </div>
@@ -281,7 +281,7 @@
                 let isReady = (item.stok && Number(item.stok) > 0) ? true : false;
                 let badgeHtml = isReady ? `<div class="stok-badge stok-ready">Tersedia</div>` : `<div class="stok-badge stok-habis">Habis</div>`;
                 let cartBtn = isReady 
-                    ? `<button class="btn-cart-small" onclick="event.stopPropagation(); bukaDetail(${index})"><i class="fas fa-shopping-cart"></i></button>`
+                    ? `<button class="btn-cart-small" onclick="event.stopPropagation(); bukaDetail(${index});"><i class="fas fa-shopping-cart"></i></button>`
                     : `<button class="btn-cart-small" style="background:#cbd5e1; cursor:not-allowed;" onclick="event.stopPropagation();"><i class="fas fa-ban"></i></button>`;
 
                 html += `
@@ -371,6 +371,11 @@
 
         function tanyaStok() { prosesWA("apakah barang ini masih tersedia?"); }
         function beliSekarang() { prosesWA("saya ingin memesan barang ini."); }
+
+        function bukaKeranjangWA() {
+            let pesan = encodeURIComponent("Halo Infinity Gadget, saya ingin menanyakan ketersediaan produk di katalog toko Anda.");
+            window.open(`https://wa.me/${NOMOR_WA_TOKO}?text=${pesan}`, '_blank');
+        }
     </script>
 </body>
 </html>
