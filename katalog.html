@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#ffffff">
-    <title>Infinity Gadget App</title>
+    <title>Infinity Gadget - Katalog Resmi</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -12,111 +12,125 @@
         :root { 
             --red-main: #e60023; 
             --red-dark: #cc001f;
-            --bg-gray: #f5f5f5;
-            --text-dark: #111111;
-            --text-gray: #757575;
+            --bg-gray: #f8fafc;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+            --card-radius: 14px;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #e0e0e0; display: flex; justify-content: center; align-items: flex-start; }
+        body { background-color: #e2e8f0; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
 
-        .app-container { width: 100%; max-width: 480px; background-color: var(--bg-gray); min-height: 100vh; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.1); padding-bottom: 70px; overflow-x: hidden; }
+        /* KONTAINER UTAMA (RESPONSIF & ELEGAN DI PC/HP) */
+        .app-container { width: 100%; max-width: 480px; background-color: #ffffff; min-height: 100vh; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding-bottom: 80px; overflow-x: hidden; }
 
-        .header-bg { background: #ffffff; padding: 15px 20px 25px; border-radius: 0 0 25px 25px; color: var(--text-dark); position: relative; z-index: 10; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        /* HEADER */
+        .header-bg { background: #ffffff; padding: 18px 20px 20px; color: var(--text-dark); position: sticky; top: 0; z-index: 50; border-bottom: 1px solid #f1f5f9; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
         .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .logo-box { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 18px; letter-spacing: 1px; color: var(--text-dark); }
+        .logo-box { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 20px; letter-spacing: 0.5px; color: var(--text-dark); }
         .logo-box i { font-size: 24px; color: var(--red-main); }
         .header-icons { display: flex; gap: 15px; font-size: 20px; color: var(--text-dark); cursor: pointer; }
-        .header-icons i:hover { color: var(--red-main); }
         
-        .search-bar { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 10px 15px; border-radius: 12px; display: flex; align-items: center; gap: 10px; color: var(--text-dark); }
-        .search-bar input { border: none; outline: none; background: transparent; width: 100%; font-size: 14px; color: var(--text-dark); }
+        .search-bar { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 16px; border-radius: 50px; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+        .search-bar:focus-within { border-color: var(--red-main); background: #fff; box-shadow: 0 0 0 3px rgba(230,0,35,0.05); }
+        .search-bar input { border: none; outline: none; background: transparent; width: 100%; font-size: 13.5px; color: var(--text-dark); }
         .search-bar i { color: var(--text-gray); }
 
-        .banner-container { padding: 0 20px; margin-top: -15px; position: relative; z-index: 11; }
-        .banner { width: 100%; height: 150px; background: url('Pastel Phone Accessories Online Shop Banner.png') center/cover; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid white; }
+        /* BANNER */
+        .banner-container { padding: 15px 20px 5px; }
+        .banner { width: 100%; height: 160px; background: url('Pastel Phone Accessories Online Shop Banner.png') center/cover; border-radius: var(--card-radius); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
 
-        .category-section { padding: 25px 20px 10px; display: flex; justify-content: space-between; text-align: center; overflow-x: auto; scrollbar-width: none; }
+        /* KATEGORI BULAT */
+        .category-section { padding: 15px 20px; display: flex; justify-content: space-between; text-align: center; overflow-x: auto; scrollbar-width: none; gap: 12px; }
         .category-section::-webkit-scrollbar { display: none; }
-        .cat-item { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; min-width: 65px; }
-        .cat-icon { width: 50px; height: 50px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--text-dark); box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: 0.2s; }
-        .cat-item:hover .cat-icon { background: var(--red-main); color: white; }
+        .cat-item { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; min-width: 65px; flex-shrink: 0; }
+        .cat-icon { width: 52px; height: 52px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--text-dark); transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .cat-item:hover .cat-icon { background: var(--red-main); color: white; border-color: var(--red-main); transform: translateY(-3px); }
         .cat-name { font-size: 11px; font-weight: 500; color: var(--text-dark); }
 
-        .section-title { padding: 15px 20px 5px; font-size: 16px; font-weight: 700; color: var(--text-dark); display: flex; justify-content: space-between; align-items: center; }
+        /* SECTION TITLE */
+        .section-title { padding: 10px 20px; font-size: 16px; font-weight: 700; color: var(--text-dark); display: flex; justify-content: space-between; align-items: center; }
         .section-title span { font-size: 12px; color: var(--red-main); font-weight: 600; cursor: pointer; }
         
-        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 10px 20px; }
-        .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); cursor: pointer; position: relative; transition: 0.2s; }
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        /* GRID PRODUK */
+        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 5px 20px 20px; }
+        .product-card { background: white; border: 1px solid #f1f5f9; border-radius: var(--card-radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); cursor: pointer; position: relative; transition: 0.2s; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); border-color: #cbd5e1; }
         
-        .product-img-wrapper { position: relative; width: 100%; height: 160px; }
-        .product-img { width: 100%; height: 100%; object-fit: cover; background: #f9f9f9; }
-        .stok-badge { position: absolute; top: 8px; left: 8px; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; color: white; z-index: 2; }
-        .stok-ready { background-color: rgba(16, 185, 129, 0.9); }
-        .stok-habis { background-color: rgba(239, 68, 68, 0.9); }
+        .product-img-wrapper { position: relative; width: 100%; height: 155px; background: #f8fafc; }
+        .product-img { width: 100%; height: 100%; object-fit: cover; }
+        .stok-badge { position: absolute; top: 8px; left: 8px; padding: 3px 8px; border-radius: 6px; font-size: 9.5px; font-weight: 600; color: white; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stok-ready { background-color: #10b981; }
+        .stok-habis { background-color: #ef4444; }
         
         .product-info { padding: 12px; }
-        .p-title { font-size: 13px; font-weight: 500; line-height: 1.3; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 34px; color: var(--text-dark); text-transform: capitalize; }
-        .p-price { font-size: 15px; font-weight: 700; color: var(--red-main); margin-bottom: 5px; }
-        .p-rating { font-size: 10px; color: #f59e0b; display: flex; align-items: center; gap: 3px; margin-bottom: 5px; }
+        .p-title { font-size: 13px; font-weight: 500; line-height: 1.3; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 34px; color: var(--text-dark); }
+        .p-price { font-size: 15px; font-weight: 700; color: var(--red-main); margin-bottom: 4px; }
+        .p-rating { font-size: 10px; color: #f59e0b; display: flex; align-items: center; gap: 3px; }
         .p-rating span { color: var(--text-gray); margin-left: 2px; }
         
-        .btn-cart-small { position: absolute; bottom: 10px; right: 10px; background: var(--red-main); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; border: none; cursor: pointer; z-index: 5; }
+        .btn-cart-small { position: absolute; bottom: 10px; right: 10px; background: var(--red-main); color: white; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; border: none; cursor: pointer; z-index: 5; transition: 0.2s; }
+        .btn-cart-small:hover { transform: scale(1.1); background: var(--red-dark); }
 
-        .store-info { text-align: center; padding: 25px 20px 40px; border-top: 1px dashed #ddd; margin-top: 20px; }
-        .store-info h4 { font-size: 16px; color: var(--text-dark); margin-bottom: 10px; font-weight: 700; text-transform: uppercase; }
-        .store-info p { font-size: 13px; color: var(--text-dark); font-weight: 500; display: flex; align-items: flex-start; justify-content: center; gap: 8px; margin-bottom: 8px; text-align: center; line-height: 1.4; }
-        .store-info i { color: var(--red-main); font-size: 14px; margin-top: 2px; }
+        /* INFO TOKO */
+        .store-info { text-align: center; padding: 25px 20px; border-top: 1px solid #f1f5f9; margin-top: 10px; background: #fafafa; }
+        .store-info h4 { font-size: 15px; color: var(--text-dark); margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .store-info p { font-size: 12.5px; color: var(--text-gray); font-weight: 400; display: flex; align-items: flex-start; justify-content: center; gap: 8px; margin-bottom: 6px; text-align: center; line-height: 1.4; }
+        .store-info i { color: var(--red-main); font-size: 13px; margin-top: 2px; }
 
-        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; background: white; height: 65px; display: flex; justify-content: space-around; align-items: center; border-radius: 20px 20px 0 0; box-shadow: 0 -2px 15px rgba(0,0,0,0.05); z-index: 90; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--text-gray); font-size: 10px; font-weight: 500; cursor: pointer; width: 20%; }
-        .nav-item i { font-size: 20px; }
+        /* BOTTOM NAV (MOBILE) */
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: white; height: 65px; display: flex; justify-content: space-around; align-items: center; border-radius: 20px 20px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 90; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--text-gray); font-size: 10px; font-weight: 500; cursor: pointer; width: 20%; }
+        .nav-item i { font-size: 19px; }
         .nav-item.active { color: var(--red-main); }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 100; display: none; justify-content: center; align-items: flex-end; }
-        .modal-content { background: white; width: 100%; max-width: 480px; height: 90vh; border-radius: 20px 20px 0 0; display: flex; flex-direction: column; position: relative; animation: slideUp 0.3s ease-out; }
+        /* MODAL DETAIL */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; display: none; justify-content: center; align-items: flex-end; }
+        .modal-content { background: white; width: 100%; max-width: 480px; height: 88vh; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; position: relative; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         
         .modal-header { position: absolute; top: 15px; left: 15px; right: 15px; display: flex; justify-content: space-between; z-index: 10; }
-        .btn-circle { width: 35px; height: 35px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text-dark); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border: none; }
+        .btn-circle { width: 36px; height: 36px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-dark); cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: none; }
         
         .modal-body { flex: 1; overflow-y: auto; padding-bottom: 20px; }
-        .detail-img { width: 100%; height: 350px; object-fit: contain; background: #fff; padding: 20px; margin-bottom: 10px; }
+        .detail-img { width: 100%; height: 320px; object-fit: contain; background: #f8fafc; padding: 20px; border-bottom: 1px solid #f1f5f9; }
         
-        .detail-info { padding: 0 20px; }
-        .d-price { font-size: 24px; font-weight: 800; color: var(--red-main); margin-bottom: 5px; }
-        .d-title { font-size: 18px; font-weight: 600; color: var(--text-dark); line-height: 1.3; margin-bottom: 15px; text-transform: capitalize; }
+        .detail-info { padding: 20px; }
+        .d-price { font-size: 24px; font-weight: 800; color: var(--red-main); margin-bottom: 4px; }
+        .d-title { font-size: 17px; font-weight: 600; color: var(--text-dark); line-height: 1.3; margin-bottom: 12px; }
         
-        .d-specs { background: var(--bg-gray); padding: 15px; border-radius: 12px; margin-bottom: 20px; }
-        .d-specs p { font-size: 13px; color: var(--text-dark); margin-bottom: 8px; display: flex; gap: 10px; }
-        .d-specs p i { color: var(--text-gray); width: 15px; text-align: center; }
+        .d-specs { background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
+        .d-specs p { font-size: 13px; color: var(--text-dark); margin-bottom: 8px; display: flex; gap: 10px; line-height: 1.4; }
+        .d-specs p i { color: #10b981; width: 15px; text-align: center; margin-top: 2px; }
 
-        .modal-footer { padding: 15px 20px; background: white; border-top: 1px solid #eee; display: flex; gap: 10px; }
-        .btn-outline { flex: 1; padding: 12px; border: 1px solid var(--red-main); color: var(--red-main); background: white; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; }
-        .btn-solid { flex: 1; padding: 12px; background: var(--red-main); color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; }
+        .modal-footer { padding: 15px 20px; background: white; border-top: 1px solid #f1f5f9; display: flex; gap: 10px; }
+        .btn-outline { flex: 1; padding: 12px; border: 1px solid var(--red-main); color: var(--red-main); background: white; border-radius: 10px; font-weight: 600; font-size: 13.5px; cursor: pointer; }
+        .btn-solid { flex: 1; padding: 12px; background: var(--red-main); color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 13.5px; cursor: pointer; }
 
         .loading { text-align: center; padding: 50px 20px; color: var(--text-gray); }
 
+        /* TAMPILAN LAPTOP / PC (E-COMMERCE STYLE) */
         @media (min-width: 768px) {
-            .app-container { max-width: 1100px; margin: 30px auto; border-radius: 20px; padding-bottom: 20px; }
-            .header-bg { border-radius: 20px 20px 0 0; padding: 30px 40px; }
-            .banner-container { padding: 0 40px; margin-top: 30px; }
-            .banner { height: 280px; border-radius: 20px; }
-            .category-section { justify-content: center; gap: 50px; padding: 40px 20px 20px; }
-            .cat-icon { width: 70px; height: 70px; font-size: 30px; }
-            .section-title { padding: 20px 40px 10px; font-size: 20px; }
-            .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; padding: 10px 40px 40px; }
-            .product-img-wrapper { height: 200px; }
-            .bottom-nav { display: none; }
+            body { background-color: #f1f5f9; }
+            .app-container { max-width: 950px; margin: 25px auto; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+            .header-bg { border-radius: 20px 20px 0 0; padding: 25px 35px; }
+            .banner-container { padding: 25px 35px 10px; }
+            .banner { height: 260px; border-radius: 16px; }
+            .category-section { justify-content: center; gap: 35px; padding: 20px 35px; }
+            .cat-icon { width: 65px; height: 65px; font-size: 26px; }
+            .section-title { padding: 15px 35px; font-size: 18px; }
+            .product-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 10px 35px 40px; }
+            .product-img-wrapper { height: 190px; }
+            .bottom-nav { display: none; } /* Sembunyikan navigasi HP di PC */
+            .app-container { padding-bottom: 20px; }
+
             .modal-overlay { align-items: center; }
-            .modal-content { max-width: 850px; height: auto; max-height: 85vh; border-radius: 20px; }
-            .modal-body { display: flex; flex-direction: row; padding: 30px; gap: 30px; }
-            .detail-img { width: 45%; height: 350px; border-radius: 15px; border: 1px solid #eee; padding: 10px; margin: 0; }
+            .modal-content { max-width: 750px; height: auto; max-height: 85vh; border-radius: 20px; }
+            .modal-body { display: flex; flex-direction: row; padding: 25px; gap: 25px; }
+            .detail-img { width: 45%; height: 320px; border-radius: 14px; border: 1px solid #e2e8f0; padding: 10px; }
             .detail-info { width: 55%; padding: 0; display: flex; flex-direction: column; justify-content: center; }
-            .modal-footer { border-radius: 0 0 20px 20px; padding: 20px 30px; justify-content: flex-end; }
-            .btn-outline, .btn-solid { flex: none; width: 200px; }
-            .store-info { margin-top: 40px; padding: 40px; }
+            .modal-footer { border-radius: 0 0 20px 20px; padding: 20px 25px; justify-content: flex-end; }
+            .btn-outline, .btn-solid { flex: none; width: 180px; }
         }
     </style>
 </head>
@@ -130,8 +144,7 @@
                     <i class="fas fa-infinity"></i> INFINITY GADGET
                 </div>
                 <div class="header-icons">
-                    <!-- Ikon keranjang kanan atas sudah dihapus agar lebih bersih -->
-                    <i class="fas fa-bell" onclick="alert('Infinity Gadget - Toko Aksesoris & Handphone Terpercaya.')" title="Info Toko"></i>
+                    <i class="fas fa-bell" onclick="alert('Infinity Gadget - Toko Aksesoris & Handphone Terpercaya.')" title="Info Toko" style="font-size: 18px;"></i>
                 </div>
             </div>
             <div class="search-bar">
@@ -240,9 +253,11 @@
         const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
         
         function formatGambarDrive(url) {
-            if(!url || typeof url !== 'string' || url.trim() === "") return "https://via.placeholder.com/300x300/f5f5f5/cccccc?text=No+Image";
+            if(!url || typeof url !== 'string' || url.trim() === "") return "https://via.placeholder.com/300x300/f8fafc/cbd5e1?text=No+Image";
             let match = url.match(/\/d\/(.+?)\//);
             if(match && match[1]) { return "https://lh3.googleusercontent.com/d/" + match[1]; }
+            let matchParam = url.match(/id=([a-zA-Z0-9_-]+)/);
+            if(matchParam && matchParam[1]) { return "https://lh3.googleusercontent.com/d/" + matchParam[1]; }
             return url;
         }
 
