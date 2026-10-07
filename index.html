@@ -213,7 +213,13 @@
                         <input type="text" id="barcode" name="barcode" class="form-control" placeholder="Barcode..." style="margin-top: 8px;">
                     </div>
 
-                    <div class="form-group"><label>Nama Barang / Tipe HP</label><input type="text" id="barang" name="barang" class="form-control" placeholder="Contoh: LCD Oppo" required></div>
+                    <!-- KONTROL NAMA BARANG: Berubah jadi Dropdown jika Penjualan, atau Text Input jika Barang Masuk -->
+                    <div class="form-group">
+                        <label id="labelNamaBarang">Nama Barang / Tipe HP</label>
+                        <div id="containerNamaBarang">
+                            <input type="text" id="barang" name="barang" class="form-control" placeholder="Contoh: LCD Oppo" required>
+                        </div>
+                    </div>
                     
                     <div class="form-group" id="divKategori" style="display:none;">
                         <label>Kategori Barang</label>
@@ -221,10 +227,10 @@
                         <datalist id="pilihanKategori"><option value="TWS"><option value="Powerbank"><option value="LCD / Touchscreen"><option value="Casing / Softcase"><option value="Charger / Adaptor"><option value="Kabel Data"><option value="Handphone"><option value="Speaker"></datalist>
                     </div>
 
-                    <div class="form-group"><label>Jumlah (Qty)</label><input type="number" id="qty" name="qty" class="form-control" value="1" required></div>
+                    <div class="form-group"><label>Jumlah (Qty)</label><input type="number" id="qty" name="qty" class="form-control" value="1" oninput="hitungTotalOtomatis()" required></div>
                     <div class="form-group" id="divHargaModal" style="display:none;"><label>Harga Modal (Rp)</label><input type="number" id="hargaModal" name="hargaModal" class="form-control" value="0"></div>
                     <div class="form-group" id="divHargaJualInput" style="display:none;"><label>Harga Jual (Rp)</label><input type="number" id="hargaJualInput" name="hargaJualInput" class="form-control" value="0"></div>
-                    <div class="form-group" id="divTotalJual"><label>Total Harga Jual (Rp)</label><input type="number" id="totalJual" name="totalJual" class="form-control" value="0"></div>
+                    <div class="form-group" id="divTotalJual"><label>Total Harga Jual (Rp)</label><input type="number" id="totalJual" name="totalJual" class="form-control" value="0" readonly style="background:#e2e8f0; font-weight:700;"></div>
 
                     <div class="form-group" id="divFoto" style="display:none;">
                         <label>Ambil Foto Fisik Barang</label>
@@ -264,10 +270,11 @@
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyjUYfuAtipQ4jPGXaYvo6CI7SAwiSYqKhaziTsnGCxGaBYE_PeqcUiM3N2XsWLvJnN/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxBXAryBPE81DmRCFtliQmGIq2Xx3K4olGOQurn_GQL7K2cBvkYqFL2lxenx3X4Jy9s/exec';
         const PIN_RAHASIA = '1234';
         let statusRole = 'karyawan';
         let cacheDataEdit = [];
+        let dataMasterBarang = [];
         let fileB64 = "", mimeType = "", namaFile = "";
         let html5QrScannerTop = null, html5QrcodeScannerForm = null;
 
@@ -278,6 +285,7 @@
             document.getElementById('page-' + id).classList.add('active'); 
             if(el && el.classList) el.classList.add('active'); 
             if(id === 'edit') muatSemuaBarangUntukEdit();
+            if(id === 'kasir') muatDataDropdownBarang();
             if(window.innerWidth <= 768) { document.querySelector('.sidebar').classList.remove('show'); document.querySelector('.sidebar-overlay').classList.remove('show'); }
         }
         
@@ -303,9 +311,71 @@
                 document.getElementById('angka-produk').innerText = (d.produk || 0) + " Barang";
                 document.getElementById('angka-kategori').innerText = (d.kategoriCount || 0) + " Jenis";
                 document.getElementById('angka-aset').innerText = formatRp(d.aset || 0);
+                muatDataDropdownBarang();
             }).catch(e => console.log(e));
         }
         window.onload = muatDashboard;
+
+        function muatDataDropdownBarang() {
+            fetch(scriptURL + "?action=search&keyword=").then(r => r.json()).then(data => {
+                dataMasterBarang = data;
+                aturForm(); // update tampilan dropdown saat data siap
+            });
+        }
+
+        function aturForm() {
+            let tipe = document.getElementById("tipeForm").value;
+            let container = document.getElementById("containerNamaBarang");
+            
+            if(tipe === "penjualan") {
+                document.getElementById("divTotalJual").style.display = "block";
+                document.getElementById("divHargaJualInput").style.display = "none";
+                document.getElementById("divKategori").style.display = "none";
+                document.getElementById("divFoto").style.display = "none";
+                document.getElementById("divHargaModal").style.display = "none";
+
+                let optHtml = `<select id="barang" name="barang" class="form-control" onchange="pilihBarangKasir(this)" required><option value="">-- Pilih Barang dari Gudang --</option>`;
+                dataMasterBarang.forEach(item => {
+                    optHtml += `<option value="${item.nama}" data-harga="${item.hargaJual}" data-stok="${item.stok}">📦 ${item.nama} (Stok: ${item.stok} | Rp ${Number(item.hargaJual).toLocaleString('id-ID')})</option>`;
+                });
+                optHtml += `</select><small style="color:var(--text-muted); display:block; margin-top:5px;">💡 Karyawan bisa melihat nama, sisa stok, dan harga jual langsung dari pilihan.</small>`;
+                container.innerHTML = optHtml;
+            } else {
+                document.getElementById("divTotalJual").style.display = "none";
+                document.getElementById("divHargaJualInput").style.display = "block";
+                document.getElementById("divKategori").style.display = "block";
+                document.getElementById("divFoto").style.display = "block";
+                document.getElementById("divHargaModal").style.display = statusRole === 'owner' ? "block" : "none";
+
+                container.innerHTML = `<input type="text" id="barang" name="barang" class="form-control" placeholder="Contoh: LCD Oppo / Powerbank Baru" required>`;
+            }
+        }
+
+        function pilihBarangKasir(sel) {
+            let opt = sel.options[sel.selectedIndex];
+            let harga = Number(opt.getAttribute("data-harga")) || 0;
+            let qty = Number(document.getElementById("qty").value) || 1;
+            document.getElementById("totalJual").value = harga * qty;
+            
+            // Otomatis isi barcode jika ada kecocokan
+            let selectedItem = dataMasterBarang.find(i => i.nama === sel.value);
+            if(selectedItem && selectedItem.barcode && selectedItem.barcode !== "-") {
+                document.getElementById("barcode").value = selectedItem.barcode;
+            }
+        }
+
+        function hitungTotalOtomatis() {
+            let tipe = document.getElementById("tipeForm").value;
+            if(tipe === "penjualan") {
+                let sel = document.getElementById("barang");
+                if(sel && sel.selectedIndex > 0) {
+                    let opt = sel.options[sel.selectedIndex];
+                    let harga = Number(opt.getAttribute("data-harga")) || 0;
+                    let qty = Number(document.getElementById("qty").value) || 1;
+                    document.getElementById("totalJual").value = harga * qty;
+                }
+            }
+        }
 
         function bukaScannerTop() {
             document.getElementById('scannerModal').style.display = 'flex';
@@ -439,7 +509,7 @@
                 document.getElementById("formEditBarang").style.display = "none";
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-check"></i> Simpan Perubahan';
-                muatSemuaBarangToTabel();
+                muatSemuaBarangUntukEdit();
                 muatDashboard();
             })
             .catch(err => {
@@ -464,23 +534,6 @@
                 .catch(err => {
                     alert("Gagal menghapus barang. Periksa koneksi internet.");
                 });
-            }
-        }
-
-        function aturForm() {
-            let tipe = document.getElementById("tipeForm").value;
-            if(tipe === "barang_masuk") {
-                document.getElementById("divTotalJual").style.display = "none";
-                document.getElementById("divHargaJualInput").style.display = "block";
-                document.getElementById("divKategori").style.display = "block";
-                document.getElementById("divFoto").style.display = "block";
-                document.getElementById("divHargaModal").style.display = statusRole === 'owner' ? "block" : "none";
-            } else {
-                document.getElementById("divTotalJual").style.display = "block";
-                document.getElementById("divHargaJualInput").style.display = "none";
-                document.getElementById("divKategori").style.display = "none";
-                document.getElementById("divFoto").style.display = "none";
-                document.getElementById("divHargaModal").style.display = "none";
             }
         }
 
