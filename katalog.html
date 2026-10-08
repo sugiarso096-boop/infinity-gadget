@@ -1,396 +1,2090 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#ffffff">
-    <title>Infinity Gadget - Katalog Resmi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root { 
-            --red-main: #e60023; 
-            --red-dark: #cc001f;
-            --bg-gray: #f8fafc;
-            --text-dark: #1e293b;
-            --text-gray: #64748b;
-            --card-radius: 14px;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #e2e8f0; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#ffffff">
+<title>Infinity Gadget - Katalog Resmi</title>
 
-        /* KONTAINER UTAMA (RESPONSIF & ELEGAN DI PC/HP) */
-        .app-container { width: 100%; max-width: 480px; background-color: #ffffff; min-height: 100vh; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding-bottom: 80px; overflow-x: hidden; }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        /* HEADER */
-        .header-bg { background: #ffffff; padding: 18px 20px 20px; color: var(--text-dark); position: sticky; top: 0; z-index: 50; border-bottom: 1px solid #f1f5f9; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .logo-box { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 20px; letter-spacing: 0.5px; color: var(--text-dark); }
-        .logo-box i { font-size: 24px; color: var(--red-main); }
-        .header-icons { display: flex; gap: 15px; font-size: 20px; color: var(--text-dark); cursor: pointer; }
-        
-        .search-bar { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 16px; border-radius: 50px; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
-        .search-bar:focus-within { border-color: var(--red-main); background: #fff; box-shadow: 0 0 0 3px rgba(230,0,35,0.05); }
-        .search-bar input { border: none; outline: none; background: transparent; width: 100%; font-size: 13.5px; color: var(--text-dark); }
-        .search-bar i { color: var(--text-gray); }
+<style>
+:root{
+  --red:#e60023;
+  --red2:#ff1738;
+  --dark:#111827;
+  --gray:#64748b;
+  --light:#f6f8fb;
+  --line:#e8edf3;
+  --green:#10b981;
+  --orange:#f59e0b;
+  --radius:16px;
+}
 
-        /* BANNER */
-        .banner-container { padding: 15px 20px 5px; }
-        .banner { width: 100%; height: 160px; background: url('robot.png') center/cover; border-radius: var(--card-radius); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Poppins,sans-serif;
+}
 
-        /* KATEGORI BULAT */
-        .category-section { padding: 15px 20px; display: flex; justify-content: space-between; text-align: center; overflow-x: auto; scrollbar-width: none; gap: 12px; }
-        .category-section::-webkit-scrollbar { display: none; }
-        .cat-item { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; min-width: 65px; flex-shrink: 0; }
-        .cat-icon { width: 52px; height: 52px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--text-dark); transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
-        .cat-item:hover .cat-icon { background: var(--red-main); color: white; border-color: var(--red-main); transform: translateY(-3px); }
-        .cat-name { font-size: 11px; font-weight: 500; color: var(--text-dark); }
+body{
+  background:#eef2f7;
+  color:var(--dark);
+}
 
-        /* SECTION TITLE */
-        .section-title { padding: 10px 20px; font-size: 16px; font-weight: 700; color: var(--text-dark); display: flex; justify-content: space-between; align-items: center; }
-        .section-title span { font-size: 12px; color: var(--red-main); font-weight: 600; cursor: pointer; }
-        
-        /* GRID PRODUK */
-        .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 5px 20px 20px; }
-        .product-card { background: white; border: 1px solid #f1f5f9; border-radius: var(--card-radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.03); cursor: pointer; position: relative; transition: 0.2s; }
-        .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); border-color: #cbd5e1; }
-        
-        .product-img-wrapper { position: relative; width: 100%; height: 155px; background: #f8fafc; }
-        .product-img { width: 100%; height: 100%; object-fit: cover; }
-        .stok-badge { position: absolute; top: 8px; left: 8px; padding: 3px 8px; border-radius: 6px; font-size: 9.5px; font-weight: 600; color: white; z-index: 2; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .stok-ready { background-color: #10b981; }
-        .stok-habis { background-color: #ef4444; }
-        
-        .product-info { padding: 12px; }
-        .p-title { font-size: 13px; font-weight: 500; line-height: 1.3; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 34px; color: var(--text-dark); }
-        .p-price { font-size: 15px; font-weight: 700; color: var(--red-main); margin-bottom: 4px; }
-        .p-rating { font-size: 10px; color: #f59e0b; display: flex; align-items: center; gap: 3px; }
-        .p-rating span { color: var(--text-gray); margin-left: 2px; }
-        
-        .btn-cart-small { position: absolute; bottom: 10px; right: 10px; background: var(--red-main); color: white; width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; border: none; cursor: pointer; z-index: 5; transition: 0.2s; }
-        .btn-cart-small:hover { transform: scale(1.1); background: var(--red-dark); }
+a{
+  text-decoration:none;
+  color:inherit;
+}
 
-        /* INFO TOKO */
-        .store-info { text-align: center; padding: 25px 20px; border-top: 1px solid #f1f5f9; margin-top: 10px; background: #fafafa; }
-        .store-info h4 { font-size: 15px; color: var(--text-dark); margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .store-info p { font-size: 12.5px; color: var(--text-gray); font-weight: 400; display: flex; align-items: flex-start; justify-content: center; gap: 8px; margin-bottom: 6px; text-align: center; line-height: 1.4; }
-        .store-info i { color: var(--red-main); font-size: 13px; margin-top: 2px; }
+button{
+  font-family:inherit;
+}
 
-        /* BOTTOM NAV (MOBILE) */
-        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: white; height: 65px; display: flex; justify-content: space-around; align-items: center; border-radius: 20px 20px 0 0; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); z-index: 90; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--text-gray); font-size: 10px; font-weight: 500; cursor: pointer; width: 20%; }
-        .nav-item i { font-size: 19px; }
-        .nav-item.active { color: var(--red-main); }
+.app{
+  width:100%;
+  max-width:1200px;
+  margin:auto;
+  background:#fff;
+  min-height:100vh;
+  box-shadow:0 0 40px #00000010;
+}
 
-        /* MODAL DETAIL */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; display: none; justify-content: center; align-items: flex-end; }
-        .modal-content { background: white; width: 100%; max-width: 480px; height: 88vh; border-radius: 24px 24px 0 0; display: flex; flex-direction: column; position: relative; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        
-        .modal-header { position: absolute; top: 15px; left: 15px; right: 15px; display: flex; justify-content: space-between; z-index: 10; }
-        .btn-circle { width: 36px; height: 36px; background: rgba(255,255,255,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-dark); cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: none; }
-        
-        .modal-body { flex: 1; overflow-y: auto; padding-bottom: 20px; }
-        .detail-img { width: 100%; height: 320px; object-fit: contain; background: #f8fafc; padding: 20px; border-bottom: 1px solid #f1f5f9; }
-        
-        .detail-info { padding: 20px; }
-        .d-price { font-size: 24px; font-weight: 800; color: var(--red-main); margin-bottom: 4px; }
-        .d-title { font-size: 17px; font-weight: 600; color: var(--text-dark); line-height: 1.3; margin-bottom: 12px; }
-        
-        .d-specs { background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
-        .d-specs p { font-size: 13px; color: var(--text-dark); margin-bottom: 8px; display: flex; gap: 10px; line-height: 1.4; }
-        .d-specs p i { color: #10b981; width: 15px; text-align: center; margin-top: 2px; }
+/* TOP BAR */
+.top-strip{
+  background:#111827;
+  color:#fff;
+  padding:8px 28px;
+  font-size:11px;
+  display:flex;
+  justify-content:space-between;
+}
 
-        .modal-footer { padding: 15px 20px; background: white; border-top: 1px solid #f1f5f9; display: flex; gap: 10px; }
-        .btn-outline { flex: 1; padding: 12px; border: 1px solid var(--red-main); color: var(--red-main); background: white; border-radius: 10px; font-weight: 600; font-size: 13.5px; cursor: pointer; }
-        .btn-solid { flex: 1; padding: 12px; background: var(--red-main); color: white; border: none; border-radius: 10px; font-weight: 600; font-size: 13.5px; cursor: pointer; }
+/* HEADER */
+.header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  padding:14px 28px;
+}
 
-        .loading { text-align: center; padding: 50px 20px; color: var(--text-gray); }
+.nav{
+  display:flex;
+  align-items:center;
+  gap:28px;
+}
 
-        /* TAMPILAN LAPTOP / PC (E-COMMERCE STYLE) */
-        @media (min-width: 768px) {
-            body { background-color: #f1f5f9; }
-            .app-container { max-width: 950px; margin: 25px auto; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
-            .header-bg { border-radius: 20px 20px 0 0; padding: 25px 35px; }
-            .banner-container { padding: 25px 35px 10px; }
-            .banner { height: 260px; border-radius: 16px; }
-            .category-section { justify-content: center; gap: 35px; padding: 20px 35px; }
-            .cat-icon { width: 65px; height: 65px; font-size: 26px; }
-            .section-title { padding: 15px 35px; font-size: 18px; }
-            .product-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 10px 35px 40px; }
-            .product-img-wrapper { height: 190px; }
-            .bottom-nav { display: none; } /* Sembunyikan navigasi HP di PC */
-            .app-container { padding-bottom: 20px; }
+.logo{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-weight:800;
+  font-size:22px;
+  white-space:nowrap;
+}
 
-            .modal-overlay { align-items: center; }
-            .modal-content { max-width: 750px; height: auto; max-height: 85vh; border-radius: 20px; }
-            .modal-body { display: flex; flex-direction: row; padding: 25px; gap: 25px; }
-            .detail-img { width: 45%; height: 320px; border-radius: 14px; border: 1px solid #e2e8f0; padding: 10px; }
-            .detail-info { width: 55%; padding: 0; display: flex; flex-direction: column; justify-content: center; }
-            .modal-footer { border-radius: 0 0 20px 20px; padding: 20px 25px; justify-content: flex-end; }
-            .btn-outline, .btn-solid { flex: none; width: 180px; }
-        }
-    </style>
+.logo i{
+  color:var(--red);
+  font-size:28px;
+}
+
+.logo span{
+  color:var(--red);
+}
+
+.menu{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+.menu a{
+  font-size:13px;
+  font-weight:600;
+  padding:10px 13px;
+  border-radius:10px;
+}
+
+.menu a.active,
+.menu a:hover{
+  background:var(--red);
+  color:#fff;
+}
+
+.search{
+  margin-left:auto;
+  width:280px;
+  height:40px;
+  background:#f7f9fc;
+  border:1px solid #dfe5ed;
+  border-radius:11px;
+  display:flex;
+  align-items:center;
+  padding:0 12px;
+  gap:8px;
+}
+
+.search i{
+  color:var(--gray);
+}
+
+.search input{
+  border:0;
+  outline:0;
+  background:transparent;
+  width:100%;
+  font-size:12px;
+}
+
+.head-icon{
+  font-size:20px;
+  position:relative;
+  cursor:pointer;
+}
+
+.badge{
+  position:absolute;
+  top:-8px;
+  right:-9px;
+  background:var(--red);
+  color:#fff;
+  font-size:9px;
+  width:17px;
+  height:17px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+}
+
+/* HERO */
+.hero{
+  margin:18px 28px 0;
+  height:300px;
+  border-radius:18px;
+  background:url('robot.png') center/cover no-repeat;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-content{
+  position:absolute;
+  left:42px;
+  top:50%;
+  transform:translateY(-50%);
+  max-width:430px;
+}
+
+.hero h1{
+  font-size:38px;
+  line-height:1.05;
+  font-weight:800;
+  color:#111827;
+}
+
+.hero h1 span{
+  color:var(--red);
+}
+
+.hero p{
+  font-size:13px;
+  margin:12px 0 18px;
+  color:#334155;
+  font-weight:500;
+}
+
+.hero-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:var(--red);
+  color:#fff;
+  border:0;
+  border-radius:12px;
+  padding:12px 22px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.hero-features{
+  display:flex;
+  gap:16px;
+  margin-top:18px;
+}
+
+.hero-features div{
+  font-size:10px;
+  font-weight:600;
+  display:flex;
+  gap:5px;
+  align-items:center;
+}
+
+.hero-features i{
+  color:var(--red);
+  font-size:14px;
+}
+
+/* KATEGORI */
+.categories{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  padding:20px 28px 10px;
+  scrollbar-width:none;
+}
+
+.categories::-webkit-scrollbar{
+  display:none;
+}
+
+.cat{
+  min-width:95px;
+  text-align:center;
+  cursor:pointer;
+}
+
+.cat-icon{
+  width:62px;
+  height:62px;
+  margin:auto;
+  border:1px solid #e1e7ef;
+  background:#f8fafc;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:22px;
+  transition:.2s;
+}
+
+.cat:hover .cat-icon,
+.cat.active .cat-icon{
+  background:#fff0f2;
+  border-color:#ff9aaa;
+  color:var(--red);
+  transform:translateY(-2px);
+}
+
+.cat b{
+  font-size:12px;
+  display:block;
+  margin-top:7px;
+}
+
+.cat small{
+  font-size:9px;
+  color:var(--gray);
+}
+
+/* HIGHLIGHT */
+.highlights{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  padding:10px 28px 20px;
+}
+
+.highlight{
+  background:#fff4f5;
+  border:1px solid #ffe0e4;
+  border-radius:12px;
+  padding:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.highlight i{
+  font-size:21px;
+  color:var(--red);
+}
+
+.highlight b{
+  font-size:11px;
+  display:block;
+}
+
+.highlight span{
+  font-size:9px;
+  color:var(--gray);
+}
+
+/* SECTION */
+.section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 28px;
+}
+
+.section-head h2{
+  font-size:21px;
+}
+
+.section-head h2:before{
+  content:"";
+  display:inline-block;
+  width:5px;
+  height:24px;
+  background:var(--red);
+  border-radius:5px;
+  margin-right:9px;
+  vertical-align:-4px;
+}
+
+.section-head a{
+  font-size:12px;
+  color:var(--red);
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* PRODUK */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+  padding:0 28px 24px;
+}
+
+.card{
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+  overflow:hidden;
+  position:relative;
+  transition:.2s;
+  cursor:pointer;
+}
+
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 25px #0000000d;
+}
+
+.imgbox{
+  height:180px;
+  background:#f5f7fa;
+  position:relative;
+}
+
+.imgbox img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.status{
+  position:absolute;
+  top:9px;
+  left:9px;
+  color:#fff;
+  background:var(--green);
+  border-radius:6px;
+  padding:4px 8px;
+  font-size:9px;
+  font-weight:700;
+  z-index:2;
+}
+
+.status.sold{
+  background:#ef4444;
+}
+
+.status.best{
+  background:var(--orange);
+}
+
+.card-info{
+  padding:10px;
+}
+
+.card-title{
+  font-size:12px;
+  font-weight:600;
+  line-height:1.35;
+  height:34px;
+  overflow:hidden;
+}
+
+.cat-text{
+  font-size:9px;
+  color:#94a3b8;
+  margin-top:2px;
+}
+
+.rating{
+  font-size:9px;
+  color:#f59e0b;
+  margin:5px 0;
+}
+
+.rating span{
+  color:var(--gray);
+}
+
+.price{
+  font-size:15px;
+  font-weight:800;
+  color:var(--red);
+}
+
+.stock{
+  font-size:9px;
+  color:var(--gray);
+  margin-top:2px;
+}
+
+.cart{
+  width:100%;
+  border:0;
+  background:var(--red);
+  color:#fff;
+  border-radius:8px;
+  padding:8px;
+  margin-top:8px;
+  font-size:10px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.cart:hover{
+  background:#c9001f;
+}
+
+/* PROMO */
+.promos{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:12px;
+  padding:0 28px 25px;
+}
+
+.promo{
+  height:105px;
+  border-radius:14px;
+  padding:17px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  overflow:hidden;
+}
+
+.promo h3{
+  font-size:18px;
+}
+
+.promo p{
+  font-size:10px;
+  margin-top:4px;
+}
+
+.promo:nth-child(1){
+  background:linear-gradient(110deg,#df001f,#ff304b);
+}
+
+.promo:nth-child(2){
+  background:linear-gradient(110deg,#fff1f2,#ffd9de);
+  color:#111827;
+}
+
+.promo:nth-child(3){
+  background:linear-gradient(110deg,#171b22,#303846);
+}
+
+/* FOOTER */
+.store{
+  background:#111827;
+  color:#fff;
+  padding:35px 28px;
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1.3fr;
+  gap:30px;
+}
+
+.store h3{
+  font-size:18px;
+  margin-bottom:10px;
+}
+
+.store p,
+.store a{
+  display:block;
+  color:#cbd5e1;
+  font-size:10px;
+  line-height:2;
+}
+
+.store .logo{
+  color:#fff;
+}
+
+/* WHATSAPP */
+.wa{
+  position:fixed;
+  right:24px;
+  bottom:22px;
+  z-index:100;
+  background:#20c66a;
+  color:#fff;
+  border-radius:50px;
+  padding:11px 17px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:11px;
+  font-weight:700;
+  box-shadow:0 8px 25px #0003;
+  cursor:pointer;
+}
+
+.wa i{
+  font-size:20px;
+}
+
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  background:#0008;
+  z-index:200;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modal-box{
+  background:#fff;
+  border-radius:20px;
+  max-width:760px;
+  width:100%;
+  max-height:90vh;
+  overflow:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  position:relative;
+}
+
+.modal img{
+  width:100%;
+  height:360px;
+  object-fit:contain;
+  background:#f7f8fa;
+}
+
+.modal-info{
+  padding:30px;
+}
+
+.close{
+  position:absolute;
+  right:14px;
+  top:14px;
+  border:0;
+  background:#fff;
+  border-radius:50%;
+  width:36px;
+  height:36px;
+  box-shadow:0 3px 12px #0002;
+  cursor:pointer;
+  z-index:5;
+}
+
+.m-price{
+  font-size:25px;
+  font-weight:800;
+  color:var(--red);
+  margin:10px 0;
+}
+
+.spec{
+  background:#f7f9fc;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+  font-size:12px;
+  line-height:1.8;
+}
+
+/* MOBILE NAV */
+.bottom{
+  display:none;
+}
+
+/* MOBILE */
+@media(max-width:767px){
+
+  body{
+    background:#fff;
+  }
+
+  .app{
+    max-width:480px;
+  }
+
+  .top-strip{
+    display:none;
+  }
+
+  .header{
+    padding:12px 16px;
+  }
+
+  .nav{
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .logo{
+    font-size:18px;
+  }
+
+  .logo i{
+    font-size:22px;
+  }
+
+  .menu{
+    display:none;
+  }
+
+  .search{
+    order:3;
+    width:100%;
+    margin:2px 0 0;
+  }
+
+  .hero{
+    margin:12px 16px 0;
+    height:190px;
+  }
+
+  .hero-content{
+    left:20px;
+    max-width:250px;
+  }
+
+  .hero h1{
+    font-size:25px;
+  }
+
+  .hero p{
+    font-size:9px;
+    margin:8px 0 10px;
+  }
+
+  .hero-features{
+    gap:7px;
+    margin-top:8px;
+  }
+
+  .hero-features div{
+    font-size:7px;
+  }
+
+  .hero-btn{
+    padding:8px 13px;
+    font-size:9px;
+  }
+
+  .categories{
+    padding:15px 16px 8px;
+    gap:12px;
+  }
+
+  .cat{
+    min-width:72px;
+  }
+
+  .cat-icon{
+    width:50px;
+    height:50px;
+    font-size:18px;
+  }
+
+  .cat b{
+    font-size:10px;
+  }
+
+  .highlights{
+    grid-template-columns:repeat(2,1fr);
+    padding:8px 16px 15px;
+  }
+
+  .highlight{
+    padding:9px;
+  }
+
+  .highlight i{
+    font-size:17px;
+  }
+
+  .highlight b{
+    font-size:9px;
+  }
+
+  .highlight span{
+    font-size:7px;
+  }
+
+  .section-head{
+    padding:9px 16px;
+  }
+
+  .section-head h2{
+    font-size:17px;
+  }
+
+  .grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    padding:0 16px 20px;
+  }
+
+  .imgbox{
+    height:145px;
+  }
+
+  .card-title{
+    font-size:11px;
+  }
+
+  .price{
+    font-size:13px;
+  }
+
+  .promos{
+    grid-template-columns:1fr;
+    padding:0 16px 20px;
+  }
+
+  .promo{
+    height:90px;
+  }
+
+  .store{
+    grid-template-columns:1fr 1fr;
+    padding:25px 18px 80px;
+    gap:20px;
+  }
+
+  .store>div:first-child{
+    grid-column:1/-1;
+  }
+
+  .bottom{
+    position:fixed;
+    display:flex;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:480px;
+    height:62px;
+    background:#fff;
+    border-top:1px solid var(--line);
+    z-index:90;
+    justify-content:space-around;
+    align-items:center;
+  }
+
+  .bottom div{
+    text-align:center;
+    font-size:9px;
+    color:var(--gray);
+    cursor:pointer;
+  }
+
+  .bottom i{
+    display:block;
+    font-size:18px;
+    margin-bottom:3px;
+  }
+
+  .bottom .active{
+    color:var(--red);
+  }
+
+  .wa{
+    right:15px;
+    bottom:76px;
+    padding:10px 13px;
+  }
+
+  .wa span{
+    display:none;
+  }
+
+  .modal{
+    padding:0;
+    align-items:flex-end;
+  }
+
+  .modal-box{
+    grid-template-columns:1fr;
+    border-radius:22px 22px 0 0;
+    max-height:92vh;
+  }
+
+  .modal img{
+    height:270px;
+  }
+
+  .modal-info{
+    padding:20px;
+  }
+}
+</style>
 </head>
+
 <body>
 
-    <div class="app-container">
-        
-        <div class="header-bg">
-            <div class="top-bar">
-                <div class="logo-box">
-                    <i class="fas fa-infinity"></i> INFINITY GADGET
-                </div>
-                <div class="header-icons">
-                    <i class="fas fa-bell" onclick="alert('Infinity Gadget - Toko Aksesoris & Handphone Terpercaya.')" title="Info Toko" style="font-size: 18px;"></i>
-                </div>
-            </div>
-            <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Cari aksesoris, merk, produk..." onkeyup="filterKatalog()">
-            </div>
-        </div>
+<div class="app">
 
-        <div class="banner-container">
-            <div class="banner"></div>
-        </div>
+  <!-- TOP BAR -->
+  <div class="top-strip">
+    <span>
+      <i class="fas fa-store"></i>
+      Selamat datang di Infinity Gadget
+    </span>
 
-        <div class="category-section">
-            <div class="cat-item" onclick="filterByKategori('Casing / Softcase')">
-                <div class="cat-icon"><i class="fas fa-mobile-alt"></i></div>
-                <span class="cat-name">Case</span>
-            </div>
-            <div class="cat-item" onclick="filterByKategori('Handphone')">
-                <div class="cat-icon"><i class="fas fa-mobile"></i></div>
-                <span class="cat-name">Handphone</span>
-            </div>
-            <div class="cat-item" onclick="filterByKategori('Charger / Adaptor')">
-                <div class="cat-icon"><i class="fas fa-plug"></i></div>
-                <span class="cat-name">Charger</span>
-            </div>
-            <div class="cat-item" onclick="filterByKategori('Headset / TWS / Earphone')">
-                <div class="cat-icon"><i class="fas fa-headphones"></i></div>
-                <span class="cat-name">Headset</span>
-            </div>
-            <div class="cat-item" onclick="filterByKategori('Speaker')">
-                <div class="cat-icon"><i class="fas fa-volume-up"></i></div>
-                <span class="cat-name">Speaker</span>
-            </div>
-            <div class="cat-item" onclick="filterByKategori('Powerbank')">
-                <div class="cat-icon"><i class="fas fa-battery-full"></i></div>
-                <span class="cat-name">Power Bank</span>
-            </div>
-        </div>
+    <span>
+      <i class="fas fa-truck"></i> Pengiriman
+      &nbsp;&nbsp;
+      <i class="fas fa-shield-alt"></i> Produk Terjamin
+    </span>
+  </div>
 
-        <div class="section-title">
-            Produk Terbaru <span onclick="filterByKategori('')">Lihat Semua ></span>
-        </div>
+  <!-- HEADER -->
+  <header class="header">
 
-        <div class="product-grid" id="katalogGrid">
-            <div class="loading"><i class="fas fa-spinner fa-spin fa-2x"></i><br><br>Memuat Produk...</div>
-        </div>
+    <div class="nav">
 
-        <div class="store-info">
-            <h4>Infinity Gadget</h4>
-            <p><i class="fas fa-map-marker-alt"></i> Melayani area Mamosalato dan Toili barat (Ambil / Kurir)</p>
-            <p><i class="fas fa-shield-alt"></i> Sparepart Kualitas Terjamin</p>
-            <p><i class="fas fa-headset"></i> Fast Respon via WhatsApp</p>
-        </div>
+      <div class="logo">
+        <i class="fas fa-infinity"></i>
+        INFINITY <span>GADGET</span>
+      </div>
 
-        <div class="bottom-nav">
-            <div class="nav-item active"><i class="fas fa-home"></i> Beranda</div>
-            <div class="nav-item" onclick="filterByKategori('')"><i class="fas fa-th-large"></i> Kategori</div>
-            <div class="nav-item" onclick="bukaKeranjangWA()"><i class="fas fa-shopping-bag"></i> Pesan</div>
-            <div class="nav-item" onclick="bukaKeranjangWA()"><i class="fas fa-clipboard-list"></i> Info</div>
-            <div class="nav-item" onclick="alert('Infinity Gadget - Admin Store')"><i class="fas fa-user"></i> Akun</div>
-        </div>
+      <div class="menu">
+        <a class="active" href="#">Beranda</a>
+        <a href="#produk">Produk</a>
+        <a href="#kategori">Kategori</a>
+        <a href="#service">Service</a>
+        <a href="#tentang">Tentang Kami</a>
+      </div>
+
+      <div class="search">
+        <i class="fas fa-search"></i>
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Cari produk, merk, atau kategori..."
+          onkeyup="filterKatalog()"
+        >
+      </div>
+
+      <div class="head-icon" onclick="bukaKeranjangWA()">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="badge">0</span>
+      </div>
+
+      <div class="head-icon" onclick="bukaKeranjangWA()">
+        <i class="fab fa-whatsapp"></i>
+      </div>
 
     </div>
 
-    <!-- MODAL DETAIL -->
-    <div class="modal-overlay" id="detailModal" onclick="tutupDetail(event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <button class="btn-circle" onclick="tutupDetail(event)"><i class="fas fa-times"></i></button>
-                <div style="display:flex; gap:10px;">
-                    <button class="btn-circle"><i class="far fa-heart"></i></button>
-                    <button class="btn-circle"><i class="fas fa-share-alt"></i></button>
-                </div>
-            </div>
-            
-            <div class="modal-body">
-                <img src="" id="d-foto" class="detail-img">
-                <div class="detail-info">
-                    <div class="d-price" id="d-harga">Rp 0</div>
-                    <div class="d-title" id="d-nama">Nama Barang</div>
-                    
-                    <div class="p-rating" style="font-size: 13px; margin-bottom: 20px;">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                        <span style="font-size: 13px;">4.8 (Terlaris)</span>
-                    </div>
+  </header>
 
-                    <div class="d-specs" id="d-spek-box"></div>
-                </div>
-            </div>
 
-            <div class="modal-footer">
-                <button class="btn-outline" onclick="tanyaStok()">Tanya Stok</button>
-                <button class="btn-solid" id="btn-beli" onclick="beliSekarang()">Beli Sekarang</button>
-            </div>
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <h1>
+        Gadget Original
+        <br>
+        <span>Harga Terbaik</span>
+      </h1>
+
+      <p>
+        Belanja handphone & aksesoris dengan mudah,
+        aman dan terpercaya di Infinity Gadget.
+      </p>
+
+      <button
+        class="hero-btn"
+        onclick="document.getElementById('produk').scrollIntoView({behavior:'smooth'})"
+      >
+        Belanja Sekarang
+        <i class="fas fa-arrow-right"></i>
+      </button>
+
+      <div class="hero-features">
+
+        <div>
+          <i class="fas fa-shield-alt"></i>
+          100% Terjamin
         </div>
+
+        <div>
+          <i class="fas fa-truck"></i>
+          Pengiriman
+        </div>
+
+        <div>
+          <i class="fas fa-star"></i>
+          Garansi
+        </div>
+
+      </div>
+
     </div>
 
-    <script>
-        const NOMOR_WA_TOKO = "6285824859368"; 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxBXAryBPE81DmRCFtliQmGIq2Xx3K4olGOQurn_GQL7K2cBvkYqFL2lxenx3X4Jy9s/exec';
-        
-        let dataKatalog = [];
-        let currentData = [];
-        let itemAktif = null;
+  </section>
 
-        const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
-        
-        function formatGambarDrive(url) {
-            if(!url || typeof url !== 'string' || url.trim() === "") return "https://via.placeholder.com/300x300/f8fafc/cbd5e1?text=No+Image";
-            let match = url.match(/\/d\/(.+?)\//);
-            if(match && match[1]) { return "https://lh3.googleusercontent.com/d/" + match[1]; }
-            let matchParam = url.match(/id=([a-zA-Z0-9_-]+)/);
-            if(matchParam && matchParam[1]) { return "https://lh3.googleusercontent.com/d/" + matchParam[1]; }
-            return url;
-        }
 
-        window.onload = () => {
-            fetch(scriptURL + "?action=search&keyword=")
-                .then(response => response.json())
-                .then(data => {
-                    dataKatalog = data.filter(item => {
-                        if (!item || !item.hargaJual) return false;
-                        let hg = Number(String(item.hargaJual).replace(/[^0-9]/g, ''));
-                        return hg > 0;
-                    });
-                    currentData = dataKatalog;
-                    renderGrid(currentData);
-                })
-                .catch(err => {
-                    console.error("Error loading data:", err);
-                    document.getElementById("katalogGrid").innerHTML = `<div class="loading"><i class="fas fa-exclamation-triangle fa-2x"></i><br><br>Gagal memuat produk. Silakan refresh halaman.</div>`;
-                });
-        };
+  <!-- KATEGORI -->
+  <section class="categories" id="kategori">
 
-        function renderGrid(dataArray) {
-            let grid = document.getElementById("katalogGrid");
-            if(!dataArray || dataArray.length === 0) {
-                grid.innerHTML = `<div class="loading"><i class="fas fa-box-open fa-2x"></i><br><br>Produk tidak ditemukan.</div>`; 
-                return;
+    <div class="cat active" onclick="filterByKategori('')">
+      <div class="cat-icon">
+        <i class="fas fa-th-large"></i>
+      </div>
+      <b>Semua</b>
+      <small>Produk</small>
+    </div>
+
+    <div class="cat" onclick="filterByKategori('Handphone')">
+      <div class="cat-icon">
+        <i class="fas fa-mobile-alt"></i>
+      </div>
+      <b>Handphone</b>
+      <small>Produk</small>
+    </div>
+
+    <div class="cat" onclick="filterByKategori('Casing / Softcase')">
+      <div class="cat-icon">
+        <i class="fas fa-mobile"></i>
+      </div>
+      <b>Case</b>
+      <small>Produk</small>
+    </div>
+
+    <div class="cat" onclick="filterByKategori('Charger / Adaptor')">
+      <div class="cat-icon">
+        <i class="fas fa-plug"></i>
+      </div>
+      <b>Charger</b>
+      <small>Produk</small>
+    </div>
+
+    <div class="cat" onclick="filterByKategori('Headset / TWS / Earphone')">
+      <div class="cat-icon">
+        <i class="fas fa-headphones"></i>
+      </div>
+      <b>Headset</b>
+      <small>Produk</small>
+    </div>
+
+    <div class="cat" onclick="filterByKategori('Speaker')">
+      <div class="cat-icon">
+        <i class="fas fa-volume-up"></i>
+      </div>
+      <b>Speaker</b>
+      <small>Produk</small>
+    </div>
+
+    <div class="cat" onclick="filterByKategori('Powerbank')">
+      <div class="cat-icon">
+        <i class="fas fa-battery-full"></i>
+      </div>
+      <b>Power Bank</b>
+      <small>Produk</small>
+    </div>
+
+    <div class="cat">
+      <div class="cat-icon">
+        <i class="fas fa-watch"></i>
+      </div>
+      <b>Smartwatch</b>
+      <small>Produk</small>
+    </div>
+
+  </section>
+
+
+  <!-- KEUNGGULAN -->
+  <section class="highlights">
+
+    <div class="highlight">
+      <i class="fas fa-truck"></i>
+      <div>
+        <b>Bisa Kirim</b>
+        <span>Area Indonesia</span>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <i class="fas fa-shield-alt"></i>
+      <div>
+        <b>Produk Terjamin</b>
+        <span>Garansi toko</span>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <i class="fab fa-whatsapp"></i>
+      <div>
+        <b>Fast Response</b>
+        <span>Chat langsung</span>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <i class="fas fa-credit-card"></i>
+      <div>
+        <b>Pembayaran Mudah</b>
+        <span>Transfer / e-Wallet</span>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- PRODUK -->
+  <div id="produk"></div>
+
+  <div class="section-head">
+    <h2>Produk Terbaru</h2>
+
+    <a onclick="filterByKategori('')">
+      Lihat Semua
+      <i class="fas fa-arrow-right"></i>
+    </a>
+  </div>
+
+  <div class="grid" id="katalogGrid">
+
+    <div style="
+      grid-column:1/-1;
+      text-align:center;
+      padding:50px;
+      color:#64748b;
+    ">
+      <i class="fas fa-spinner fa-spin fa-2x"></i>
+      <br><br>
+      Memuat Produk...
+    </div>
+
+  </div>
+
+
+  <!-- PROMO -->
+  <div class="promos">
+
+    <div class="promo">
+
+      <div>
+        <h3>Promo Hari Ini</h3>
+        <p>Diskon spesial produk pilihan</p>
+      </div>
+
+      <i class="fas fa-tags fa-3x"></i>
+
+    </div>
+
+
+    <div class="promo">
+
+      <div>
+        <h3>Gratis Ongkir</h3>
+        <p>Tanya admin untuk promo pengiriman</p>
+      </div>
+
+      <i class="fas fa-truck fa-3x"></i>
+
+    </div>
+
+
+    <div class="promo" id="service">
+
+      <div>
+        <h3>Service HP</h3>
+        <p>Cepat, terpercaya & bergaransi</p>
+      </div>
+
+      <i class="fas fa-tools fa-3x"></i>
+
+    </div>
+
+  </div>
+
+
+  <!-- TERLARIS -->
+  <div class="section-head">
+
+    <h2>🔥 Produk Terlaris</h2>
+
+    <a onclick="filterByKategori('')">
+      Lihat Semua
+      <i class="fas fa-arrow-right"></i>
+    </a>
+
+  </div>
+
+  <div class="grid" id="bestGrid"></div>
+
+
+  <!-- FOOTER -->
+  <footer class="store" id="tentang">
+
+    <div>
+
+      <div class="logo">
+        <i class="fas fa-infinity"></i>
+        INFINITY <span>GADGET</span>
+      </div>
+
+      <p style="margin-top:10px">
+        Toko gadget dan aksesoris terpercaya.
+        Melayani pembelian, pengiriman dan
+        konsultasi produk.
+      </p>
+
+    </div>
+
+
+    <div>
+
+      <h3>Menu</h3>
+
+      <a href="#">Beranda</a>
+      <a href="#produk">Produk</a>
+      <a href="#kategori">Kategori</a>
+      <a href="#service">Service</a>
+
+    </div>
+
+
+    <div>
+
+      <h3>Informasi</h3>
+
+      <p>📍 Mamosalato & Toili Barat</p>
+      <p>🕐 08.00 - 21.00 WIB</p>
+      <p>🚚 Ambil / Kurir</p>
+
+    </div>
+
+
+    <div>
+
+      <h3>Hubungi Kami</h3>
+
+      <p>WhatsApp: Chat langsung</p>
+      <p>Produk & stok siap ditanyakan</p>
+
+      <button
+        class="hero-btn"
+        onclick="bukaKeranjangWA()"
+      >
+        Chat WhatsApp
+      </button>
+
+    </div>
+
+  </footer>
+
+</div>
+
+
+<!-- FLOATING WHATSAPP -->
+<div class="wa" onclick="bukaKeranjangWA()">
+
+  <i class="fab fa-whatsapp"></i>
+
+  <span>Chat WhatsApp</span>
+
+</div>
+
+
+<!-- BOTTOM NAV HP -->
+<div class="bottom">
+
+  <div
+    class="active"
+    onclick="window.scrollTo({top:0,behavior:'smooth'})"
+  >
+    <i class="fas fa-home"></i>
+    Beranda
+  </div>
+
+  <div
+    onclick="document.getElementById('kategori').scrollIntoView({behavior:'smooth'})"
+  >
+    <i class="fas fa-th-large"></i>
+    Kategori
+  </div>
+
+  <div
+    onclick="document.getElementById('produk').scrollIntoView({behavior:'smooth'})"
+  >
+    <i class="fas fa-box"></i>
+    Produk
+  </div>
+
+  <div onclick="bukaKeranjangWA()">
+    <i class="fab fa-whatsapp"></i>
+    Pesan
+  </div>
+
+</div>
+
+
+<!-- DETAIL PRODUK -->
+<div
+  class="modal"
+  id="detailModal"
+  onclick="tutupDetail(event)"
+>
+
+  <div
+    class="modal-box"
+    onclick="event.stopPropagation()"
+  >
+
+    <button
+      class="close"
+      onclick="tutupDetail()"
+    >
+      <i class="fas fa-times"></i>
+    </button>
+
+    <img
+      id="d-foto"
+      src=""
+      alt="Produk"
+    >
+
+    <div class="modal-info">
+
+      <div
+        id="d-nama"
+        style="
+          font-size:20px;
+          font-weight:700;
+        "
+      >
+        Nama Produk
+      </div>
+
+      <div
+        id="d-harga"
+        class="m-price"
+      >
+        Rp 0
+      </div>
+
+      <div class="rating">
+
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+        <i class="fas fa-star"></i>
+
+        <span>4.9</span>
+
+      </div>
+
+      <div
+        id="d-spek-box"
+        class="spec"
+      ></div>
+
+      <button
+        class="hero-btn"
+        style="
+          width:100%;
+          justify-content:center;
+          margin-top:18px;
+        "
+        onclick="beliSekarang()"
+      >
+        Beli Sekarang via WhatsApp
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   PENGATURAN TOKO
+========================================= */
+
+const NOMOR_WA_TOKO = "6285824859368";
+
+
+/* =========================================
+   GOOGLE APPS SCRIPT
+========================================= */
+
+const scriptURL =
+'https://script.google.com/macros/s/AKfycbxBXAryBPE81DmRCFtliQmGIq2Xx3K4olGOQurn_GQL7K2cBvkYqFL2lxenx3X4Jy9s/exec';
+
+
+/* =========================================
+   DATA
+========================================= */
+
+let dataKatalog = [];
+
+let currentData = [];
+
+let itemAktif = null;
+
+
+/* =========================================
+   FORMAT RUPIAH
+========================================= */
+
+const formatRp = (angka) => {
+
+  return new Intl.NumberFormat(
+    'id-ID',
+    {
+      style:'currency',
+      currency:'IDR',
+      minimumFractionDigits:0
+    }
+  ).format(angka || 0);
+
+};
+
+
+/* =========================================
+   FORMAT GAMBAR GOOGLE DRIVE
+========================================= */
+
+function formatGambarDrive(url){
+
+  if(
+    !url ||
+    typeof url !== 'string' ||
+    !url.trim()
+  ){
+
+    return
+    "https://via.placeholder.com/400x400/f8fafc/cbd5e1?text=No+Image";
+
+  }
+
+
+  let match =
+    url.match(/\/d\/(.+?)\//);
+
+
+  if(
+    match &&
+    match[1]
+  ){
+
+    return
+    "https://lh3.googleusercontent.com/d/"
+    + match[1];
+
+  }
+
+
+  let matchParam =
+    url.match(/id=([a-zA-Z0-9_-]+)/);
+
+
+  if(
+    matchParam &&
+    matchParam[1]
+  ){
+
+    return
+    "https://lh3.googleusercontent.com/d/"
+    + matchParam[1];
+
+  }
+
+
+  return url;
+
+}
+
+
+/* =========================================
+   LOAD PRODUK
+========================================= */
+
+window.onload = () => {
+
+  fetch(
+    scriptURL +
+    "?action=search&keyword="
+  )
+
+  .then(
+    response => response.json()
+  )
+
+  .then(
+    data => {
+
+      dataKatalog =
+        data.filter(
+          item => {
+
+            if(
+              !item ||
+              !item.hargaJual
+            ){
+
+              return false;
+
             }
-            
-            let html = "";
-            dataArray.forEach((item, index) => {
-                let harga = Number(String(item.hargaJual || "0").replace(/[^0-9]/g, ''));
-                let rawNama = item.nama ? String(item.nama) : "Produk Baru";
-                let namaSplit = rawNama.split("|");
-                let namaAsli = namaSplit[0].trim();
-                
-                let isReady = (item.stok && Number(item.stok) > 0) ? true : false;
-                let badgeHtml = isReady ? `<div class="stok-badge stok-ready">Tersedia</div>` : `<div class="stok-badge stok-habis">Habis</div>`;
-                let cartBtn = isReady 
-                    ? `<button class="btn-cart-small" onclick="event.stopPropagation(); bukaDetail(${index});"><i class="fas fa-shopping-cart"></i></button>`
-                    : `<button class="btn-cart-small" style="background:#cbd5e1; cursor:not-allowed;" onclick="event.stopPropagation();"><i class="fas fa-ban"></i></button>`;
 
-                html += `
-                <div class="product-card" onclick="bukaDetail(${index})">
-                    <div class="product-img-wrapper">
-                        ${badgeHtml}
-                        <img src="${formatGambarDrive(item.foto)}" class="product-img">
-                    </div>
-                    <div class="product-info">
-                        <div class="p-title">${namaAsli}</div>
-                        <div class="p-price">${formatRp(harga)}</div>
-                        <div class="p-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> <span>4.9</span></div>
-                    </div>
-                    ${cartBtn}
-                </div>`;
-            });
-            grid.innerHTML = html;
-        }
+            let harga =
+              Number(
+                String(
+                  item.hargaJual
+                ).replace(
+                  /[^0-9]/g,
+                  ''
+                )
+              );
 
-        function filterKatalog() {
-            let keyword = document.getElementById("searchInput").value.toLowerCase();
-            currentData = dataKatalog.filter(item => {
-                let nama = item.nama ? String(item.nama).toLowerCase() : "";
-                let kategori = item.kategori ? String(item.kategori).toLowerCase() : "";
-                return nama.includes(keyword) || kategori.includes(keyword);
-            });
-            renderGrid(currentData);
-        }
+            return harga > 0;
 
-        function filterByKategori(kategori) {
-            document.getElementById("searchInput").value = kategori;
-            filterKatalog();
-        }
+          }
+        );
 
-        function bukaDetail(index) {
-            itemAktif = currentData[index];
-            if(!itemAktif) return;
-            
-            let rawNama = itemAktif.nama ? String(itemAktif.nama) : "Produk Baru";
-            let namaSplit = rawNama.split("|");
-            let namaAsli = namaSplit[0].trim();
-            let spesifikasi = namaSplit[1] ? namaSplit[1].trim() : "Produk Original Berkualitas dari Infinity Gadget.";
-            let harga = Number(String(itemAktif.hargaJual || "0").replace(/[^0-9]/g, ''));
-            let isReady = (itemAktif.stok && Number(itemAktif.stok) > 0) ? true : false;
 
-            document.getElementById("d-foto").src = formatGambarDrive(itemAktif.foto);
-            document.getElementById("d-nama").innerText = namaAsli;
-            document.getElementById("d-harga").innerText = formatRp(harga);
+      currentData =
+        dataKatalog;
 
-            let spekHtml = "";
-            let spekItems = spesifikasi.split(","); 
-            spekItems.forEach(s => {
-                if(s.trim() !== "") {
-                    spekHtml += `<p><i class="fas fa-check-circle"></i> ${s.trim()}</p>`;
-                }
-            });
-            document.getElementById("d-spek-box").innerHTML = spekHtml;
 
-            let btnBeli = document.getElementById("btn-beli");
-            if(!isReady) {
-                btnBeli.innerText = "Stok Habis";
-                btnBeli.style.background = "#cbd5e1";
-                btnBeli.onclick = null;
-            } else {
-                btnBeli.innerText = "Beli Sekarang";
-                btnBeli.style.background = "var(--red-main)";
-                btnBeli.onclick = beliSekarang;
+      renderGrid(
+        currentData
+      );
+
+
+      renderBest();
+
+    }
+  )
+
+  .catch(
+    err => {
+
+      console.error(
+        "Error loading data:",
+        err
+      );
+
+      document
+        .getElementById(
+          "katalogGrid"
+        )
+        .innerHTML = `
+
+          <div style="
+            grid-column:1/-1;
+            text-align:center;
+            padding:50px;
+            color:#ef4444;
+          ">
+
+            <i class="
+              fas
+              fa-exclamation-triangle
+              fa-2x
+            "></i>
+
+            <br><br>
+
+            Gagal memuat produk.
+
+            <br>
+
+            Silakan refresh halaman.
+
+          </div>
+
+        `;
+
+    }
+  );
+
+};
+
+
+/* =========================================
+   KARTU PRODUK
+========================================= */
+
+function productCard(
+  item,
+  index,
+  best = false
+){
+
+  let harga =
+    Number(
+      String(
+        item.hargaJual || 0
+      ).replace(
+        /[^0-9]/g,
+        ''
+      )
+    );
+
+
+  let nama =
+    String(
+      item.nama ||
+      'Produk Baru'
+    )
+    .split('|')[0]
+    .trim();
+
+
+  let ready =
+    Number(
+      item.stok || 0
+    ) > 0;
+
+
+  return `
+
+    <div
+      class="card"
+      onclick="bukaDetail(${index})"
+    >
+
+      <div class="imgbox">
+
+        <span
+          class="
+            status
+            ${!ready
+              ? 'sold'
+              : best
+              ? 'best'
+              : ''
             }
+          "
+        >
 
-            document.getElementById("detailModal").style.display = "flex";
+          ${
+            !ready
+              ? 'Habis'
+              : best
+              ? 'Terlaris'
+              : 'Tersedia'
+          }
+
+        </span>
+
+
+        <img
+          src="${formatGambarDrive(item.foto)}"
+          alt="${nama}"
+          loading="lazy"
+        >
+
+      </div>
+
+
+      <div class="card-info">
+
+        <div class="card-title">
+          ${nama}
+        </div>
+
+
+        <div class="cat-text">
+          ${item.kategori || 'Aksesoris'}
+        </div>
+
+
+        <div class="rating">
+
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+
+          <span>4.9</span>
+
+        </div>
+
+
+        <div class="price">
+          ${formatRp(harga)}
+        </div>
+
+
+        <div class="stock">
+          Stok: ${Number(item.stok || 0)}
+        </div>
+
+
+        ${
+          ready
+
+          ?
+
+          `
+          <button
+            class="cart"
+            onclick="
+              event.stopPropagation();
+              bukaDetail(${index})
+            "
+          >
+
+            <i class="fas fa-shopping-cart"></i>
+
+            + Keranjang
+
+          </button>
+          `
+
+          :
+
+          `
+          <button
+            class="cart"
+            style="background:#cbd5e1"
+            disabled
+          >
+
+            Stok Habis
+
+          </button>
+          `
+
         }
 
-        function tutupDetail(e) {
-            if (e) e.stopPropagation();
-            document.getElementById("detailModal").style.display = "none";
-            itemAktif = null;
-        }
+      </div>
 
-        function prosesWA(teksTambahan) {
-            if(!itemAktif) return;
-            let rawNama = itemAktif.nama ? String(itemAktif.nama) : "Produk";
-            let namaSplit = rawNama.split("|")[0].trim();
-            let harga = formatRp(Number(String(itemAktif.hargaJual || "0").replace(/[^0-9]/g, '')));
-            let pesan = encodeURIComponent(`Halo Infinity Gadget, ${teksTambahan}\n\nBarang: ${namaSplit}\nHarga: ${harga}`);
-            window.open(`https://wa.me/${NOMOR_WA_TOKO}?text=${pesan}`, '_blank');
-        }
+    </div>
 
-        function tanyaStok() { prosesWA("apakah barang ini masih tersedia?"); }
-        function beliSekarang() { prosesWA("saya ingin memesan barang ini."); }
+  `;
 
-        function bukaKeranjangWA() {
-            let pesan = encodeURIComponent("Halo Infinity Gadget, saya ingin menanyakan ketersediaan produk di katalog toko Anda.");
-            window.open(`https://wa.me/${NOMOR_WA_TOKO}?text=${pesan}`, '_blank');
-        }
-    </script>
+}
+
+
+/* =========================================
+   RENDER PRODUK
+========================================= */
+
+function renderGrid(
+  arr
+){
+
+  const grid =
+    document.getElementById(
+      'katalogGrid'
+    );
+
+
+  if(
+    !arr ||
+    arr.length === 0
+  ){
+
+    grid.innerHTML = `
+
+      <div style="
+        grid-column:1/-1;
+        text-align:center;
+        padding:40px;
+        color:#64748b;
+      ">
+
+        <i
+          class="
+            fas
+            fa-box-open
+            fa-2x
+          "
+        ></i>
+
+        <br><br>
+
+        Produk tidak ditemukan.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  grid.innerHTML =
+    arr
+      .map(
+        (item,index) =>
+          productCard(
+            item,
+            index
+          )
+      )
+      .join('');
+
+}
+
+
+/* =========================================
+   PRODUK TERLARIS
+========================================= */
+
+function renderBest(){
+
+  const grid =
+    document.getElementById(
+      'bestGrid'
+    );
+
+
+  grid.innerHTML =
+    dataKatalog
+      .slice(0,5)
+      .map(
+        (item,index) =>
+          productCard(
+            item,
+            index,
+            true
+          )
+      )
+      .join('');
+
+}
+
+
+/* =========================================
+   PENCARIAN
+========================================= */
+
+function filterKatalog(){
+
+  let keyword =
+    document
+      .getElementById(
+        'searchInput'
+      )
+      .value
+      .toLowerCase();
+
+
+  currentData =
+    dataKatalog.filter(
+      item => {
+
+        let nama =
+          item.nama
+            ? String(
+                item.nama
+              ).toLowerCase()
+            : "";
+
+
+        let kategori =
+          item.kategori
+            ? String(
+                item.kategori
+              ).toLowerCase()
+            : "";
+
+
+        return (
+          nama.includes(keyword) ||
+          kategori.includes(keyword)
+        );
+
+      }
+    );
+
+
+  renderGrid(
+    currentData
+  );
+
+}
+
+
+/* =========================================
+   FILTER KATEGORI
+========================================= */
+
+function filterByKategori(
+  kategori
+){
+
+  document
+    .getElementById(
+      'searchInput'
+    )
+    .value = kategori;
+
+
+  filterKatalog();
+
+
+  document
+    .getElementById(
+      'produk'
+    )
+    .scrollIntoView({
+      behavior:'smooth'
+    });
+
+}
+
+
+/* =========================================
+   DETAIL PRODUK
+========================================= */
+
+function bukaDetail(
+  index
+){
+
+  itemAktif =
+    currentData[index];
+
+
+  if(!itemAktif){
+
+    return;
+
+  }
+
+
+  let raw =
+    String(
+      itemAktif.nama ||
+      'Produk'
+    );
+
+
+  let split =
+    raw.split('|');
+
+
+  let nama =
+    split[0].trim();
+
+
+  let spesifikasi =
+    split[1]
+    ? split[1].trim()
+    : 'Produk berkualitas dari Infinity Gadget.';
+
+
+  let harga =
+    Number(
+      String(
+        itemAktif.hargaJual || 0
+      ).replace(
+        /[^0-9]/g,
+        ''
+      )
+    );
+
+
+  document
+    .getElementById(
+      'd-foto'
+    )
+    .src =
+      formatGambarDrive(
+        itemAktif.foto
+      );
+
+
+  document
+    .getElementById(
+      'd-nama'
+    )
+    .innerText =
+      nama;
+
+
+  document
+    .getElementById(
+      'd-harga'
+    )
+    .innerText =
+      formatRp(
+        harga
+      );
+
+
+  document
+    .getElementById(
+      'd-spek-box'
+    )
+    .innerHTML =
+      spesifikasi
+        .split(',')
+        .map(
+          s => `
+            <div>
+              ✓ ${s.trim()}
+            </div>
+          `
+        )
+        .join('');
+
+
+  document
+    .getElementById(
+      'detailModal'
+    )
+    .style.display =
+      'flex';
+
+}
+
+
+/* =========================================
+   TUTUP DETAIL
+========================================= */
+
+function tutupDetail(){
+
+  document
+    .getElementById(
+      'detailModal'
+    )
+    .style.display =
+      'none';
+
+
+  itemAktif =
+    null;
+
+}
+
+
+/* =========================================
+   WHATSAPP PRODUK
+========================================= */
+
+function prosesWA(
+  teks
+){
+
+  if(!itemAktif){
+
+    return;
+
+  }
+
+
+  let nama =
+    String(
+      itemAktif.nama ||
+      'Produk'
+    )
+    .split('|')[0]
+    .trim();
+
+
+  let harga =
+    formatRp(
+      Number(
+        String(
+          itemAktif.hargaJual ||
+          0
+        ).replace(
+          /[^0-9]/g,
+          ''
+        )
+      )
+    );
+
+
+  let pesan =
+    encodeURIComponent(
+      'Halo Infinity Gadget, '
+      + teks
+      + '\n\nBarang: '
+      + nama
+      + '\nHarga: '
+      + harga
+    );
+
+
+  window.open(
+    'https://wa.me/'
+    + NOMOR_WA_TOKO
+    + '?text='
+    + pesan,
+    '_blank'
+  );
+
+}
+
+
+/* =========================================
+   BELI SEKARANG
+========================================= */
+
+function beliSekarang(){
+
+  prosesWA(
+    'saya ingin memesan barang ini.'
+  );
+
+}
+
+
+/* =========================================
+   WHATSAPP UMUM
+========================================= */
+
+function bukaKeranjangWA(){
+
+  let pesan =
+    encodeURIComponent(
+      'Halo Infinity Gadget, saya ingin menanyakan produk dari katalog online.'
+    );
+
+
+  window.open(
+    'https://wa.me/'
+    + NOMOR_WA_TOKO
+    + '?text='
+    + pesan,
+    '_blank'
+  );
+
+}
+
+</script>
+
 </body>
 </html>
