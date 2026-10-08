@@ -1,42 +1,29 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Infinity Gadget - Katalog Resmi</title>
 
-<link rel="preconnect"
-href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link rel="preconnect"
-href="https://fonts.gstatic.com"
-crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-
 <style>
 
 /* =====================================================
-   RESET
+   DASAR
 ===================================================== */
 
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
-}
-
-html{
-    scroll-behavior:smooth;
 }
 
 body{
@@ -54,7 +41,6 @@ a{
     text-decoration:none;
     color:inherit;
 }
-
 
 /* =====================================================
    TOP BAR
@@ -75,7 +61,6 @@ a{
     gap:20px;
 }
 
-
 /* =====================================================
    HEADER
 ===================================================== */
@@ -93,7 +78,6 @@ a{
 
     position:sticky;
     top:0;
-
     z-index:1000;
 }
 
@@ -122,10 +106,7 @@ a{
     color:#ed0b24;
 }
 
-
-/* =====================================================
-   NAV
-===================================================== */
+/* MENU */
 
 .nav{
     display:flex;
@@ -148,10 +129,7 @@ a{
     color:white;
 }
 
-
-/* =====================================================
-   SEARCH
-===================================================== */
+/* SEARCH */
 
 .header-search{
     margin-left:auto;
@@ -191,10 +169,7 @@ a{
     background:white;
 }
 
-
-/* =====================================================
-   HEADER ACTION
-===================================================== */
+/* HEADER ICON */
 
 .header-actions{
     display:flex;
@@ -204,9 +179,7 @@ a{
 
 .action-icon{
     position:relative;
-
     font-size:22px;
-
     cursor:pointer;
 }
 
@@ -232,9 +205,8 @@ a{
     font-weight:700;
 }
 
-
 /* =====================================================
-   HERO DESKTOP
+   HERO
 ===================================================== */
 
 .hero{
@@ -252,7 +224,6 @@ a{
     position:relative;
 
     background-image:url('robot.png');
-
     background-position:center;
     background-size:cover;
     background-repeat:no-repeat;
@@ -263,22 +234,19 @@ a{
 
 .hero-overlay{
     position:absolute;
-
     inset:0;
 
-    background:
-    linear-gradient(
+    background:linear-gradient(
         90deg,
-        rgba(255,255,255,.97) 0%,
-        rgba(255,255,255,.88) 35%,
-        rgba(255,255,255,.20) 70%,
+        rgba(255,255,255,.95) 0%,
+        rgba(255,255,255,.82) 38%,
+        rgba(255,255,255,.08) 65%,
         rgba(255,255,255,0) 100%
     );
 }
 
 .hero-content{
     position:relative;
-
     z-index:2;
 
     width:50%;
@@ -297,7 +265,6 @@ a{
 
 .hero h1{
     font-size:46px;
-
     line-height:1.1;
 
     margin-bottom:15px;
@@ -339,7 +306,6 @@ a{
 
 .btn-primary:hover{
     background:#c9001d;
-
     transform:translateY(-2px);
 }
 
@@ -367,7 +333,6 @@ a{
 .hero-feature i{
     color:#ed0b24;
 }
-
 
 /* =====================================================
    KATEGORI
@@ -453,9 +418,8 @@ a{
     margin-top:4px;
 }
 
-
 /* =====================================================
-   HIGHLIGHT
+   HIGHLIGHTS
 ===================================================== */
 
 .highlights{
@@ -504,7 +468,6 @@ a{
 
     font-size:12px;
 }
-
 
 /* =====================================================
    SECTION
@@ -557,7 +520,6 @@ a{
     cursor:pointer;
 }
 
-
 /* =====================================================
    PRODUCT GRID
 ===================================================== */
@@ -572,9 +534,8 @@ a{
     align-items:stretch;
 }
 
-
 /* =====================================================
-   PRODUCT CARD
+   KARTU PRODUK
 ===================================================== */
 
 .product-card{
@@ -591,7 +552,6 @@ a{
     position:relative;
 
     display:flex;
-
     flex-direction:column;
 
     height:100%;
@@ -603,12 +563,11 @@ a{
     transform:translateY(-5px);
 
     box-shadow:
-    0 15px 35px rgba(15,23,42,.12);
+        0 15px 35px rgba(15,23,42,.12);
 }
 
-
 /* =====================================================
-   PRODUCT IMAGE
+   FOTO PRODUK
 ===================================================== */
 
 .product-image{
@@ -639,9 +598,8 @@ a{
     padding:15px;
 }
 
-
 /* =====================================================
-   STOCK BADGE
+   BADGE STOK
 ===================================================== */
 
 .stock-badge{
@@ -663,24 +621,22 @@ a{
     font-weight:700;
 }
 
-
 /* =====================================================
-   PRODUCT INFO
+   INFORMASI PRODUK
 ===================================================== */
 
 .product-info{
     padding:15px;
 
     display:flex;
-
     flex-direction:column;
 
     flex:1;
 }
 
-
 /* =====================================================
-   PRODUCT NAME
+   NAMA PRODUK
+   MAKSIMAL 2 BARIS
 ===================================================== */
 
 .product-name{
@@ -689,6 +645,11 @@ a{
     font-weight:700;
 
     line-height:1.45;
+
+    /*
+       PENTING:
+       Nama produk hanya boleh tampil 2 baris.
+    */
 
     display:-webkit-box;
 
@@ -705,9 +666,8 @@ a{
     min-height:41px;
 }
 
-
 /* =====================================================
-   PRODUCT CATEGORY
+   KATEGORI
 ===================================================== */
 
 .product-category{
@@ -725,7 +685,6 @@ a{
 
     text-overflow:ellipsis;
 }
-
 
 /* =====================================================
    RATING
@@ -751,9 +710,8 @@ a{
     margin-left:4px;
 }
 
-
 /* =====================================================
-   PRICE
+   HARGA
 ===================================================== */
 
 .price{
@@ -778,9 +736,8 @@ a{
     text-overflow:ellipsis;
 }
 
-
 /* =====================================================
-   STOCK
+   STOK
 ===================================================== */
 
 .stock{
@@ -793,9 +750,8 @@ a{
     height:18px;
 }
 
-
 /* =====================================================
-   PRODUCT BUTTON
+   TOMBOL
 ===================================================== */
 
 .product-buttons{
@@ -846,7 +802,6 @@ a{
     background:#e2e8f0;
 }
 
-
 /* =====================================================
    LOADING
 ===================================================== */
@@ -868,7 +823,6 @@ a{
 
     margin-bottom:12px;
 }
-
 
 /* =====================================================
    PROMO
@@ -928,6 +882,7 @@ a{
     position:absolute;
 
     right:25px;
+
     bottom:20px;
 
     font-size:60px;
@@ -935,9 +890,8 @@ a{
     opacity:.15;
 }
 
-
 /* =====================================================
-   MODAL
+   MODAL DETAIL
 ===================================================== */
 
 .modal{
@@ -1044,6 +998,11 @@ a{
 
     margin-bottom:12px;
 
+    /*
+       Detail tetap boleh panjang,
+       karena ini halaman detail.
+    */
+
     line-height:1.4;
 }
 
@@ -1081,9 +1040,8 @@ a{
     gap:15px;
 }
 
-
 /* =====================================================
-   WHATSAPP FLOAT
+   WHATSAPP
 ===================================================== */
 
 .whatsapp-float{
@@ -1110,8 +1068,7 @@ a{
 
     font-size:13px;
 
-    box-shadow:
-    0 8px 25px rgba(0,0,0,.2);
+    box-shadow:0 8px 25px rgba(0,0,0,.2);
 
     z-index:1500;
 
@@ -1121,7 +1078,6 @@ a{
 .whatsapp-float i{
     font-size:22px;
 }
-
 
 /* =====================================================
    FOOTER
@@ -1186,7 +1142,6 @@ a{
     font-size:12px;
 }
 
-
 /* =====================================================
    MOBILE NAV
 ===================================================== */
@@ -1194,7 +1149,6 @@ a{
 .mobile-nav{
     display:none;
 }
-
 
 /* =====================================================
    ERROR
@@ -1216,7 +1170,6 @@ a{
     text-align:center;
 }
 
-
 /* =====================================================
    TABLET
 ===================================================== */
@@ -1233,9 +1186,8 @@ a{
 
 }
 
-
 /* =====================================================
-   TABLET
+   TABLET KECIL
 ===================================================== */
 
 @media(max-width:900px){
@@ -1323,43 +1275,18 @@ a{
 
 }
 
-
 /* =====================================================
    HP
-   PERBAIKAN KHUSUS TAMPILAN MOBILE
 ===================================================== */
 
 @media(max-width:600px){
 
     body{
-        padding-bottom:70px;
-
-        overflow-x:hidden;
+        padding-bottom:65px;
     }
-
-
-    /* ===============================
-       HEADER HP
-    =============================== */
 
     .header{
-        height:72px;
-
-        padding:0 14px;
-
-        gap:10px;
-    }
-
-    .logo{
-        width:38px;
-
-        flex-shrink:0;
-
-        justify-content:center;
-    }
-
-    .logo-infinity{
-        font-size:38px;
+        position:sticky;
     }
 
     .logo-text{
@@ -1367,280 +1294,108 @@ a{
     }
 
     .header-search{
-        width:auto;
-
-        flex:1;
-
-        min-width:0;
-
-        margin:0;
-    }
-
-    .header-search i{
-        left:14px;
-    }
-
-    .header-search input{
         width:100%;
-
-        height:46px;
-
-        border-radius:24px;
-
-        padding-left:43px;
-        padding-right:10px;
-
-        font-size:13px;
-
-        white-space:nowrap;
-
-        overflow:hidden;
-
-        text-overflow:ellipsis;
-    }
-
-    .header-actions{
-        flex-shrink:0;
-
-        gap:0;
     }
 
     .header-actions .action-icon:first-child{
         display:none;
     }
 
-    .header-actions .action-icon{
-        font-size:25px;
-    }
-
-
-    /* ===============================
-       HERO HP
-    =============================== */
-
     .hero{
-        width:94%;
+        min-height:470px;
 
-        height:430px;
-
-        min-height:430px;
-
-        max-height:430px;
-
-        margin:18px auto 20px;
-
-        border-radius:22px;
-
-        align-items:flex-start;
-
-        background-position:center bottom;
-
-        background-size:auto 100%;
+        background-position:65% center;
     }
-
-
-    /*
-       Overlay lebih kuat supaya
-       tulisan tidak bercampur dengan gambar
-    */
 
     .hero-overlay{
-        background:
-        linear-gradient(
+        background:linear-gradient(
             180deg,
-            rgba(255,255,255,.98) 0%,
-            rgba(255,255,255,.94) 38%,
-            rgba(255,255,255,.65) 61%,
-            rgba(255,255,255,.10) 100%
+            rgba(255,255,255,.95) 0%,
+            rgba(255,255,255,.82) 42%,
+            rgba(255,255,255,.1) 75%
         );
     }
-
 
     .hero-content{
         width:100%;
 
-        padding:38px 28px 20px;
+        padding:25px;
 
-        text-align:left;
+        align-self:flex-start;
     }
-
-
-    .hero-small{
-        font-size:12px;
-
-        margin-bottom:7px;
-    }
-
 
     .hero h1{
-        font-size:34px;
-
-        line-height:1.08;
-
-        margin-bottom:14px;
+        font-size:31px;
     }
-
 
     .hero p{
         font-size:12px;
 
-        line-height:1.65;
-
-        max-width:310px;
-
-        margin-bottom:18px;
-
-        color:#475569;
+        max-width:330px;
     }
-
-
-    .hero .btn-primary{
-        padding:13px 20px;
-
-        font-size:13px;
-
-        border-radius:12px;
-    }
-
-
-    /*
-       FITUR DI BANNER DISEMBUNYIKAN
-       SUPAYA TIDAK BERTABRAKAN
-    */
 
     .hero-features{
-        display:none;
+        gap:10px;
     }
 
-
-    /* ===============================
-       WHATSAPP FLOAT HP
-    =============================== */
-
-    .whatsapp-float{
-        right:15px;
-
-        bottom:82px;
-
-        padding:12px 17px;
-
-        font-size:12px;
-
-        border-radius:30px;
-
-        z-index:1350;
+    .hero-feature{
+        font-size:10px;
     }
-
-    .whatsapp-float i{
-        font-size:20px;
-    }
-
-
-    /* ===============================
-       KATEGORI HP
-    =============================== */
 
     .categories{
-        width:94%;
-
-        margin:20px auto;
-
-        gap:12px;
-
-        padding-bottom:8px;
+        gap:10px;
     }
 
     .category{
-        min-width:82px;
+        min-width:90px;
     }
 
     .category-icon{
-        width:62px;
-        height:62px;
+        width:65px;
+        height:65px;
 
         font-size:20px;
     }
 
     .category-name{
-        font-size:10px;
-
-        margin-top:7px;
-    }
-
-    .category-count{
-        font-size:9px;
-    }
-
-
-    /* ===============================
-       HIGHLIGHT HP
-    =============================== */
-
-    .highlights{
-        width:94%;
-
-        grid-template-columns:1fr 1fr;
-
-        gap:8px;
-
-        margin-bottom:28px;
-    }
-
-    .highlight{
-        min-height:70px;
-
-        padding:11px;
-
-        gap:8px;
-
-        border-radius:13px;
-    }
-
-    .highlight i{
-        font-size:19px;
-    }
-
-    .highlight strong{
-        font-size:10px;
-    }
-
-    .highlight span{
-        font-size:8px;
-    }
-
-
-    /* ===============================
-       SECTION HP
-    =============================== */
-
-    .section{
-        width:94%;
-
-        margin:30px auto;
-    }
-
-    .section-title{
-        margin-bottom:15px;
-    }
-
-    .section-title h2{
-        font-size:19px;
-    }
-
-    .title-line{
-        width:5px;
-
-        height:25px;
-    }
-
-    .see-all{
         font-size:11px;
     }
 
+    .highlights{
+        grid-template-columns:1fr 1fr;
 
-    /* ===============================
-       PRODUK HP
-    =============================== */
+        gap:8px;
+    }
+
+    .highlight{
+        padding:12px;
+
+        gap:8px;
+    }
+
+    .highlight i{
+        font-size:20px;
+    }
+
+    .highlight strong{
+        font-size:11px;
+    }
+
+    .highlight span{
+        font-size:9px;
+    }
+
+    .section{
+        margin:30px auto;
+    }
+
+    .section-title h2{
+        font-size:20px;
+    }
+
+    /* =================================================
+       KARTU PRODUK HP
+    ================================================= */
 
     .product-grid{
         grid-template-columns:repeat(2,1fr);
@@ -1649,17 +1404,11 @@ a{
     }
 
     .product-card{
-        min-height:430px;
-
-        border-radius:13px;
+        min-height:440px;
     }
 
     .product-image{
-        height:170px;
-    }
-
-    .product-image img{
-        padding:9px;
+        height:175px;
     }
 
     .product-info{
@@ -1682,24 +1431,18 @@ a{
         font-size:9px;
 
         height:16px;
-
-        margin-top:5px;
     }
 
     .rating{
-        font-size:10px;
+        font-size:11px;
 
-        height:19px;
-
-        margin-top:5px;
+        height:20px;
     }
 
     .price{
-        font-size:15px;
+        font-size:16px;
 
-        height:26px;
-
-        margin-top:5px;
+        height:27px;
     }
 
     .stock{
@@ -1708,19 +1451,10 @@ a{
         height:16px;
     }
 
-    .stock-badge{
-        font-size:8px;
-
-        padding:4px 7px;
-
-        left:7px;
-        top:7px;
-    }
-
     .product-buttons{
         gap:5px;
 
-        padding-top:7px;
+        padding-top:8px;
     }
 
     .product-buttons button{
@@ -1728,92 +1462,48 @@ a{
 
         font-size:9px;
 
-        border-radius:8px;
+        padding:8px 3px;
     }
 
+    .stock-badge{
+        font-size:8px;
 
-    /* ===============================
-       PROMO HP
-    =============================== */
-
-    .promo-grid{
-        grid-template-columns:1fr;
-
-        gap:10px;
+        padding:5px 7px;
     }
+
+    /* PROMO */
 
     .promo{
-        min-height:135px;
-
-        padding:20px;
-
-        border-radius:15px;
+        min-height:140px;
     }
 
-    .promo h3{
-        font-size:17px;
-    }
-
-
-    /* ===============================
-       MODAL HP
-    =============================== */
-
-    .modal{
-        padding:10px;
-    }
-
-    .modal-box{
-        border-radius:18px;
-
-        padding:15px;
-
-        max-height:92vh;
-    }
+    /* MODAL */
 
     .detail-content{
         grid-template-columns:1fr;
-
-        gap:10px;
     }
 
     .detail-image{
-        min-height:260px;
+        min-height:300px;
     }
 
-    .detail-info{
-        padding:10px;
-    }
-
-    .detail-info h2{
-        font-size:20px;
-    }
-
-    .detail-price{
-        font-size:24px;
-    }
-
-
-    /* ===============================
-       FOOTER HP
-    =============================== */
-
-    .footer{
-        margin-top:50px;
-
-        padding:35px 20px 25px;
-    }
+    /* FOOTER */
 
     .footer-grid{
         grid-template-columns:1fr;
-
-        gap:25px;
     }
 
+    /* WHATSAPP */
 
-    /* ===============================
-       BOTTOM NAV HP
-    =============================== */
+    .whatsapp-float{
+        right:15px;
+
+        bottom:75px;
+
+        padding:12px 16px;
+    }
+
+    /* MOBILE NAV */
 
     .mobile-nav{
         position:fixed;
@@ -1825,14 +1515,11 @@ a{
         left:0;
         right:0;
 
-        height:70px;
+        height:62px;
 
         background:white;
 
         border-top:1px solid #e5e7eb;
-
-        box-shadow:
-        0 -5px 20px rgba(0,0,0,.08);
 
         z-index:1400;
 
@@ -1860,40 +1547,19 @@ a{
     }
 
     .mobile-nav i{
-        font-size:20px;
+        font-size:18px;
     }
 
 }
 
-
 /* =====================================================
-   HP KECIL
+   HP SANGAT KECIL
 ===================================================== */
 
 @media(max-width:380px){
 
-    .hero{
-        height:410px;
-
-        min-height:410px;
-
-        max-height:410px;
-    }
-
-    .hero-content{
-        padding:32px 23px 15px;
-    }
-
-    .hero h1{
-        font-size:30px;
-    }
-
-    .hero p{
-        font-size:11px;
-    }
-
     .product-card{
-        min-height:415px;
+        min-height:420px;
     }
 
     .product-image{
@@ -1908,46 +1574,2076 @@ a{
         font-size:14px;
     }
 
+    .product-buttons button{
+        font-size:8px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     TOP BAR
+===================================================== -->
+
+<div class="topbar">
+
+    <div>
+        <i class="fa-solid fa-store"></i>
+        Selamat datang di Infinity Gadget
+    </div>
+
+    <div class="topbar-right">
+
+        <span>
+            <i class="fa-solid fa-truck"></i>
+            Pengiriman
+        </span>
+
+        <span>
+            <i class="fa-solid fa-shield-halved"></i>
+            Produk Terjamin
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+    <div class="logo">
+
+        <span class="logo-infinity">
+            ∞
+        </span>
+
+        <span class="logo-text">
+            INFINITY <span>GADGET</span>
+        </span>
+
+    </div>
+
+
+    <nav class="nav">
+
+        <a href="#" class="active">
+            Beranda
+        </a>
+
+        <a href="#produk">
+            Produk
+        </a>
+
+        <a href="#kategori">
+            Kategori
+        </a>
+
+        <a href="#service">
+            Service
+        </a>
+
+        <a href="#tentang">
+            Tentang Kami
+        </a>
+
+    </nav>
+
+
+    <div class="header-search">
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Cari produk, merk, atau kategori..."
+            oninput="cariProduk()"
+        >
+
+    </div>
+
+
+    <div class="header-actions">
+
+        <div class="action-icon">
+
+            <i class="fa-solid fa-cart-shopping"></i>
+
+            <span class="cart-badge">
+                0
+            </span>
+
+        </div>
+
+
+        <div
+            class="action-icon"
+            onclick="bukaWhatsApp()"
+        >
+
+            <i class="fa-brands fa-whatsapp"></i>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+
+        <div class="hero-small">
+            INFINITY GADGET
+        </div>
+
+        <h1>
+            Gadget Original
+            <br>
+            <span>Harga Terbaik</span>
+        </h1>
+
+        <p>
+            Belanja handphone dan aksesoris dengan mudah,
+            aman dan terpercaya di Infinity Gadget.
+        </p>
+
+        <button
+            class="btn-primary"
+            onclick="scrollProduk()"
+        >
+
+            Belanja Sekarang
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </button>
+
+
+        <div class="hero-features">
+
+            <div class="hero-feature">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                100% Terjamin
+
+            </div>
+
+
+            <div class="hero-feature">
+
+                <i class="fa-solid fa-truck-fast"></i>
+
+                Pengiriman Cepat
+
+            </div>
+
+
+            <div class="hero-feature">
+
+                <i class="fa-solid fa-star"></i>
+
+                Garansi Produk
+
+            </div>
+
+
+            <div class="hero-feature">
+
+                <i class="fa-brands fa-whatsapp"></i>
+
+                CS Responsif
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     KATEGORI
+===================================================== -->
+
+<section id="kategori">
+
+    <div
+        class="categories"
+        id="categoryContainer"
+    >
+
+        <div
+            class="category active"
+            onclick="filterKategori('Semua',this)"
+        >
+
+            <div class="category-icon">
+                <i class="fa-solid fa-table-cells-large"></i>
+            </div>
+
+            <div class="category-name">
+                Semua
+            </div>
+
+            <div class="category-count">
+                Produk
+            </div>
+
+        </div>
+
+
+        <div
+            class="category"
+            onclick="filterKategori('Handphone',this)"
+        >
+
+            <div class="category-icon">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+            </div>
+
+            <div class="category-name">
+                Handphone
+            </div>
+
+            <div class="category-count">
+                Produk
+            </div>
+
+        </div>
+
+
+        <div
+            class="category"
+            onclick="filterKategori('Case',this)"
+        >
+
+            <div class="category-icon">
+                <i class="fa-solid fa-mobile-screen"></i>
+            </div>
+
+            <div class="category-name">
+                Case
+            </div>
+
+            <div class="category-count">
+                Produk
+            </div>
+
+        </div>
+
+
+        <div
+            class="category"
+            onclick="filterKategori('Charger',this)"
+        >
+
+            <div class="category-icon">
+                <i class="fa-solid fa-plug"></i>
+            </div>
+
+            <div class="category-name">
+                Charger
+            </div>
+
+            <div class="category-count">
+                Produk
+            </div>
+
+        </div>
+
+
+        <div
+            class="category"
+            onclick="filterKategori('Headset',this)"
+        >
+
+            <div class="category-icon">
+                <i class="fa-solid fa-headphones"></i>
+            </div>
+
+            <div class="category-name">
+                Headset
+            </div>
+
+            <div class="category-count">
+                Produk
+            </div>
+
+        </div>
+
+
+        <div
+            class="category"
+            onclick="filterKategori('Speaker',this)"
+        >
+
+            <div class="category-icon">
+                <i class="fa-solid fa-volume-high"></i>
+            </div>
+
+            <div class="category-name">
+                Speaker
+            </div>
+
+            <div class="category-count">
+                Produk
+            </div>
+
+        </div>
+
+
+        <div
+            class="category"
+            onclick="filterKategori('Powerbank',this)"
+        >
+
+            <div class="category-icon">
+                <i class="fa-solid fa-battery-full"></i>
+            </div>
+
+            <div class="category-name">
+                Power Bank
+            </div>
+
+            <div class="category-count">
+                Produk
+            </div>
+
+        </div>
+
+
+        <div
+            class="category"
+            onclick="filterKategori('Smartwatch',this)"
+        >
+
+            <div class="category-icon">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+
+            <div class="category-name">
+                Smartwatch
+            </div>
+
+            <div class="category-count">
+                Produk
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     HIGHLIGHTS
+===================================================== -->
+
+<section class="highlights">
+
+    <div class="highlight">
+
+        <i class="fa-solid fa-truck"></i>
+
+        <div>
+
+            <strong>
+                Bisa Kirim
+            </strong>
+
+            <span>
+                Area Indonesia
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <i class="fa-solid fa-shield-halved"></i>
+
+        <div>
+
+            <strong>
+                Produk Terjamin
+            </strong>
+
+            <span>
+                Garansi toko
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <i class="fa-brands fa-whatsapp"></i>
+
+        <div>
+
+            <strong>
+                Fast Response
+            </strong>
+
+            <span>
+                Chat langsung
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <i class="fa-solid fa-credit-card"></i>
+
+        <div>
+
+            <strong>
+                Pembayaran Mudah
+            </strong>
+
+            <span>
+                Transfer / e-Wallet
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PRODUK
+===================================================== -->
+
+<section
+    class="section"
+    id="produk"
+>
+
+    <div class="section-title">
+
+        <div class="title-left">
+
+            <div class="title-line"></div>
+
+            <h2>
+                Produk Terbaru
+            </h2>
+
+        </div>
+
+
+        <div
+            class="see-all"
+            onclick="filterKategori('Semua',null)"
+        >
+
+            Lihat Semua
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </div>
+
+    </div>
+
+
+    <div
+        class="product-grid"
+        id="productGrid"
+    >
+
+        <div class="loading">
+
+            <i class="fa-solid fa-spinner fa-spin"></i>
+
+            <div>
+                Memuat produk...
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PROMO / SERVICE
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="title-left">
+
+            <div class="title-line"></div>
+
+            <h2>
+                Layanan Infinity Gadget
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <div class="promo-grid">
+
+        <div class="promo">
+
+            <h3>
+                Promo Hari Ini
+            </h3>
+
+            <p>
+                Temukan berbagai produk gadget
+                dengan harga menarik.
+            </p>
+
+            <i class="fa-solid fa-tags"></i>
+
+        </div>
+
+
+        <div class="promo">
+
+            <h3>
+                Pengiriman Cepat
+            </h3>
+
+            <p>
+                Melayani pengiriman untuk area
+                Mamosalato dan Toili Barat.
+            </p>
+
+            <i class="fa-solid fa-truck-fast"></i>
+
+        </div>
+
+
+        <div
+            class="promo"
+            id="service"
+        >
+
+            <h3>
+                Service HP
+            </h3>
+
+            <p>
+                Melayani service dan perbaikan
+                berbagai jenis handphone.
+            </p>
+
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     TENTANG
+===================================================== -->
+
+<section
+    class="section"
+    id="tentang"
+>
+
+    <div class="section-title">
+
+        <div class="title-left">
+
+            <div class="title-line"></div>
+
+            <h2>
+                Tentang Infinity Gadget
+            </h2>
+
+        </div>
+
+    </div>
+
+
+    <p style="
+        color:#64748b;
+        line-height:1.8;
+        max-width:850px;
+        font-size:14px;
+    ">
+
+        Infinity Gadget melayani kebutuhan handphone,
+        aksesoris dan service HP. Kami melayani area
+        Mamosalato dan Toili Barat dengan pilihan
+        pengambilan langsung maupun kurir.
+
+        <br><br>
+
+        Sparepart berkualitas dan pelayanan cepat
+        melalui WhatsApp.
+
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-grid">
+
+        <div>
+
+            <h3>
+                <span style="color:#ed0b24;">
+                    ∞
+                </span>
+
+                INFINITY GADGET
+            </h3>
+
+            <p>
+                Solusi gadget terbaik untuk kebutuhan
+                handphone dan aksesoris kamu.
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Menu
+            </h3>
+
+            <a href="#">
+                Beranda
+            </a>
+
+            <a href="#produk">
+                Produk
+            </a>
+
+            <a href="#kategori">
+                Kategori
+            </a>
+
+            <a href="#service">
+                Service
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Kategori
+            </h3>
+
+            <a href="#produk">
+                Handphone
+            </a>
+
+            <a href="#produk">
+                Charger
+            </a>
+
+            <a href="#produk">
+                Headset
+            </a>
+
+            <a href="#produk">
+                Power Bank
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                Hubungi Kami
+            </h3>
+
+            <p>
+                <i class="fa-brands fa-whatsapp"></i>
+                WhatsApp
+            </p>
+
+            <p>
+                Mamosalato & Toili Barat
+            </p>
+
+            <p>
+                Pengambilan / Kurir
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        © 2026 Infinity Gadget.
+        Semua hak dilindungi.
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     WHATSAPP FLOAT
+===================================================== -->
+
+<div
+    class="whatsapp-float"
+    onclick="bukaWhatsApp()"
+>
+
+    <i class="fa-brands fa-whatsapp"></i>
+
+    Chat WhatsApp
+
+</div>
+
+
+<!-- =====================================================
+     MOBILE NAV
+===================================================== -->
+
+<nav class="mobile-nav">
+
+    <a
+        href="#"
+        class="active"
+    >
+
+        <i class="fa-solid fa-house"></i>
+
+        Beranda
+
+    </a>
+
+
+    <a href="#produk">
+
+        <i class="fa-solid fa-box"></i>
+
+        Produk
+
+    </a>
+
+
+    <a href="#kategori">
+
+        <i class="fa-solid fa-layer-group"></i>
+
+        Kategori
+
+    </a>
+
+
+    <a href="#service">
+
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+
+        Service
+
+    </a>
+
+
+    <a
+        href="javascript:void(0)"
+        onclick="bukaWhatsApp()"
+    >
+
+        <i class="fa-brands fa-whatsapp"></i>
+
+        WhatsApp
+
+    </a>
+
+</nav>
+
+
+<!-- =====================================================
+     MODAL DETAIL
+===================================================== -->
+
+<div
+    class="modal"
+    id="productModal"
+    onclick="tutupModal(event)"
+>
+
+    <div
+        class="modal-box"
+        onclick="event.stopPropagation()"
+    >
+
+        <button
+            class="close-modal"
+            onclick="tutupModal()"
+        >
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+
+        <div
+            class="detail-content"
+            id="detailContent"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   PENGATURAN TOKO
+===================================================== */
+
+const NOMOR_WA_TOKO =
+"6285824859368";
+
+
+/* =====================================================
+   GOOGLE APPS SCRIPT
+===================================================== */
+
+const scriptURL =
+'https://script.google.com/macros/s/AKfycbxBXAryBPE81DmRCFtliQmGIq2Xx3K4olGOQurn_GQL7K2cBvkYqFL2lxenx3X4Jy9s/exec';
+
+
+/* =====================================================
+   DATA
+===================================================== */
+
+let semuaProduk = [];
+
+let produkTampil = [];
+
+let kategoriAktif = "Semua";
+
+
+/* =====================================================
+   RUPIAH
+===================================================== */
+
+function formatRupiah(value){
+
+    if(
+        value === undefined ||
+        value === null
+    ){
+        return "Rp 0";
+    }
+
+    let angka =
+        String(value)
+        .replace(/[^\d]/g,"");
+
+    if(!angka){
+        return "Rp 0";
+    }
+
+    return "Rp " +
+        Number(angka)
+        .toLocaleString("id-ID");
 }
 
 
 /* =====================================================
-   HP SANGAT KECIL
+   BERSIHKAN TEXT
 ===================================================== */
 
-@media(max-width:340px){
+function bersihkanText(value){
 
-    .hero{
-        height:390px;
-
-        min-height:390px;
-
-        max-height:390px;
+    if(
+        value === undefined ||
+        value === null
+    ){
+        return "";
     }
 
-    .hero h1{
-        font-size:27px;
+    return String(value).trim();
+}
+
+
+/* =====================================================
+   GOOGLE DRIVE IMAGE
+===================================================== */
+
+function formatGambarDrive(url){
+
+    const placeholder =
+    "https://via.placeholder.com/600x600/f8fafc/94a3b8?text=Infinity+Gadget";
+
+
+    if(!url){
+        return [placeholder];
     }
 
-    .hero-content{
-        padding:28px 20px;
+
+    url = String(url).trim();
+
+
+    if(!url){
+        return [placeholder];
     }
 
-    .header{
-        padding:0 9px;
+
+    let match =
+        url.match(
+            /drive\.google\.com\/file\/d\/([^\/?]+)/i
+        );
+
+
+    if(match && match[1]){
+
+        const id = match[1];
+
+        return [
+
+            `https://drive.google.com/thumbnail?id=${id}&sz=w1000`,
+
+            `https://lh3.googleusercontent.com/d/${id}=w1000`,
+
+            `https://drive.google.com/uc?export=view&id=${id}`
+
+        ];
+
     }
 
-    .header-search input{
-        font-size:11px;
+
+    match =
+        url.match(
+            /[?&]id=([^&]+)/i
+        );
+
+
+    if(
+        match &&
+        match[1] &&
+        url.toLowerCase()
+        .includes("drive.google.com")
+    ){
+
+        const id = match[1];
+
+        return [
+
+            `https://drive.google.com/thumbnail?id=${id}&sz=w1000`,
+
+            `https://lh3.googleusercontent.com/d/${id}=w1000`,
+
+            `https://drive.google.com/uc?export=view&id=${id}`
+
+        ];
+
+    }
+
+
+    match =
+        url.match(
+            /googleusercontent\.com\/d\/([^\/?]+)/i
+        );
+
+
+    if(match && match[1]){
+
+        const id = match[1];
+
+        return [
+
+            `https://lh3.googleusercontent.com/d/${id}=w1000`,
+
+            `https://drive.google.com/thumbnail?id=${id}&sz=w1000`,
+
+            `https://drive.google.com/uc?export=view&id=${id}`
+
+        ];
+
+    }
+
+
+    if(
+        /^[a-zA-Z0-9_-]{20,}$/.test(url)
+    ){
+
+        const id = url;
+
+        return [
+
+            `https://drive.google.com/thumbnail?id=${id}&sz=w1000`,
+
+            `https://lh3.googleusercontent.com/d/${id}=w1000`,
+
+            `https://drive.google.com/uc?export=view&id=${id}`
+
+        ];
+
+    }
+
+
+    if(
+        url.startsWith("http://") ||
+        url.startsWith("https://")
+    ){
+
+        return [url];
+
+    }
+
+
+    return [placeholder];
+
+}
+
+
+/* =====================================================
+   IMAGE FALLBACK
+===================================================== */
+
+function setImageWithFallback(img,url){
+
+    const urls =
+        formatGambarDrive(url);
+
+    let index = 0;
+
+
+    function coba(){
+
+        if(index >= urls.length){
+
+            img.onerror = null;
+
+            img.src =
+            "https://via.placeholder.com/600x600/f8fafc/94a3b8?text=Foto+Tidak+Tersedia";
+
+            return;
+        }
+
+
+        const current =
+            urls[index];
+
+        index++;
+
+
+        img.onerror = function(){
+
+            coba();
+
+        };
+
+
+        img.src = current;
+
+    }
+
+
+    coba();
+
+}
+
+
+/* =====================================================
+   NORMALISASI DATA
+===================================================== */
+
+function normalisasiProduk(item){
+
+    return {
+
+        id:
+            bersihkanText(
+                item.ID_Barang ??
+                item.id_barang ??
+                item.kode ??
+                item.Kode_Barang
+            ),
+
+        nama:
+            bersihkanText(
+                item.Nama_Barang ??
+                item.nama_barang ??
+                item.nama ??
+                item.Nama
+            ),
+
+        kategori:
+            bersihkanText(
+                item.Kategori ??
+                item.kategori
+            ),
+
+        stok:
+            item.Stok ??
+            item.stok ??
+            0,
+
+        hargaJual:
+            item.Harga_Jual ??
+            item.hargaJual ??
+            item.harga_jual ??
+            item.HargaJual ??
+            0,
+
+        hargaModal:
+            item.Harga_Modal ??
+            item.hargaModal ??
+            item.harga_modal ??
+            0,
+
+        barcode:
+            bersihkanText(
+                item.Barcode ??
+                item.barcode
+            ),
+
+        foto:
+            bersihkanText(
+                item.Link_Foto ??
+                item.link_foto ??
+                item.LinkFoto ??
+                item.foto ??
+                item.Foto
+            )
+
+    };
+
+}
+
+
+/* =====================================================
+   LOAD PRODUK
+===================================================== */
+
+async function loadProduk(){
+
+    const grid =
+        document.getElementById(
+            "productGrid"
+        );
+
+
+    grid.innerHTML = `
+
+        <div class="loading">
+
+            <i class="fa-solid fa-spinner fa-spin"></i>
+
+            <div>
+                Mengambil data produk...
+            </div>
+
+        </div>
+
+    `;
+
+
+    try{
+
+        const response =
+            await fetch(
+                scriptURL +
+                "?action=search&keyword=" +
+                encodeURIComponent("")
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Gagal terhubung ke server"
+            );
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        let data = result;
+
+
+        if(result.data){
+
+            data = result.data;
+
+        }
+
+        else if(result.products){
+
+            data = result.products;
+
+        }
+
+        else if(result.result){
+
+            data = result.result;
+
+        }
+
+
+        if(!Array.isArray(data)){
+
+            throw new Error(
+                "Format data tidak berupa array"
+            );
+
+        }
+
+
+        semuaProduk =
+            data
+            .map(normalisasiProduk)
+            .filter(item => {
+
+                return (
+
+                    item.nama &&
+
+                    Number(
+                        String(item.hargaJual)
+                        .replace(/[^\d]/g,"")
+                    ) > 0
+
+                );
+
+            });
+
+
+        produkTampil =
+            [...semuaProduk];
+
+
+        tampilkanProduk();
+
+    }
+
+    catch(error){
+
+        console.error(
+            "ERROR LOAD PRODUK:",
+            error
+        );
+
+
+        grid.innerHTML = `
+
+            <div class="error-box">
+
+                <i
+                    class="fa-solid fa-triangle-exclamation"
+                    style="
+                        font-size:30px;
+                        margin-bottom:10px;
+                    "
+                ></i>
+
+                <br>
+
+                <strong>
+                    Produk belum dapat dimuat
+                </strong>
+
+                <p
+                    style="
+                        margin-top:8px;
+                        font-size:12px;
+                    "
+                >
+                    Periksa koneksi Apps Script.
+                </p>
+
+                <button
+                    onclick="loadProduk()"
+                    class="btn-primary"
+                    style="margin-top:15px;"
+                >
+                    Coba Lagi
+                </button>
+
+            </div>
+
+        `;
+
     }
 
 }
 
 
 /* =====================================================
-   MENCEGAH OVERFLOW
+   TAMPILKAN PRODUK
 ===================================================== */
 
-img{
-    max-width:100%;
+function tampilkanProduk(){
+
+    const grid =
+        document.getElementById(
+            "productGrid"
+        );
+
+
+    if(!produkTampil.length){
+
+        grid.innerHTML = `
+
+            <div class="error-box">
+
+                <i
+                    class="fa-solid fa-box-open"
+                    style="
+                        font-size:35px;
+                        margin-bottom:10px;
+                    "
+                ></i>
+
+                <br>
+
+                Produk tidak ditemukan.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    grid.innerHTML = "";
+
+
+    produkTampil.forEach(
+        (item,index) => {
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "product-card";
+
+
+            const stockNumber =
+                Number(
+                    String(item.stok)
+                    .replace(/[^\d-]/g,"")
+                ) || 0;
+
+
+            const stockText =
+                stockNumber > 0
+                ? "Tersedia"
+                : "Habis";
+
+
+            const stockColor =
+                stockNumber > 0
+                ? "#16b981"
+                : "#64748b";
+
+
+            card.innerHTML = `
+
+                <div class="product-image">
+
+                    <span
+                        class="stock-badge"
+                        style="
+                            background:${stockColor};
+                        "
+                    >
+                        ${stockText}
+                    </span>
+
+
+                    <img
+                        alt="${escapeHtml(item.nama)}"
+                        loading="lazy"
+                    >
+
+                </div>
+
+
+                <div class="product-info">
+
+                    <div class="product-name">
+
+                        ${escapeHtml(item.nama)}
+
+                    </div>
+
+
+                    <div class="product-category">
+
+                        ${escapeHtml(
+                            item.kategori ||
+                            "Produk"
+                        )}
+
+                    </div>
+
+
+                    <div class="rating">
+
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+
+                        <span>
+                            4.9
+                        </span>
+
+                    </div>
+
+
+                    <div class="price">
+
+                        ${formatRupiah(
+                            item.hargaJual
+                        )}
+
+                    </div>
+
+
+                    <div class="stock">
+
+                        Stok:
+                        ${escapeHtml(
+                            String(item.stok)
+                        )}
+
+                    </div>
+
+
+                    <div class="product-buttons">
+
+                        <button
+                            class="btn-buy"
+                            onclick="beliProduk(${index})"
+                        >
+
+                            <i class="fa-brands fa-whatsapp"></i>
+
+                            Beli
+
+                        </button>
+
+
+                        <button
+                            class="btn-detail"
+                            onclick="detailProduk(${index})"
+                        >
+
+                            Detail
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            const img =
+                card.querySelector("img");
+
+
+            setImageWithFallback(
+                img,
+                item.foto
+            );
+
+
+            grid.appendChild(card);
+
+        }
+    );
+
 }
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHtml(text){
+
+    return String(text ?? "")
+
+        .replace(/&/g,"&amp;")
+
+        .replace(/</g,"&lt;")
+
+        .replace(/>/g,"&gt;")
+
+        .replace(/"/g,"&quot;")
+
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function cariProduk(){
+
+    const keyword =
+        document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    produkTampil =
+        semuaProduk.filter(
+            item => {
+
+                const gabungan =
+                    [
+
+                        item.nama,
+
+                        item.kategori,
+
+                        item.id,
+
+                        item.barcode
+
+                    ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                return gabungan
+                    .includes(keyword);
+
+            }
+        );
+
+
+    tampilkanProduk();
+
+}
+
+
+/* =====================================================
+   FILTER KATEGORI
+===================================================== */
+
+function filterKategori(
+    kategori,
+    element
+){
+
+    kategoriAktif =
+        kategori;
+
+
+    document
+    .querySelectorAll(".category")
+    .forEach(el => {
+
+        el.classList.remove(
+            "active"
+        );
+
+    });
+
+
+    if(element){
+
+        element.classList.add(
+            "active"
+        );
+
+    }
+
+
+    if(kategori === "Semua"){
+
+        produkTampil =
+            [...semuaProduk];
+
+    }
+
+    else{
+
+        produkTampil =
+            semuaProduk.filter(
+                item => {
+
+                    return item.kategori
+                        .toLowerCase()
+                        .includes(
+                            kategori
+                            .toLowerCase()
+                        );
+
+                }
+            );
+
+    }
+
+
+    tampilkanProduk();
+
+
+    document
+    .getElementById("produk")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =====================================================
+   BELI PRODUK
+===================================================== */
+
+function beliProduk(index){
+
+    const item =
+        produkTampil[index];
+
+
+    if(!item){
+        return;
+    }
+
+
+    const pesan =
+
+`Halo Infinity Gadget 👋
+
+Saya ingin membeli produk:
+
+📦 ${item.nama}
+
+💰 Harga:
+${formatRupiah(item.hargaJual)}
+
+📊 Stok:
+${item.stok}
+
+🏷️ Kategori:
+${item.kategori}
+
+Apakah produk ini masih tersedia?`;
+
+
+    const url =
+        "https://wa.me/" +
+        NOMOR_WA_TOKO +
+        "?text=" +
+        encodeURIComponent(
+            pesan
+        );
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =====================================================
+   DETAIL PRODUK
+===================================================== */
+
+function detailProduk(index){
+
+    const item =
+        produkTampil[index];
+
+
+    if(!item){
+        return;
+    }
+
+
+    const modal =
+        document.getElementById(
+            "productModal"
+        );
+
+
+    const content =
+        document.getElementById(
+            "detailContent"
+        );
+
+
+    content.innerHTML = `
+
+        <div class="detail-image">
+
+            <img
+                id="detailProductImage"
+                alt="${escapeHtml(item.nama)}"
+            >
+
+        </div>
+
+
+        <div class="detail-info">
+
+            <div
+                style="
+                    color:#ed0b24;
+                    font-size:12px;
+                    font-weight:700;
+                "
+            >
+
+                ${escapeHtml(
+                    item.kategori ||
+                    "PRODUK"
+                )}
+
+            </div>
+
+
+            <h2>
+
+                ${escapeHtml(item.nama)}
+
+            </h2>
+
+
+            <div class="rating">
+
+                ★★★★★
+
+                <span>
+                    4.9
+                </span>
+
+            </div>
+
+
+            <div class="detail-price">
+
+                ${formatRupiah(
+                    item.hargaJual
+                )}
+
+            </div>
+
+
+            <div class="detail-stock">
+
+                <i class="fa-solid fa-box"></i>
+
+                Stok tersedia:
+
+                <strong>
+
+                    ${escapeHtml(
+                        String(item.stok)
+                    )}
+
+                </strong>
+
+            </div>
+
+
+            <div class="detail-specs">
+
+                <div>
+
+                    <span>
+                        Kode Barang
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            item.id || "-"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Kategori
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            item.kategori || "-"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Barcode
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            item.barcode || "-"
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Stok
+                    </span>
+
+                    <strong>
+                        ${escapeHtml(
+                            String(item.stok)
+                        )}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="btn-primary"
+                style="width:100%;"
+                onclick="beliProdukDariDetail()"
+            >
+
+                <i class="fa-brands fa-whatsapp"></i>
+
+                Tanya / Beli via WhatsApp
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    const img =
+        document.getElementById(
+            "detailProductImage"
+        );
+
+
+    setImageWithFallback(
+        img,
+        item.foto
+    );
+
+
+    window.produkDetailAktif =
+        item;
+
+
+    modal.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   BELI DARI DETAIL
+===================================================== */
+
+function beliProdukDariDetail(){
+
+    if(
+        !window.produkDetailAktif
+    ){
+        return;
+    }
+
+
+    const item =
+        window.produkDetailAktif;
+
+
+    const pesan =
+
+`Halo Infinity Gadget 👋
+
+Saya tertarik dengan:
+
+📦 ${item.nama}
+
+💰 ${formatRupiah(
+    item.hargaJual
+)}
+
+📊 Stok:
+${item.stok}
+
+Apakah masih tersedia?`;
+
+
+    window.open(
+
+        "https://wa.me/" +
+        NOMOR_WA_TOKO +
+        "?text=" +
+        encodeURIComponent(
+            pesan
+        ),
+
+        "_blank"
+
+    );
+
+}
+
+
+/* =====================================================
+   TUTUP MODAL
+===================================================== */
+
+function tutupModal(event){
+
+    if(
+        event &&
+        event.target !==
+        document.getElementById(
+            "productModal"
+        )
+    ){
+        return;
+    }
+
+
+    document
+    .getElementById(
+        "productModal"
+    )
+    .classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   WHATSAPP
+===================================================== */
+
+function bukaWhatsApp(){
+
+    const pesan =
+        "Halo Infinity Gadget 👋 Saya ingin bertanya tentang produk.";
+
+
+    window.open(
+
+        "https://wa.me/" +
+        NOMOR_WA_TOKO +
+        "?text=" +
+        encodeURIComponent(
+            pesan
+        ),
+
+        "_blank"
+
+    );
+
+}
+
+
+/* =====================================================
+   SCROLL PRODUK
+===================================================== */
+
+function scrollProduk(){
+
+    document
+    .getElementById("produk")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =====================================================
+   MULAI
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        loadProduk();
+
+    }
+);
+
+</script>
+
+</body>
+</html>
