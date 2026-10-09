@@ -81,7 +81,6 @@
         .page-content.active { display: block; animation: slideFadeUp 0.3s; }
         @keyframes slideFadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* PERUBAHAN POSISI & LEBAR TEXT BANNER AGAR TIDAK NABRAK GAMBAR */
         .banner { 
             width: 100%; 
             height: 260px; 
@@ -91,33 +90,13 @@
             box-shadow: 0 15px 35px -10px rgba(0,0,0,0.15); 
             display: flex;
             align-items: flex-start;
-            padding: 45px 50px 0 50px; /* Disesuaikan agar posisinya pas di tengah-tengah ruang kosong */
+            padding: 45px 50px 0 50px;
             position: relative;
         }
-        .banner-text {
-            max-width: 360px; /* Dibatasi 360px agar aman dan TIDAK menabrak gambar HP/headphone */
-        }
-        .banner-text h2 {
-            font-size: 26px; /* Sedikit disesuaikan agar proporsional */
-            font-weight: 800;
-            color: #1e293b;
-            margin-bottom: 12px;
-            line-height: 1.2;
-        }
-        .banner-text h2 span {
-            color: #ef4444; 
-        }
-        .banner-text p {
-            font-size: 13px; /* Dikecilkan sedikit agar rapi */
-            color: #334155;
-            line-height: 1.6;
-            font-weight: 500;
-            font-style: italic;
-            position: relative;
-            padding: 6px 0 6px 16px; /* Memberi jarak ke garis merah */
-            border-left: 4px solid #ef4444;
-            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8); /* Memberi efek bayangan putih agar terbaca jelas walau kena bayangan gambar */
-        }
+        .banner-text { max-width: 360px; }
+        .banner-text h2 { font-size: 26px; font-weight: 800; color: #1e293b; margin-bottom: 12px; line-height: 1.2; }
+        .banner-text h2 span { color: #ef4444; }
+        .banner-text p { font-size: 13px; color: #334155; line-height: 1.6; font-weight: 500; font-style: italic; position: relative; padding: 6px 0 6px 16px; border-left: 4px solid #ef4444; text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8); }
 
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .stat-card { background: var(--card-bg); padding: 22px; border-radius: var(--radius-card); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column; cursor: pointer; border: 1px solid rgba(0,0,0,0.02); }
@@ -127,6 +106,8 @@
         .icon-purple { background: #faf5ff; color: #a855f7; }
         .icon-orange { background: #fff7ed; color: #f97316; }
         .icon-green { background: #f0fdf4; color: #22c55e; }
+        .icon-red { background: #fef2f2; color: #ef4444; } 
+        
         .stat-title { font-size: 13px; color: var(--text-muted); }
         .stat-value { font-size: 26px; font-weight: 700; color: var(--text-main); }
 
@@ -152,8 +133,6 @@
             .page-content { padding: 15px; }
             .form-card { padding: 20px 15px; }
             .search-container { max-width: 100%; }
-            
-            /* Penyesuaian Banner untuk Tampilan Mobile/HP */
             .banner { height: auto; min-height: 180px; padding: 20px; align-items: flex-start; }
             .banner-text { max-width: 100%; background: rgba(255, 255, 255, 0.85); padding: 15px; border-radius: 12px; backdrop-filter: blur(4px); margin-top: 10px; }
             .banner-text h2 { font-size: 20px; margin-bottom: 8px; }
@@ -236,6 +215,15 @@
                 <div class="stat-card"><div class="stat-header"><div class="icon-box icon-blue"><i class="fas fa-shopping-bag"></i></div><div class="stat-title">Total Penjualan</div></div><div class="stat-value" id="angka-penjualan">Memuat...</div></div>
                 <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-purple"><i class="fas fa-box"></i></div><div class="stat-title">Total Produk</div></div><div class="stat-value" id="angka-produk">Memuat...</div></div>
                 <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-orange"><i class="fas fa-tags"></i></div><div class="stat-title">Kategori Barang</div></div><div class="stat-value" id="angka-kategori">Memuat...</div></div>
+                
+                <div class="stat-card" onclick="aksesMenuEdit()">
+                    <div class="stat-header">
+                        <div class="icon-box icon-red"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="stat-title">Stok Menipis (&le; 2)</div>
+                    </div>
+                    <div class="stat-value" id="angka-stok-menipis">Memuat...</div>
+                </div>
+
                 <div class="stat-card" id="cardAset" style="display:none;" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset</div></div><div class="stat-value" id="angka-aset">Memuat...</div></div>
             </div>
         </div>
@@ -368,6 +356,18 @@
             fetch(scriptURL + "?action=search&keyword=").then(r => r.json()).then(data => {
                 dataMasterBarang = data;
                 aturForm(); // update tampilan dropdown saat data siap
+                
+                // MENGHITUNG STOK MENIPIS OTOMATIS (Sisa <= 2)
+                let jumlahMenipis = data.filter(item => parseInt(item.stok) <= 2).length;
+                let elMenipis = document.getElementById("angka-stok-menipis");
+                if (elMenipis) {
+                    elMenipis.innerText = jumlahMenipis + " Barang";
+                    if (jumlahMenipis > 0) {
+                        elMenipis.style.color = "#ef4444"; // Ubah angka jadi merah jika ada stok menipis (<=2)
+                    } else {
+                        elMenipis.style.color = "var(--text-main)";
+                    }
+                }
             });
         }
 
