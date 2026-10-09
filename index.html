@@ -165,20 +165,17 @@
             
             /* Banner HP: teks berada di atas, gambar mendapat ruang sendiri di bawah */
             .banner {
-                display: flex;
-                flex-direction: column;
-                align-items: stretch;
+                display: block;
                 min-height: 0;
-                padding: 24px 18px 0;
+                padding: 24px 18px 14px;
                 margin-bottom: 20px;
                 overflow: hidden;
                 background-color: #ffffff;
+                /* Robot dinaikkan ke kanan, sejajar dengan judul */
                 background-image: url('robot.png');
-                background-position: center bottom;
-                background-size: 100% auto;
+                background-position: right 8px top 58px;
+                background-size: 68% auto;
                 background-repeat: no-repeat;
-                /* Sisakan ruang untuk gambar agar tidak tertimpa paragraf */
-                padding-bottom: clamp(95px, 28vw, 135px);
             }
             .banner-text {
                 width: 100%;
@@ -192,9 +189,11 @@
                 margin-bottom: 8px;
             }
             .banner-text h2 {
-                font-size: clamp(25px, 7vw, 30px);
+                width: 57%;
+                max-width: 57%;
+                font-size: clamp(23px, 6.2vw, 29px);
                 line-height: 1.12;
-                margin-bottom: 14px;
+                margin-bottom: 18px;
                 overflow-wrap: break-word;
             }
             .banner-text p {
@@ -202,11 +201,11 @@
                 width: 100%;
                 max-width: 100%;
                 font-size: 12px;
-                line-height: 1.65;
+                line-height: 1.6;
                 color: #1e293b;
                 font-weight: 500;
                 text-shadow: none;
-                background: #ffffff;
+                background: rgba(255, 255, 255, 0.94);
                 padding: 10px 12px;
                 margin: 0;
                 border-radius: 0 8px 8px 0;
@@ -220,11 +219,13 @@
             .banner {
                 padding-left: 14px;
                 padding-right: 14px;
-                padding-bottom: 100px;
-                background-size: 100% auto;
+                background-position: right 4px top 58px;
+                background-size: 70% auto;
             }
             .banner-text h2 {
-                font-size: 24px;
+                width: 58%;
+                max-width: 58%;
+                font-size: 23px;
             }
         }
     </style>
