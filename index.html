@@ -81,7 +81,7 @@
         .page-content.active { display: block; animation: slideFadeUp 0.3s; }
         @keyframes slideFadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* GAYA BANNER TERBARU - MIRIP KATALOG */
+        /* GAYA BANNER TERBARU - MIRIP KATALOG (DESKTOP) */
         .banner { 
             width: 100%; 
             height: auto;
@@ -123,6 +123,8 @@
             color: #475569; 
             line-height: 1.6; 
             font-weight: 400; 
+            border-left: 4px solid #ef4444;
+            padding-left: 16px;
         }
 
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
@@ -161,29 +163,35 @@
             .form-card { padding: 20px 15px; }
             .search-container { max-width: 100%; }
             
-            /* Penyesuaian Banner khusus Tampilan HP PERSIS SEPERTI KATALOG */
+            /* Penyesuaian Banner khusus Tampilan HP AGAR TIDAK TABRAKAN */
             .banner { 
-                min-height: 330px; 
-                padding: 30px 20px; 
-                align-items: flex-start; 
-                background: url('robot.png') right bottom / 145% no-repeat; 
-                background-color: #fff;
+                min-height: 420px; /* Tinggikan area banner agar ada ruang untuk teks dan gambar terpisah */
+                padding: 25px 20px; 
+                align-items: flex-start; /* Dorong teks ke bagian atas */
+                background: url('robot.png') bottom right / 150% auto no-repeat; /* Gambar robot nempel di dasar (bawah) */
+                background-color: #ffffff; /* Sisi atas dipastikan berwarna putih */
             }
             .banner-text { 
-                max-width: 75%; 
+                max-width: 100%; 
             }
             .banner-subtitle {
                 font-size: 11px;
                 margin-bottom: 8px;
             }
             .banner-text h2 { 
-                font-size: 28px; 
-                margin-bottom: 10px; 
+                font-size: 26px; 
+                margin-bottom: 12px; 
             }
             .banner-text p { 
                 font-size: 12px; 
-                color: #475569;
-                text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.9); 
+                color: #1e293b;
+                font-weight: 500;
+                text-shadow: none; 
+                background: rgba(255, 255, 255, 0.85); /* Background putih halus HANYA di kotak paragraf */
+                padding: 8px 12px;
+                border-radius: 0 8px 8px 0;
+                border-left: 4px solid #ef4444; 
+                max-width: 95%; /* Mencegah teks terlalu mepet ke kanan */
             }
         }
     </style>
@@ -256,7 +264,6 @@
                 <div class="banner-text">
                     <div class="banner-subtitle">INFINITY GADGET</div>
                     <h2>Melayani<br>Dengan<br><span>Sepenuh</span><br><span>Hati</span></h2>
-                    <!-- QUOTE DIUBAH DI SINI -->
                     <p>"Lebih dari sekadar kasir, kamu adalah ujung tombak pelayanan. Hitung dengan teliti, layani dengan senyuman, dan pastikan pelanggan pulang dengan puas!"</p>
                 </div>
             </div>
