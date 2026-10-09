@@ -535,28 +535,20 @@ a{
 }
 
 /* =====================================================
-   KARTU PRODUK
+   KARTU PRODUK (SUDAH DIPENDEKKAN)
 ===================================================== */
 
 .product-card{
     background:white;
-
     border:1px solid #e5e7eb;
-
     border-radius:17px;
-
     overflow:hidden;
-
     transition:.25s;
-
     position:relative;
-
     display:flex;
     flex-direction:column;
-
     height:100%;
-
-    min-height:535px;
+    min-height:auto; /* Tinggi disesuaikan isi otomatis */
 }
 
 .product-card:hover{
@@ -571,30 +563,21 @@ a{
 ===================================================== */
 
 .product-image{
-    height:245px;
-
+    height:180px; /* Gambar diperkecil agar tidak memanjang */
     flex-shrink:0;
-
     background:#f8fafc;
-
     position:relative;
-
     display:flex;
-
     align-items:center;
     justify-content:center;
-
     overflow:hidden;
 }
 
 .product-image img{
     width:100%;
     height:100%;
-
     object-fit:contain;
-
     display:block;
-
     padding:15px;
 }
 
@@ -626,11 +609,9 @@ a{
 ===================================================== */
 
 .product-info{
-    padding:15px;
-
+    padding:12px;
     display:flex;
     flex-direction:column;
-
     flex:1;
 }
 
@@ -640,30 +621,16 @@ a{
 ===================================================== */
 
 .product-name{
-    font-size:14px;
-
+    font-size:13px;
     font-weight:700;
-
     line-height:1.45;
-
-    /*
-       PENTING:
-       Nama produk hanya boleh tampil 2 baris.
-    */
-
     display:-webkit-box;
-
     -webkit-box-orient:vertical;
-
     -webkit-line-clamp:2;
-
     overflow:hidden;
-
     text-overflow:ellipsis;
-
-    height:41px;
-
-    min-height:41px;
+    min-height:36px;
+    margin-bottom: 2px;
 }
 
 /* =====================================================
@@ -672,17 +639,11 @@ a{
 
 .product-category{
     color:#94a3b8;
-
     font-size:11px;
-
-    margin-top:6px;
-
-    height:18px;
-
+    margin-top:2px;
+    height:auto;
     overflow:hidden;
-
     white-space:nowrap;
-
     text-overflow:ellipsis;
 }
 
@@ -692,21 +653,15 @@ a{
 
 .rating{
     color:#f59e0b;
-
-    font-size:13px;
-
-    margin-top:7px;
-
-    height:21px;
-
+    font-size:12px;
+    margin-top:4px;
+    height:auto;
     display:flex;
-
     align-items:center;
 }
 
 .rating span{
     color:#64748b;
-
     margin-left:4px;
 }
 
@@ -716,23 +671,14 @@ a{
 
 .price{
     color:#ed0b24;
-
-    font-size:20px;
-
+    font-size:18px;
     font-weight:800;
-
-    margin-top:7px;
-
-    height:30px;
-
+    margin-top:4px;
+    height:auto;
     display:flex;
-
     align-items:center;
-
     white-space:nowrap;
-
     overflow:hidden;
-
     text-overflow:ellipsis;
 }
 
@@ -742,12 +688,9 @@ a{
 
 .stock{
     color:#64748b;
-
     font-size:11px;
-
     margin-top:2px;
-
-    height:18px;
+    height:auto;
 }
 
 /* =====================================================
@@ -756,41 +699,29 @@ a{
 
 .product-buttons{
     display:flex;
-
     gap:7px;
-
     margin-top:auto;
-
-    padding-top:12px;
+    padding-top:8px;
 }
 
 .product-buttons button{
     flex:1;
-
     border:0;
-
     border-radius:9px;
-
     height:42px;
-
     padding:10px 5px;
-
     font-size:11px;
-
     font-weight:700;
-
     cursor:pointer;
 }
 
 .btn-buy{
     background:#ed0b24;
-
     color:white;
 }
 
 .btn-detail{
     background:#f1f5f9;
-
     color:#111827;
 }
 
@@ -997,11 +928,6 @@ a{
     font-size:25px;
 
     margin-bottom:12px;
-
-    /*
-       Detail tetap boleh panjang,
-       karena ini halaman detail.
-    */
 
     line-height:1.4;
 }
@@ -1404,11 +1330,11 @@ a{
     }
 
     .product-card{
-        min-height:440px;
+        min-height:auto;
     }
 
     .product-image{
-        height:175px;
+        height:130px;
     }
 
     .product-info{
@@ -1419,9 +1345,7 @@ a{
         font-size:12px;
 
         line-height:1.4;
-
-        height:34px;
-
+        
         min-height:34px;
 
         -webkit-line-clamp:2;
@@ -1429,26 +1353,22 @@ a{
 
     .product-category{
         font-size:9px;
-
-        height:16px;
+        height:auto;
     }
 
     .rating{
         font-size:11px;
-
-        height:20px;
+        height:auto;
     }
 
     .price{
         font-size:16px;
-
-        height:27px;
+        height:auto;
     }
 
     .stock{
         font-size:9px;
-
-        height:16px;
+        height:auto;
     }
 
     .product-buttons{
@@ -1559,11 +1479,11 @@ a{
 @media(max-width:380px){
 
     .product-card{
-        min-height:420px;
+        min-height:auto;
     }
 
     .product-image{
-        height:155px;
+        height:120px;
     }
 
     .product-name{
@@ -1586,9 +1506,8 @@ a{
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
-    min-height: 38px !important;
-    max-height: 38px !important;
-    line-height: 19px !important;
+    min-height: 36px !important;
+    line-height: 1.4 !important;
   }
 
   .product-card {
@@ -1712,7 +1631,7 @@ a{
   }
 
   .product-image {
-    height: 145px !important;
+    height: 130px !important;
   }
 
   .product-info {
