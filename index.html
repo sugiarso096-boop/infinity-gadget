@@ -163,35 +163,68 @@
             .form-card { padding: 20px 15px; }
             .search-container { max-width: 100%; }
             
-            /* Penyesuaian Banner khusus Tampilan HP AGAR TIDAK TABRAKAN */
-            .banner { 
-                min-height: 420px; /* Tinggikan area banner agar ada ruang untuk teks dan gambar terpisah */
-                padding: 25px 20px; 
-                align-items: flex-start; /* Dorong teks ke bagian atas */
-                background: url('robot.png') bottom right / 150% auto no-repeat; /* Gambar robot nempel di dasar (bawah) */
-                background-color: #ffffff; /* Sisi atas dipastikan berwarna putih */
+            /* Banner HP: teks berada di atas, gambar mendapat ruang sendiri di bawah */
+            .banner {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                min-height: 0;
+                padding: 24px 18px 0;
+                margin-bottom: 20px;
+                overflow: hidden;
+                background-color: #ffffff;
+                background-image: url('robot.png');
+                background-position: center bottom;
+                background-size: 100% auto;
+                background-repeat: no-repeat;
+                /* Sisakan ruang untuk gambar agar tidak tertimpa paragraf */
+                padding-bottom: clamp(190px, 56vw, 280px);
             }
-            .banner-text { 
-                max-width: 100%; 
+            .banner-text {
+                width: 100%;
+                max-width: 100%;
+                position: relative;
+                z-index: 2;
             }
             .banner-subtitle {
                 font-size: 11px;
+                letter-spacing: 1px;
                 margin-bottom: 8px;
             }
-            .banner-text h2 { 
-                font-size: 26px; 
-                margin-bottom: 12px; 
+            .banner-text h2 {
+                font-size: clamp(25px, 7vw, 30px);
+                line-height: 1.12;
+                margin-bottom: 14px;
+                overflow-wrap: break-word;
             }
-            .banner-text p { 
-                font-size: 12px; 
+            .banner-text p {
+                display: block;
+                width: 100%;
+                max-width: 100%;
+                font-size: 12px;
+                line-height: 1.65;
                 color: #1e293b;
                 font-weight: 500;
-                text-shadow: none; 
-                background: rgba(255, 255, 255, 0.85); /* Background putih halus HANYA di kotak paragraf */
-                padding: 8px 12px;
+                text-shadow: none;
+                background: #ffffff;
+                padding: 10px 12px;
+                margin: 0;
                 border-radius: 0 8px 8px 0;
-                border-left: 4px solid #ef4444; 
-                max-width: 95%; /* Mencegah teks terlalu mepet ke kanan */
+                border-left: 4px solid #ef4444;
+                position: relative;
+                z-index: 3;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .banner {
+                padding-left: 14px;
+                padding-right: 14px;
+                padding-bottom: 185px;
+                background-size: 100% auto;
+            }
+            .banner-text h2 {
+                font-size: 24px;
             }
         }
     </style>
