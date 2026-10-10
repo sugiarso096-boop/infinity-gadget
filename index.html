@@ -260,7 +260,51 @@
             .quick-menu-label { font-size: 9px; }
 
         }
-    </style>
+    
+        /* Pintasan Kasir dan Kelola Stok tetap terlihat saat halaman HP di-scroll */
+        .mobile-sticky-actions {
+            display: none;
+            position: fixed;
+            left: 12px;
+            right: 12px;
+            bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+            z-index: 9999;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 9px;
+            border: 1px solid rgba(226,232,240,.9);
+            border-radius: 18px;
+            background: rgba(255,255,255,.96);
+            box-shadow: 0 8px 28px rgba(15,23,42,.18);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .mobile-sticky-btn {
+            min-height: 48px;
+            border: 0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            color: #fff;
+        }
+        .mobile-sticky-btn i { font-size: 17px; }
+        .mobile-sticky-cashier { background: linear-gradient(135deg,#ff4350,#d91f2b); }
+        .mobile-sticky-stock { background: linear-gradient(135deg,#273449,#111827); }
+        @media (max-width: 768px) {
+            body { padding-bottom: 100px; }
+            .mobile-sticky-actions { display: grid; }
+        }
+        @media (min-width: 769px) {
+            .mobile-sticky-actions { display: none !important; }
+        }
+
+</style>
 </head>
 <body>
 
@@ -818,5 +862,16 @@
             });
         }
     </script>
+
+    <!-- Pintasan tetap di bawah layar HP -->
+    <nav class="mobile-sticky-actions" aria-label="Pintasan cepat">
+        <button type="button" class="mobile-sticky-btn mobile-sticky-cashier" onclick="switchPage('kasir', null)">
+            <i class="fas fa-cash-register" aria-hidden="true"></i><span>Kasir</span>
+        </button>
+        <button type="button" class="mobile-sticky-btn mobile-sticky-stock" onclick="aksesMenuEdit()">
+            <i class="fas fa-box-open" aria-hidden="true"></i><span>Kelola Stok</span>
+        </button>
+    </nav>
+
 </body>
 </html>
