@@ -93,7 +93,7 @@
     </section>
     <div id="appStatus" class="status"></div>
   </main>
-  <nav class="bottom-nav" id="bottomNav" aria-label="Navigasi utama">
+  <nav class="bottom-nav hidden" id="bottomNav" aria-label="Navigasi utama">
     <button class="active" data-page="dashboard" onclick="showPage('dashboard')"><span class="nav-icon">⌂</span><span>Beranda</span></button>
     <button data-page="credits" onclick="showPage('credits')"><span class="nav-icon">♙</span><span>Pelanggan</span></button>
     <button data-page="payments" onclick="showPage('payments')"><span class="nav-icon">▤</span><span>Cicilan</span></button>
@@ -131,7 +131,7 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
   sessionToken=result.token||result.sessionToken||'';
   currentUser=result.user||result;
   if(!sessionToken)throw new Error('Login merespons, tetapi token sesi tidak ditemukan. Periksa format respons fungsi login di Code.gs.');
-  document.getElementById('loginPage').classList.add('hidden');document.getElementById('appPage').classList.remove('hidden');document.getElementById('logoutBtn').classList.remove('hidden');
+  document.getElementById('loginPage').classList.add('hidden');document.getElementById('appPage').classList.remove('hidden');document.getElementById('logoutBtn').classList.remove('hidden');document.getElementById('bottomNav').classList.remove('hidden');
   document.getElementById('welcome').textContent='Halo, '+(currentUser?.name||currentUser?.customerName||currentUser?.username||document.getElementById('loginId').value);
   document.getElementById('roleText').textContent=isAdmin()?'Mode admin • kelola data kredit dan pembayaran':'Mode pelanggan • lihat data kredit dan pembayaran Anda';
   document.getElementById('createCreditCard').classList.toggle('hidden',!isAdmin());document.getElementById('recordPaymentCard').classList.toggle('hidden',!isAdmin());
@@ -209,7 +209,7 @@ async function deletePayment(paymentId, amountLabel) {
   catch(e) { status('appStatus','Gagal menghapus pembayaran: '+e.message,true); }
 }
 
-async function logout(){try{if(sessionToken)await api('logout',{})}catch(e){}sessionToken='';currentUser=null;cachedCredits=[];cachedPayments=[];document.getElementById('appPage').classList.add('hidden');document.getElementById('loginPage').classList.remove('hidden');document.getElementById('logoutBtn').classList.add('hidden');document.getElementById('loginPin').value='';status('loginStatus','Anda sudah keluar.');}
+async function logout(){try{if(sessionToken)await api('logout',{})}catch(e){}sessionToken='';currentUser=null;cachedCredits=[];cachedPayments=[];document.getElementById('appPage').classList.add('hidden');document.getElementById('loginPage').classList.remove('hidden');document.getElementById('logoutBtn').classList.add('hidden');document.getElementById('bottomNav').classList.add('hidden');document.getElementById('loginPin').value='';status('loginStatus','Anda sudah keluar.');}
 </script>
 </body>
 </html>
