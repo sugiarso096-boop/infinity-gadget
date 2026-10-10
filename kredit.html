@@ -131,15 +131,51 @@ async function loadCredits(){
  try{const r=await api('listCredits',{});cachedCredits=extractArray(r,['credits','items','results']);renderCredits();document.getElementById('statCredits').textContent=cachedCredits.length;const remaining=cachedCredits.reduce((s,c)=>s+Number(c.remaining??c.remainingAmount??c.balance??0),0);document.getElementById('statRemaining').textContent=money(remaining);document.getElementById('dashboardNote').textContent='Data kredit berhasil dimuat.'}
  catch(e){document.getElementById('creditList').innerHTML='<div class="empty">Data kredit belum bisa dimuat.</div>';status('appStatus','Gagal memuat kredit: '+e.message,true)}
 }
-function renderCredits(){const box=document.getElementById('creditList');if(!cachedCredits.length){box.innerHTML='<div class="empty">Belum ada data kredit atau format respons API perlu disesuaikan.</div>';return}
- box.innerHTML=cachedCredits.map(c=>{const name=c.customerName||c.customer_name||c.name||'Pelanggan';const device=c.device||c.phoneModel||c.product||'HP';const id=c.creditId||c.id||c.code||'';const remaining=c.remaining??c.remainingAmount??c.balance??0;return `<article class="item"><div class="itemtop"><div><h4>${esc(name)}</h4><p>${esc(device)} • ID: ${esc(id)}</p></div><span class="pill ${Number(remaining)>0?'red':''}">${Number(remaining)>0?'Berjalan':'Lunas'}</span></div><p>Harga kredit: <strong>${money(c.price||c.totalPrice||0)}</strong></p><p>Sisa tagihan: <strong>${money(remaining)}</strong></p><p>Nomor HP: ${esc(c.phone||c.customerPhone||'-')}</p></article>`}).join('')}
+function renderCredits(){
+ const box=document.getElementById('creditList');
+ if(!cachedCredits.length){box.innerHTML='<div class="empty">Belum ada data kredit.</div>';return}
+ box.innerHTML=cachedCredits.map(c=>{
+  const name=c.customerName||c.customer_name||c.name||'Pelanggan';
+  const device=c.device||c.phoneModel||c.product||'HP';
+  const id=c.creditId||c.id||c.code||'';
+  const remaining=c.remaining??c.remainingAmount??c.balance??0;
+  const deleteButton=isAdmin()?`<div class="rowbtn"><button class="danger" onclick="deleteCredit('${esc(id)}','${esc(name)}')">Hapus kredit</button></div>`:'';
+  return `<article class="item"><div class="itemtop"><div><h4>${esc(name)}</h4><p>${esc(device)} • ID: ${esc(id)}</p></div><span class="pill ${Number(remaining)>0?'red':''}">${Number(remaining)>0?'Berjalan':'Lunas'}</span></div><p>Harga kredit: <strong>${money(c.price||c.totalPrice||0)}</strong></p><p>Sisa tagihan: <strong>${money(remaining)}</strong></p><p>Nomor HP: ${esc(c.phone||c.customerPhone||'-')}</p>${deleteButton}</article>`;
+ }).join('');
+}
 async function loadPayments(){
  try{const r=await api('listPayments',{});cachedPayments=extractArray(r,['payments','items','results']);renderPayments();document.getElementById('statPaid').textContent=money(cachedPayments.reduce((s,p)=>s+Number(p.amount||p.paymentAmount||0),0))}
  catch(e){document.getElementById('paymentList').innerHTML='<div class="empty">Riwayat pembayaran belum bisa dimuat.</div>';status('appStatus','Gagal memuat pembayaran: '+e.message,true)}
 }
-function renderPayments(){const box=document.getElementById('paymentList');if(!cachedPayments.length){box.innerHTML='<div class="empty">Belum ada riwayat pembayaran.</div>';return}box.innerHTML=cachedPayments.map(p=>`<article class="item"><div class="itemtop"><div><h4>${money(p.amount||p.paymentAmount||0)}</h4><p>ID kredit: ${esc(p.creditId||p.credit_id||'-')}</p></div><span class="pill">Tercatat</span></div><p>Tanggal: ${esc(p.paymentDate||p.date||'-')} • Metode: ${esc(p.method||'-')}</p></article>`).join('')}
+function renderPayments(){
+ const box=document.getElementById('paymentList');
+ if(!cachedPayments.length){box.innerHTML='<div class="empty">Belum ada riwayat pembayaran.</div>';return}
+ box.innerHTML=cachedPayments.map(p=>{
+  const pid=p.paymentId||'';
+  const amount=p.amount||p.paymentAmount||0;
+  const deleteButton=isAdmin()?`<div class="rowbtn"><button class="danger" onclick="deletePayment('${esc(pid)}','${money(amount)}')">Hapus pembayaran</button></div>`:'';
+  return `<article class="item"><div class="itemtop"><div><h4>${money(amount)}</h4><p>ID kredit: ${esc(p.creditId||p.credit_id||'-')}</p></div><span class="pill">Tercatat</span></div><p>Tanggal: ${esc(p.paidAt||p.paymentDate||p.date||'-')} • Metode: ${esc(p.method||'-')}</p>${deleteButton}</article>`;
+ }).join('');
+}
 document.getElementById('creditForm').addEventListener('submit',async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target).entries());['price','downPayment','tenor'].forEach(k=>d[k]=Number(d[k]||0));try{await api('createCredit',d);status('appStatus','Data kredit berhasil dikirim.');e.target.reset();await loadCredits()}catch(err){status('appStatus','Gagal menyimpan kredit: '+err.message,true)}});
 document.getElementById('paymentForm').addEventListener('submit',async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target).entries());d.amount=Number(d.amount);try{await api('recordPayment',d);status('appStatus','Pembayaran berhasil dikirim.');e.target.reset();await refreshAll()}catch(err){status('appStatus','Gagal menyimpan pembayaran: '+err.message,true)}});
+
+async function deleteCredit(creditId, customerName) {
+  if (!confirm('Hapus kredit "'+customerName+'" beserta semua riwayat pembayarannya? Tindakan ini tidak bisa dibatalkan.')) return;
+  const typed = prompt('Ketik HAPUS untuk konfirmasi penghapusan.');
+  if (typed !== 'HAPUS') { alert('Penghapusan dibatalkan.'); return; }
+  try { status('appStatus','Menghapus kredit…'); await api('deleteCredit',{creditId,confirmText:typed}); status('appStatus','Kredit dan pembayaran terkait berhasil dihapus.'); await refreshAll(); }
+  catch(e) { status('appStatus','Gagal menghapus kredit: '+e.message,true); }
+}
+async function deletePayment(paymentId, amountLabel) {
+  if (!paymentId) { alert('ID pembayaran tidak tersedia.'); return; }
+  if (!confirm('Hapus pembayaran '+amountLabel+'? Sisa tagihan akan dihitung ulang dari riwayat yang tersisa.')) return;
+  const typed = prompt('Ketik HAPUS untuk konfirmasi penghapusan.');
+  if (typed !== 'HAPUS') { alert('Penghapusan dibatalkan.'); return; }
+  try { status('appStatus','Menghapus pembayaran…'); await api('deletePayment',{paymentId,confirmText:typed}); status('appStatus','Riwayat pembayaran berhasil dihapus.'); await refreshAll(); }
+  catch(e) { status('appStatus','Gagal menghapus pembayaran: '+e.message,true); }
+}
+
 async function logout(){try{if(sessionToken)await api('logout',{})}catch(e){}sessionToken='';currentUser=null;cachedCredits=[];cachedPayments=[];document.getElementById('appPage').classList.add('hidden');document.getElementById('loginPage').classList.remove('hidden');document.getElementById('logoutBtn').classList.add('hidden');document.getElementById('loginPin').value='';status('loginStatus','Anda sudah keluar.');}
 </script>
 </body>
