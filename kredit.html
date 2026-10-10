@@ -1,33 +1,145 @@
-<script>
-  // Ganti dengan URL Web App Apps Script Anda yang baru
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby17Q2eA07dbWtZGg59LgqH27mRnRASGVHojnMLkUjR_Dxg5pn-LHjePzf3CE3oxFFbwA/exec';
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Credit Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+    </style>
+</head>
+<body class="flex justify-center min-h-screen pb-20">
+    <div class="w-full max-w-md bg-white min-h-screen shadow-lg relative">
+        
+        <!-- Header / Hero Section -->
+        <div class="bg-gradient-to-r from-red-600 to-red-800 p-6 rounded-b-3xl text-white shadow-md relative overflow-hidden">
+            <div class="flex items-center gap-2 mb-4">
+                <div class="bg-black text-red-500 font-bold p-1 rounded">IG</div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight">INFINITY GADGET</h1>
+                    <p class="text-xs text-gray-200">Smart Credit Center</p>
+                </div>
+            </div>
+            <p class="text-sm font-medium mt-4">TOTAL SISA KREDIT</p>
+            <h2 id="total-sisa" class="text-4xl font-bold mb-4 drop-shadow-md">Memuat...</h2>
+            <button class="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-4 rounded-full inline-flex items-center gap-2 transition">
+                Dari <span id="count-aktif-label">...</span> pelanggan aktif <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
 
-  // Fungsi mengubah angka menjadi format Rupiah
-  function formatRupiah(angka) {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0
-    }).format(angka);
-  }
+        <!-- Stats Section -->
+        <div class="flex justify-between bg-white mx-4 -mt-6 rounded-xl shadow-md p-4 relative z-10 border border-gray-100">
+            <div class="text-center w-1/3 border-r">
+                <div class="bg-red-500 text-white w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-users"></i></div>
+                <p class="text-xs text-gray-500">Aktif</p>
+                <p id="count-aktif" class="text-xl font-bold">...</p>
+            </div>
+            <div class="text-center w-1/3 border-r">
+                <div class="bg-orange-500 text-white w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <p class="text-xs text-gray-500">Terlambat</p>
+                <p id="count-terlambat" class="text-xl font-bold">...</p>
+            </div>
+            <div class="text-center w-1/3">
+                <div class="bg-green-500 text-white w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-check"></i></div>
+                <p class="text-xs text-gray-500">Lunas</p>
+                <p id="count-lunas" class="text-xl font-bold">...</p>
+            </div>
+        </div>
 
-  // Mengambil data dari Google Sheets
-  async function loadDashboardData() {
-    try {
-      const response = await fetch(SCRIPT_URL);
-      const data = await response.json();
-      
-      // Memasukkan data ke dalam HTML
-      document.getElementById('total-sisa').innerText = formatRupiah(data.totalSisaKredit);
-      document.getElementById('count-aktif').innerText = data.pelangganAktif;
-      document.getElementById('count-terlambat').innerText = data.terlambat;
-      document.getElementById('count-lunas').innerText = data.lunas;
-    } catch (error) {
-      console.error('Error saat mengambil data:', error);
-      document.getElementById('total-sisa').innerText = "Gagal memuat";
-    }
-  }
+        <!-- Action Buttons -->
+        <div class="flex gap-4 p-4 mt-2">
+            <div class="bg-red-600 text-white rounded-xl p-4 w-1/2 flex items-center justify-between cursor-pointer shadow-md hover:bg-red-700">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white text-red-600 rounded-full w-10 h-10 flex items-center justify-center font-bold text-xl">+</div>
+                    <div>
+                        <p class="font-bold text-sm">Buat kredit</p>
+                        <p class="text-xs text-red-200">Daftarkan HP</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-blue-50 text-blue-900 rounded-xl p-4 w-1/2 flex items-center justify-between cursor-pointer shadow-sm border border-blue-100 hover:bg-blue-100">
+                <div class="flex items-center gap-3">
+                    <div class="bg-blue-900 text-white rounded-full w-10 h-10 flex items-center justify-center"><i class="fa-solid fa-wallet"></i></div>
+                    <div>
+                        <p class="font-bold text-sm">Terima cicilan</p>
+                        <p class="text-xs text-blue-400">Catat bayar</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-  // Jalankan fungsi saat halaman web pertama kali dibuka
-  window.onload = loadDashboardData;
-</script>
+        <!-- Pantauan Kredit -->
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="font-bold text-gray-800">Pantauan kredit</h3>
+                <a href="#" class="text-sm text-red-600 font-medium">Semua data <i class="fa-solid fa-chevron-right text-xs"></i></a>
+            </div>
+            <div class="bg-red-50 border border-red-100 rounded-xl p-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-orange-500 text-white rounded-full w-10 h-10 flex items-center justify-center"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div>
+                        <p class="font-bold text-sm text-gray-800">Andi Saputra</p>
+                        <p class="text-xs text-gray-500">Redmi Note 14 • Tempo 15 Mei</p>
+                    </div>
+                </div>
+                <span class="bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded">Terlambat</span>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="fixed bottom-0 w-full max-w-md bg-white border-t flex justify-around p-3 pb-5 z-50">
+            <div class="text-center text-red-600 flex flex-col items-center">
+                <i class="fa-solid fa-house text-xl mb-1"></i>
+                <span class="text-xs font-semibold">Beranda</span>
+            </div>
+            <div class="text-center text-gray-400 flex flex-col items-center">
+                <i class="fa-solid fa-users text-xl mb-1"></i>
+                <span class="text-xs font-medium">Pelanggan</span>
+            </div>
+            <div class="text-center text-gray-400 flex flex-col items-center">
+                <i class="fa-solid fa-receipt text-xl mb-1"></i>
+                <span class="text-xs font-medium">Cicilan</span>
+            </div>
+            <div class="text-center text-gray-400 flex flex-col items-center">
+                <i class="fa-solid fa-chart-simple text-xl mb-1"></i>
+                <span class="text-xs font-medium">Laporan</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Penghubung ke Google Sheets -->
+    <script>
+        // URL Web App Anda dari tangkapan layar sebelumnya
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby17Q2eA07dbWtZGg59LgqH27mRnRASGVHojnMLkUjR_Dxg5pn-LHjePzf3CE3oxFFbwA/exec';
+
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(angka);
+        }
+
+        async function loadDashboardData() {
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+                
+                document.getElementById('total-sisa').innerText = formatRupiah(data.totalSisaKredit);
+                document.getElementById('count-aktif').innerText = data.pelangganAktif;
+                document.getElementById('count-aktif-label').innerText = data.pelangganAktif;
+                document.getElementById('count-terlambat').innerText = data.terlambat;
+                document.getElementById('count-lunas').innerText = data.lunas;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('total-sisa').innerText = "Gagal memuat data";
+            }
+        }
+
+        window.onload = loadDashboardData;
+    </script>
+</body>
+</html>
