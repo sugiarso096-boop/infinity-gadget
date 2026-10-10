@@ -12,7 +12,7 @@
     </style>
 </head>
 <body class="flex justify-center min-h-screen pb-20 relative">
-    <div class="w-full max-w-md bg-white min-h-screen shadow-lg relative">
+    <div class="w-full max-w-md bg-white min-h-screen shadow-lg relative pb-20">
         
         <!-- Header -->
         <div class="bg-gradient-to-r from-red-600 to-red-800 p-6 rounded-b-3xl text-white shadow-md">
@@ -67,6 +67,44 @@
                         <p class="text-xs text-blue-400">Catat bayar</p>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Pantauan Kredit -->
+        <div class="p-4">
+            <div class="flex justify-between items-center mb-3">
+                <h3 class="font-bold text-gray-800">Pantauan kredit</h3>
+                <a href="#" class="text-sm text-red-600 font-medium">Semua data <i class="fa-solid fa-chevron-right text-xs"></i></a>
+            </div>
+            <div class="bg-red-50 border border-red-100 rounded-xl p-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-orange-500 text-white rounded-full w-10 h-10 flex items-center justify-center"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div>
+                        <p class="font-bold text-sm text-gray-800">Andi Saputra</p>
+                        <p class="text-xs text-gray-500">Redmi Note 14 • Tempo 15 Mei</p>
+                    </div>
+                </div>
+                <span class="bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded">Terlambat</span>
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        <div class="fixed bottom-0 w-full max-w-md bg-white border-t flex justify-around p-3 pb-5 z-50">
+            <div class="text-center text-red-600 flex flex-col items-center">
+                <i class="fa-solid fa-house text-xl mb-1"></i>
+                <span class="text-xs font-semibold">Beranda</span>
+            </div>
+            <div class="text-center text-gray-400 flex flex-col items-center">
+                <i class="fa-solid fa-users text-xl mb-1"></i>
+                <span class="text-xs font-medium">Pelanggan</span>
+            </div>
+            <div class="text-center text-gray-400 flex flex-col items-center">
+                <i class="fa-solid fa-receipt text-xl mb-1"></i>
+                <span class="text-xs font-medium">Cicilan</span>
+            </div>
+            <div class="text-center text-gray-400 flex flex-col items-center">
+                <i class="fa-solid fa-chart-simple text-xl mb-1"></i>
+                <span class="text-xs font-medium">Laporan</span>
             </div>
         </div>
     </div>
@@ -160,7 +198,7 @@
             document.getElementById('form-kredit').reset();
             toggleModal('modal-kredit');
             btn.innerText = "Simpan Data Kredit"; btn.disabled = false;
-            loadDashboardData(); // Refresh angka
+            loadDashboardData(); 
         }
 
         // Fungsi Kirim Data Cicilan
