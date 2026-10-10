@@ -9,13 +9,10 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
-        /* Scrollbar styling */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
-        /* Loading overlay */
         #loading-overlay { backdrop-filter: blur(4px); }
         .spinner {
             border: 4px solid rgba(255, 255, 255, 0.3);
@@ -28,82 +25,77 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="flex justify-center min-h-screen bg-gray-100 sm:p-4 md:p-8">
+<body class="flex justify-center min-h-screen bg-gray-200 sm:p-4 md:p-8">
 
-    <!-- Container Utama (Responsive) -->
-    <div class="w-full max-w-md bg-white shadow-2xl relative sm:rounded-3xl overflow-hidden flex flex-col h-screen sm:h-[850px]">
+    <!-- Container Utama: Diperlebar menjadi max-w-2xl untuk tampilan komputer yang lebih nyaman -->
+    <div class="w-full max-w-2xl bg-white shadow-2xl relative sm:rounded-3xl overflow-hidden flex flex-col h-screen sm:h-[800px]">
         
-        <!-- Konten yang bisa di-scroll -->
         <div class="flex-1 overflow-y-auto pb-24">
-            
             <!-- Header -->
-            <div class="bg-gradient-to-r from-red-600 to-red-800 p-6 rounded-b-3xl text-white shadow-md relative z-10">
+            <div class="bg-gradient-to-r from-red-600 to-red-800 p-6 md:p-8 rounded-b-3xl text-white shadow-md relative z-10">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-3">
                         <div class="bg-black text-red-500 font-bold p-1.5 rounded text-lg">IG</div>
                         <div>
-                            <h1 class="font-bold text-xl leading-tight">INFINITY GADGET</h1>
-                            <p class="text-xs text-red-200">Smart Credit Center</p>
+                            <h1 class="font-bold text-xl md:text-2xl leading-tight">INFINITY GADGET</h1>
+                            <p class="text-xs md:text-sm text-red-200">Smart Credit Center</p>
                         </div>
                     </div>
-                    <!-- Tombol Keluar (Dummy untuk Tampilan) -->
                     <button class="bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-1.5 rounded-full backdrop-blur-sm transition border border-white/30">
                         <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Keluar
                     </button>
                 </div>
                 
-                <p class="text-sm font-medium mt-6 text-red-100">TOTAL SISA KREDIT</p>
-                <h2 id="total-sisa" class="text-4xl font-bold mb-4 drop-shadow-md">Memuat...</h2>
+                <p class="text-sm md:text-base font-medium mt-6 text-red-100">TOTAL SISA KREDIT</p>
+                <h2 id="total-sisa" class="text-4xl md:text-5xl font-bold mb-4 drop-shadow-md">Memuat...</h2>
                 <div class="bg-white/20 inline-block px-4 py-2 rounded-full backdrop-blur-sm border border-white/20">
-                    <p class="text-sm font-medium">Dari <span id="count-aktif-label" class="font-bold">...</span> pelanggan aktif <i class="fa-solid fa-chevron-right text-xs ml-1"></i></p>
+                    <p class="text-sm md:text-base font-medium">Dari <span id="count-aktif-label" class="font-bold">...</span> pelanggan aktif</p>
                 </div>
             </div>
 
             <!-- Stats Boxes -->
-            <div class="flex justify-between bg-white mx-5 -mt-8 rounded-2xl shadow-lg p-4 relative z-20 border border-gray-100">
+            <div class="flex justify-between bg-white mx-5 md:mx-8 -mt-8 rounded-2xl shadow-lg p-4 md:p-6 relative z-20 border border-gray-100">
                 <div class="text-center w-1/3 border-r border-gray-100 px-1">
-                    <div class="bg-red-100 text-red-600 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-users"></i></div>
-                    <p class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1">Aktif</p>
-                    <p id="count-aktif" class="text-2xl font-bold text-gray-800">...</p>
+                    <div class="bg-red-100 text-red-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-users md:text-lg"></i></div>
+                    <p class="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Aktif</p>
+                    <p id="count-aktif" class="text-2xl md:text-3xl font-bold text-gray-800">...</p>
                 </div>
                 <div class="text-center w-1/3 border-r border-gray-100 px-1">
-                    <div class="bg-orange-100 text-orange-500 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                    <p class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1">Terlambat</p>
-                    <p id="count-terlambat" class="text-2xl font-bold text-gray-800">...</p>
+                    <div class="bg-orange-100 text-orange-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-triangle-exclamation md:text-lg"></i></div>
+                    <p class="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Terlambat</p>
+                    <p id="count-terlambat" class="text-2xl md:text-3xl font-bold text-gray-800">...</p>
                 </div>
                 <div class="text-center w-1/3 px-1">
-                    <div class="bg-green-100 text-green-500 w-10 h-10 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-check"></i></div>
-                    <p class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1">Lunas</p>
-                    <p id="count-lunas" class="text-2xl font-bold text-gray-800">...</p>
+                    <div class="bg-green-100 text-green-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-check md:text-lg"></i></div>
+                    <p class="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Lunas</p>
+                    <p id="count-lunas" class="text-2xl md:text-3xl font-bold text-gray-800">...</p>
                 </div>
             </div>
 
             <!-- Tombol Aksi Utama -->
-            <div class="flex gap-3 px-5 mt-6">
-                <button onclick="toggleModal('modal-kredit')" class="bg-red-600 hover:bg-red-700 text-white rounded-2xl p-4 w-1/2 flex items-center gap-3 cursor-pointer shadow-md transition transform hover:scale-105 active:scale-95 text-left">
-                    <div class="bg-white/20 text-white rounded-full w-10 h-10 flex items-center justify-center shrink-0"><i class="fa-solid fa-plus"></i></div>
+            <div class="flex gap-4 px-5 md:px-8 mt-8">
+                <button onclick="toggleModal('modal-kredit')" class="bg-red-600 hover:bg-red-700 text-white rounded-2xl p-4 md:p-5 w-1/2 flex items-center gap-4 cursor-pointer shadow-md transition transform hover:scale-105 text-left">
+                    <div class="bg-white/20 text-white rounded-full w-12 h-12 flex items-center justify-center shrink-0"><i class="fa-solid fa-plus text-xl"></i></div>
                     <div>
-                        <p class="font-bold text-sm leading-tight">Buat kredit</p>
-                        <p class="text-[10px] text-red-200 mt-0.5">Daftarkan HP & User</p>
+                        <p class="font-bold text-sm md:text-base">Buat kredit</p>
+                        <p class="text-[10px] md:text-xs text-red-200 mt-1">Daftarkan HP & User</p>
                     </div>
                 </button>
-                <button onclick="toggleModal('modal-cicilan')" class="bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-100 rounded-2xl p-4 w-1/2 flex items-center gap-3 cursor-pointer shadow-sm transition transform hover:scale-105 active:scale-95 text-left">
-                    <div class="bg-blue-900 text-white rounded-full w-10 h-10 flex items-center justify-center shrink-0"><i class="fa-solid fa-wallet"></i></div>
+                <button onclick="toggleModal('modal-cicilan')" class="bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-100 rounded-2xl p-4 md:p-5 w-1/2 flex items-center gap-4 cursor-pointer shadow-sm transition transform hover:scale-105 text-left">
+                    <div class="bg-blue-900 text-white rounded-full w-12 h-12 flex items-center justify-center shrink-0"><i class="fa-solid fa-wallet text-xl"></i></div>
                     <div>
-                        <p class="font-bold text-sm leading-tight">Terima cicilan</p>
-                        <p class="text-[10px] text-blue-500 mt-0.5">Catat pembayaran</p>
+                        <p class="font-bold text-sm md:text-base">Terima cicilan</p>
+                        <p class="text-[10px] md:text-xs text-blue-500 mt-1">Catat pembayaran</p>
                     </div>
                 </button>
             </div>
 
-            <!-- Daftar Pantauan Kredit (Dinamic Area) -->
-            <div class="px-5 mt-6 mb-4">
+            <!-- Daftar Pantauan Kredit -->
+            <div class="px-5 md:px-8 mt-8 mb-4">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-gray-800 text-lg">Pantauan kredit</h3>
-                    <button class="text-xs text-red-600 font-semibold hover:underline flex items-center">Semua data <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></button>
+                    <h3 class="font-bold text-gray-800 text-lg md:text-xl">Pantauan kredit</h3>
+                    <button class="text-sm text-red-600 font-semibold hover:underline flex items-center">Semua data <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></button>
                 </div>
-                
-                <!-- Container untuk list data dari Google Sheets -->
                 <div id="pantauan-list" class="space-y-3">
                     <div class="text-center py-6 text-gray-400 text-sm">
                         <i class="fa-solid fa-circle-notch fa-spin mb-2 text-2xl"></i><br>
@@ -111,108 +103,60 @@
                     </div>
                 </div>
             </div>
-
-        </div> <!-- End of scrollable content -->
-        
-        <!-- Bottom Navigation Menu (Fixed di bawah container) -->
-        <div class="absolute bottom-0 w-full bg-white border-t border-gray-100 flex justify-around px-2 py-3 z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.05)] sm:rounded-b-3xl">
-            <button onclick="navClick('beranda')" id="nav-beranda" class="text-red-600 flex flex-col items-center w-1/4 transition">
-                <i class="fa-solid fa-house text-xl mb-1"></i>
-                <span class="text-[10px] font-bold">Beranda</span>
-            </button>
-            <button onclick="navClick('pelanggan')" id="nav-pelanggan" class="text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition">
-                <i class="fa-solid fa-users text-xl mb-1"></i>
-                <span class="text-[10px] font-medium">Pelanggan</span>
-            </button>
-            <button onclick="navClick('cicilan')" id="nav-cicilan" class="text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition">
-                <i class="fa-solid fa-receipt text-xl mb-1"></i>
-                <span class="text-[10px] font-medium">Cicilan</span>
-            </button>
-            <button onclick="navClick('laporan')" id="nav-laporan" class="text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition">
-                <i class="fa-solid fa-chart-simple text-xl mb-1"></i>
-                <span class="text-[10px] font-medium">Laporan</span>
-            </button>
         </div>
-    </div> <!-- End of Container Utama -->
-
-    <!-- ==================== MODAL OVERLAYS ==================== -->
+        
+        <!-- Bottom Nav -->
+        <div class="absolute bottom-0 w-full bg-white border-t border-gray-100 flex justify-around px-2 py-4 z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.05)] sm:rounded-b-3xl">
+            <button class="text-red-600 flex flex-col items-center w-1/4 transition"><i class="fa-solid fa-house text-xl md:text-2xl mb-1"></i><span class="text-[10px] md:text-xs font-bold">Beranda</span></button>
+            <button class="text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition"><i class="fa-solid fa-users text-xl md:text-2xl mb-1"></i><span class="text-[10px] md:text-xs font-medium">Pelanggan</span></button>
+            <button class="text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition"><i class="fa-solid fa-receipt text-xl md:text-2xl mb-1"></i><span class="text-[10px] md:text-xs font-medium">Cicilan</span></button>
+            <button class="text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition"><i class="fa-solid fa-chart-simple text-xl md:text-2xl mb-1"></i><span class="text-[10px] md:text-xs font-medium">Laporan</span></button>
+        </div>
+    </div>
 
     <!-- MODAL 1: FORM BUAT KREDIT -->
     <div id="modal-kredit" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex justify-center items-end sm:items-center">
-        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 transform transition-all max-h-[90vh] overflow-y-auto">
+        <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 md:p-8 transform transition-all max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold text-xl text-gray-800">Buat Kredit Baru</h3>
-                <button onclick="toggleModal('modal-kredit')" class="bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-600 w-8 h-8 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+                <h3 class="font-bold text-xl md:text-2xl text-gray-800">Buat Kredit Baru</h3>
+                <button onclick="toggleModal('modal-kredit')" class="bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-600 w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form id="form-kredit" onsubmit="submitKredit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Lengkap</label>
-                    <input type="text" id="k_nama" required class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">No. WhatsApp</label>
-                    <input type="number" id="k_hp" required class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">Tipe HP / Barang</label>
-                    <input type="text" id="k_tipe" required placeholder="Contoh: iPhone 13 Pro 128GB" class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition text-sm">
-                </div>
+                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Nama Lengkap</label><input type="text" id="k_nama" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition"></div>
+                <div><label class="block text-xs font-semibold text-gray-600 mb-1">No. WhatsApp</label><input type="number" id="k_hp" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition"></div>
+                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Tipe HP / Barang</label><input type="text" id="k_tipe" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition"></div>
                 <div class="flex gap-3">
-                    <div class="w-1/2">
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Total Harga</label>
-                        <input type="number" id="k_harga" required class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition text-sm">
-                    </div>
-                    <div class="w-1/2">
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Sisa Kredit Awal</label>
-                        <input type="number" id="k_sisa" required class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition text-sm">
-                    </div>
+                    <div class="w-1/2"><label class="block text-xs font-semibold text-gray-600 mb-1">Total Harga</label><input type="number" id="k_harga" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition"></div>
+                    <div class="w-1/2"><label class="block text-xs font-semibold text-gray-600 mb-1">Sisa Kredit</label><input type="number" id="k_sisa" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition"></div>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">Tanggal Jatuh Tempo</label>
-                    <input type="text" id="k_tempo" required placeholder="DD/MM/YYYY" class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition text-sm">
-                </div>
-                <button type="submit" id="btn-kredit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold p-4 rounded-xl mt-2 transition shadow-lg shadow-red-200">Simpan Data Kredit</button>
+                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Jatuh Tempo (DD/MM/YYYY)</label><input type="text" id="k_tempo" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition"></div>
+                <button type="submit" id="btn-kredit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold p-4 rounded-xl mt-4 transition shadow-lg">Simpan Data Kredit</button>
             </form>
         </div>
     </div>
 
     <!-- MODAL 2: FORM TERIMA CICILAN -->
     <div id="modal-cicilan" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex justify-center items-end sm:items-center">
-        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 transform transition-all">
+        <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 md:p-8 transform transition-all">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold text-xl text-gray-800">Terima Cicilan</h3>
-                <button onclick="toggleModal('modal-cicilan')" class="bg-gray-100 hover:bg-blue-100 text-gray-500 hover:text-blue-600 w-8 h-8 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+                <h3 class="font-bold text-xl md:text-2xl text-gray-800">Terima Cicilan</h3>
+                <button onclick="toggleModal('modal-cicilan')" class="bg-gray-100 hover:bg-blue-100 text-gray-500 hover:text-blue-600 w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form id="form-cicilan" onsubmit="submitCicilan(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">ID Kredit Pelanggan</label>
-                    <input type="text" id="c_id" required placeholder="Contoh: KR-001" class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition text-sm font-mono uppercase">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">Nominal Pembayaran</label>
-                    <input type="number" id="c_nominal" required class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1">Keterangan / Catatan</label>
-                    <input type="text" id="c_ket" required placeholder="Contoh: Cicilan Bulan 1" class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition text-sm">
-                </div>
-                <button type="submit" id="btn-cicilan" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-4 rounded-xl mt-2 transition shadow-lg shadow-blue-200">Catat Pembayaran</button>
+                <div><label class="block text-xs font-semibold text-gray-600 mb-1">ID Kredit</label><input type="text" id="c_id" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition uppercase font-mono"></div>
+                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Nominal Pembayaran</label><input type="number" id="c_nominal" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition"></div>
+                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Keterangan</label><input type="text" id="c_ket" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition"></div>
+                <button type="submit" id="btn-cicilan" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-4 rounded-xl mt-4 transition shadow-lg">Catat Pembayaran</button>
             </form>
         </div>
     </div>
     
-    <!-- LOADING SPINNER GLOBAL -->
-    <div id="loading-overlay" class="fixed inset-0 bg-black/50 z-[60] hidden flex-col items-center justify-center">
-        <div class="spinner mb-4"></div>
-        <p class="text-white font-medium" id="loading-text">Memproses...</p>
-    </div>
+    <div id="loading-overlay" class="fixed inset-0 bg-black/50 z-[60] hidden flex-col items-center justify-center"><div class="spinner mb-4"></div><p class="text-white font-medium" id="loading-text">Memproses...</p></div>
 
-    <!-- ==================== JAVASCRIPT ==================== -->
     <script>
         // GANTI LINK DI BAWAH INI DENGAN LINK APPS SCRIPT ANDA
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwW4j4fNXHs1lWznqzcOkBjooh2lO-Mtaj5RjLXaWP6NXcbHCjAJDFAF1S6Lool9IPkTA/exec';
 
-        // --- Utility Functions ---
         function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
         }
@@ -220,177 +164,83 @@
         function showLoading(show, text="Memproses...") {
             const overlay = document.getElementById('loading-overlay');
             document.getElementById('loading-text').innerText = text;
-            if(show) overlay.classList.remove('hidden', 'flex');
-            if(show) overlay.classList.add('flex');
-            else overlay.classList.add('hidden');
+            if(show) { overlay.classList.remove('hidden'); overlay.classList.add('flex'); }
+            else { overlay.classList.add('hidden'); overlay.classList.remove('flex'); }
         }
 
-        // --- Navigation Logic ---
-        function navClick(activeId) {
-            const menus = ['beranda', 'pelanggan', 'cicilan', 'laporan'];
-            menus.forEach(menu => {
-                const btn = document.getElementById('nav-' + menu);
-                if(menu === activeId) {
-                    btn.className = 'text-red-600 flex flex-col items-center w-1/4 transition';
-                    btn.querySelector('span').classList.replace('font-medium', 'font-bold');
-                } else {
-                    btn.className = 'text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition';
-                    btn.querySelector('span').classList.replace('font-bold', 'font-medium');
-                }
-            });
-            // Notifikasi fitur belum tersedia
-            if(activeId !== 'beranda') {
-                alert(`Halaman ${activeId.toUpperCase()} sedang dalam pengembangan.`);
-                setTimeout(() => navClick('beranda'), 500); // Balik ke beranda
-            }
-        }
-
-        // --- Data Fetching (GET) ---
         async function loadDashboardData() {
             try {
-                // Fetch JSON data from Google Apps Script
                 const response = await fetch(SCRIPT_URL);
                 const data = await response.json();
                 
-                // Update Statistik Header
                 document.getElementById('total-sisa').innerText = formatRupiah(data.totalSisaKredit);
                 document.getElementById('count-aktif').innerText = data.pelangganAktif;
                 document.getElementById('count-aktif-label').innerText = data.pelangganAktif;
                 document.getElementById('count-terlambat').innerText = data.terlambat;
                 document.getElementById('count-lunas').innerText = data.lunas;
                 
-                // Update List Pantauan Kredit
                 const listContainer = document.getElementById('pantauan-list');
-                listContainer.innerHTML = ''; // Clear loading spinner
+                listContainer.innerHTML = ''; 
                 
                 if (data.listPelanggan && data.listPelanggan.length > 0) {
                     data.listPelanggan.forEach(item => {
-                        // Tentukan style badge status
-                        let statusColor = "bg-gray-100 text-gray-600";
-                        let iconColor = "bg-gray-400";
-                        let icon = "fa-user";
+                        let statusColor = "bg-gray-100 text-gray-600", iconColor = "bg-gray-400", icon = "fa-user";
+                        if(item.status === 'Terlambat') { statusColor = "bg-red-100 text-red-600"; iconColor = "bg-orange-500"; icon = "fa-triangle-exclamation"; } 
+                        else if(item.status === 'Berjalan') { statusColor = "bg-blue-100 text-blue-600"; iconColor = "bg-blue-500"; icon = "fa-rotate"; }
                         
-                        if(item.status === 'Terlambat') {
-                            statusColor = "bg-red-100 text-red-600";
-                            iconColor = "bg-orange-500";
-                            icon = "fa-triangle-exclamation";
-                        } else if(item.status === 'Berjalan') {
-                            statusColor = "bg-blue-100 text-blue-600";
-                            iconColor = "bg-blue-500";
-                            icon = "fa-rotate";
-                        } else if(item.status === 'Lunas') {
-                            statusColor = "bg-green-100 text-green-600";
-                            iconColor = "bg-green-500";
-                            icon = "fa-check";
+                        // Perbaikan Bug Format Tanggal
+                        let tanggalTeks = item.tempo;
+                        if (typeof tanggalTeks === 'string' && tanggalTeks.includes('T')) {
+                            const d = new Date(tanggalTeks);
+                            tanggalTeks = d.toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
                         }
-                        
-                        // HTML Template untuk setiap baris pelanggan
-                        const rowHtml = `
-                            <div class="bg-gray-50 hover:bg-gray-100 border border-gray-100 rounded-2xl p-4 flex items-center justify-between transition cursor-pointer">
-                                <div class="flex items-center gap-3">
-                                    <div class="${iconColor} text-white rounded-xl w-10 h-10 flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid ${icon}"></i></div>
+
+                        listContainer.innerHTML += `
+                            <div class="bg-gray-50 hover:bg-gray-100 border border-gray-100 rounded-2xl p-4 md:p-5 flex items-center justify-between transition cursor-pointer">
+                                <div class="flex items-center gap-3 md:gap-4">
+                                    <div class="${iconColor} text-white rounded-xl w-10 h-10 md:w-12 md:h-12 flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid ${icon} md:text-lg"></i></div>
                                     <div>
                                         <div class="flex items-center gap-2">
-                                            <p class="font-bold text-sm text-gray-800">${item.nama}</p>
-                                            <span class="text-[9px] font-mono text-gray-400 bg-white px-1.5 py-0.5 rounded border">${item.id}</span>
+                                            <p class="font-bold text-sm md:text-base text-gray-800">${item.nama}</p>
+                                            <span class="text-[9px] md:text-[10px] font-mono text-gray-400 bg-white px-1.5 py-0.5 rounded border">${item.id}</span>
                                         </div>
-                                        <p class="text-[11px] text-gray-500 mt-0.5">${item.tipe} • Tempo ${item.tempo}</p>
+                                        <p class="text-[11px] md:text-xs text-gray-500 mt-1">${item.tipe} • Tempo ${tanggalTeks}</p>
                                     </div>
                                 </div>
-                                <span class="${statusColor} text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide">${item.status}</span>
-                            </div>
-                        `;
-                        listContainer.innerHTML += rowHtml;
+                                <span class="${statusColor} text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide">${item.status}</span>
+                            </div>`;
                     });
                 } else {
                     listContainer.innerHTML = '<div class="text-center py-6 text-gray-400 text-sm">Belum ada data kredit aktif.</div>';
                 }
-                
             } catch (error) {
-                console.error("Gagal memuat:", error);
                 document.getElementById('total-sisa').innerText = "Gagal memuat";
-                document.getElementById('pantauan-list').innerHTML = '<div class="text-center py-6 text-red-400 text-sm"><i class="fa-solid fa-triangle-exclamation mb-2 text-2xl"></i><br>Koneksi ke database gagal. Pastikan URL Script benar.</div>';
+                document.getElementById('pantauan-list').innerHTML = '<div class="text-center py-6 text-red-400 text-sm">Koneksi gagal.</div>';
             }
         }
 
-        // Load data saat halaman dibuka
         window.onload = loadDashboardData;
 
-        // --- Form Submission Logic (POST) ---
-        function toggleModal(modalID) {
-            const modal = document.getElementById(modalID);
-            modal.classList.toggle('hidden');
-            // Auto focus on first input
-            if(!modal.classList.contains('hidden')) {
-                setTimeout(() => {
-                    const firstInput = modal.querySelector('input');
-                    if(firstInput) firstInput.focus();
-                }, 100);
-            }
-        }
+        function toggleModal(modalID) { document.getElementById(modalID).classList.toggle('hidden'); }
 
         async function submitKredit(e) {
             e.preventDefault();
-            const btn = document.getElementById('btn-kredit');
-            btn.disabled = true;
-            toggleModal('modal-kredit');
-            showLoading(true, "Menyimpan Data Kredit...");
-
-            const payload = {
-                action: 'buat_kredit',
-                nama: document.getElementById('k_nama').value,
-                hp: document.getElementById('k_hp').value,
-                tipe: document.getElementById('k_tipe').value,
-                harga: document.getElementById('k_harga').value,
-                sisa: document.getElementById('k_sisa').value,
-                jatuh_tempo: document.getElementById('k_tempo').value
-            };
-
+            toggleModal('modal-kredit'); showLoading(true, "Menyimpan Data Kredit...");
+            const payload = { action: 'buat_kredit', nama: document.getElementById('k_nama').value, hp: document.getElementById('k_hp').value, tipe: document.getElementById('k_tipe').value, harga: document.getElementById('k_harga').value, sisa: document.getElementById('k_sisa').value, jatuh_tempo: document.getElementById('k_tempo').value };
             try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-                showLoading(false);
-                alert('Berhasil! Data kredit pelanggan baru telah disimpan ke Google Sheets.');
-                document.getElementById('form-kredit').reset();
-                loadDashboardData(); // Refresh UI
-            } catch (err) {
-                showLoading(false);
-                alert('Gagal mengirim data. Periksa koneksi internet atau pengaturan URL.');
-            } finally {
-                btn.disabled = false;
-            }
+                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                alert('Berhasil disimpan!'); document.getElementById('form-kredit').reset(); loadDashboardData();
+            } catch (err) { alert('Gagal mengirim data.'); } finally { showLoading(false); }
         }
 
         async function submitCicilan(e) {
             e.preventDefault();
-            const btn = document.getElementById('btn-cicilan');
-            btn.disabled = true;
-            toggleModal('modal-cicilan');
-            showLoading(true, "Mencatat Pembayaran...");
-
-            const payload = {
-                action: 'terima_cicilan',
-                id_kredit: document.getElementById('c_id').value.toUpperCase(), // Paksa huruf besar
-                nominal: document.getElementById('c_nominal').value,
-                keterangan: document.getElementById('c_ket').value
-            };
-
+            toggleModal('modal-cicilan'); showLoading(true, "Mencatat Pembayaran...");
+            const payload = { action: 'terima_cicilan', id_kredit: document.getElementById('c_id').value.toUpperCase(), nominal: document.getElementById('c_nominal').value, keterangan: document.getElementById('c_ket').value };
             try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(payload)
-                });
-                showLoading(false);
-                alert('Berhasil! Pembayaran cicilan telah dicatat ke Google Sheets.');
-                document.getElementById('form-cicilan').reset();
-            } catch (err) {
-                showLoading(false);
-                alert('Gagal mengirim data cicilan.');
-            } finally {
-                btn.disabled = false;
-            }
+                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                alert('Cicilan berhasil dicatat!'); document.getElementById('form-cicilan').reset();
+            } catch (err) { alert('Gagal mengirim data cicilan.'); } finally { showLoading(false); }
         }
     </script>
 </body>
