@@ -261,43 +261,49 @@
 
         }
     
-        /* Pintasan Kasir dan Kelola Stok tetap terlihat saat halaman HP di-scroll */
+        /* Empat ikon menu utama selalu terlihat saat halaman HP di-scroll */
         .mobile-sticky-actions {
             display: none;
             position: fixed;
-            left: 12px;
-            right: 12px;
-            bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+            left: 10px;
+            right: 10px;
+            bottom: calc(10px + env(safe-area-inset-bottom, 0px));
             z-index: 9999;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            padding: 9px;
-            border: 1px solid rgba(226,232,240,.9);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 7px;
+            padding: 8px;
+            border: 1px solid rgba(226,232,240,.95);
             border-radius: 18px;
-            background: rgba(255,255,255,.96);
+            background: rgba(255,255,255,.97);
             box-shadow: 0 8px 28px rgba(15,23,42,.18);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
         .mobile-sticky-btn {
-            min-height: 48px;
+            min-width: 0;
+            min-height: 55px;
             border: 0;
             border-radius: 12px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 9px;
-            font: inherit;
-            font-size: 14px;
+            gap: 5px;
+            font-family: inherit;
+            font-size: 10px;
+            line-height: 1.1;
             font-weight: 800;
+            text-decoration: none;
             cursor: pointer;
             color: #fff;
         }
-        .mobile-sticky-btn i { font-size: 17px; }
+        .mobile-sticky-btn i { font-size: 18px; }
         .mobile-sticky-cashier { background: linear-gradient(135deg,#ff4350,#d91f2b); }
-        .mobile-sticky-stock { background: linear-gradient(135deg,#273449,#111827); }
+        .mobile-sticky-stock { background: linear-gradient(135deg,#3b82f6,#2563eb); }
+        .mobile-sticky-scan { background: linear-gradient(135deg,#22c55e,#16a34a); }
+        .mobile-sticky-catalog { background: linear-gradient(135deg,#a855f7,#7c3aed); }
         @media (max-width: 768px) {
-            body { padding-bottom: 100px; }
+            body { padding-bottom: 105px; }
             .mobile-sticky-actions { display: grid; }
         }
         @media (min-width: 769px) {
@@ -863,14 +869,20 @@
         }
     </script>
 
-    <!-- Pintasan tetap di bawah layar HP -->
-    <nav class="mobile-sticky-actions" aria-label="Pintasan cepat">
+    <!-- Empat pintasan utama tetap terlihat di bawah layar HP -->
+    <nav class="mobile-sticky-actions" aria-label="Menu utama">
         <button type="button" class="mobile-sticky-btn mobile-sticky-cashier" onclick="switchPage('kasir', null)">
             <i class="fas fa-cash-register" aria-hidden="true"></i><span>Kasir</span>
         </button>
         <button type="button" class="mobile-sticky-btn mobile-sticky-stock" onclick="aksesMenuEdit()">
             <i class="fas fa-box-open" aria-hidden="true"></i><span>Kelola Stok</span>
         </button>
+        <button type="button" class="mobile-sticky-btn mobile-sticky-scan" onclick="bukaScannerTop()">
+            <i class="fas fa-barcode" aria-hidden="true"></i><span>Scan</span>
+        </button>
+        <a class="mobile-sticky-btn mobile-sticky-catalog" href="katalog.html" target="_blank" rel="noopener">
+            <i class="fas fa-store" aria-hidden="true"></i><span>Katalog</span>
+        </a>
     </nav>
 
 </body>
