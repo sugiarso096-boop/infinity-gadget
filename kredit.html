@@ -162,7 +162,7 @@ function openRecordPayment(){if(!isAdmin()){showPage('payments');return}showPage
 function renderDashboard(){
  const active=cachedCredits.filter(c=>Number(c.remaining??c.remainingAmount??c.balance??0)>0);
  const paidOff=cachedCredits.filter(c=>Number(c.remaining??c.remainingAmount??c.balance??0)<=0 || String(c.status||'').toLowerCase()==='lunas');
- const late=cachedCredits.filter(c=>c.late===true||String(c.late).toLowerCase()==='true'||String(c.status||'').toLowerCase().includes('terlambat'));
+ const late=cachedCredits.filter(c=>c.late===true||String(c.late).toLowerCase()==='true');
  const totalRemaining=cachedCredits.reduce((sum,c)=>sum+Number(c.remaining??c.remainingAmount??c.balance??0),0);
  document.getElementById('statRemainingHero').textContent=money(totalRemaining);
  document.getElementById('metricActive').textContent=active.length;
@@ -190,7 +190,7 @@ function renderCredits(){
   const id=c.creditId||c.id||c.code||'';
   const remaining=c.remaining??c.remainingAmount??c.balance??0;
   const deleteButton=isAdmin()?`<div class="rowbtn"><button class="danger" onclick="deleteCredit('${esc(id)}','${esc(name)}')">Hapus kredit</button></div>`:'';
-  const price=Number(c.price||c.totalPrice||0);const down=Number(c.downPayment||0);const tenor=Number(c.tenor||0);const rawMonthly=c.monthlyInstallment??c.monthlyPayment??c.installmentAmount??c.monthlyAmount;const monthly=rawMonthly!==undefined&&rawMonthly!==null&&rawMonthly!==''?Number(rawMonthly):(tenor>0?Math.ceil(Math.max(0,price-down)/tenor):0);return `<article class="item"><div class="itemtop"><div><h4>${esc(name)}</h4><p>${esc(device)} • ID: ${esc(id)}</p></div><span class="pill ${Number(remaining)>0?'red':''}">${Number(remaining)>0?'Berjalan':'Lunas'}</span></div><p>Harga kredit: <strong>${money(price)}</strong></p><p>Cicilan per bulan: <strong>${monthly>0?money(monthly):'Belum tersedia'}</strong></p><p>Sisa tagihan: <strong>${money(remaining)}</strong></p><p>Nomor HP: ${esc(c.phone||c.customerPhone||'-')}</p>${deleteButton}</article>`;
+  const price=Number(c.price||c.totalPrice||0);const down=Number(c.downPayment||0);const tenor=Number(c.tenor||0);const rawMonthly=c.monthlyInstallment??c.monthlyPayment??c.installmentAmount??c.monthlyAmount;const monthly=rawMonthly!==undefined&&rawMonthly!==null&&rawMonthly!==''?Number(rawMonthly):(tenor>0?Math.ceil(Math.max(0,price-down)/tenor):0);return `<article class="item"><div class="itemtop"><div><h4>${esc(name)}</h4><p>${esc(device)} • ID: ${esc(id)}</p></div><span class="pill ${(Number(remaining)>0&&(c.late===true||String(c.late).toLowerCase()==='true'))?'red':(Number(remaining)>0?'':'')}">${Number(remaining)<=0?'Lunas':((c.late===true||String(c.late).toLowerCase()==='true')?'Terlambat':'Berjalan')}</span></div><p>Harga kredit: <strong>${money(price)}</strong></p><p>Cicilan per bulan: <strong>${monthly>0?money(monthly):'Belum tersedia'}</strong></p><p>Sisa tagihan: <strong>${money(remaining)}</strong></p><p>Nomor HP: ${esc(c.phone||c.customerPhone||'-')}</p>${deleteButton}</article>`;
  }).join('');
 }
 async function loadPayments(){
