@@ -62,8 +62,8 @@
           <label class="field">Merek dan tipe HP<input name="device" required></label>
           <label class="field">Harga kredit (Rp)<input name="price" type="number" min="1" required></label>
           <label class="field">Uang muka (Rp)<input name="downPayment" type="number" min="0" value="0" required></label>
-          <label class="field">Lama cicilan (bulan)<input name="tenor" type="number" min="1" value="12" required></label>
-          <label class="field">Cicilan per bulan (Rp)<input name="monthlyPayment" type="number" min="1" required></label>
+          <label class="field">Lama cicilan (bulan)<input name="tenor" type="number" min="1" max="60" value="12" required></label>
+          <label class="field">PIN pelanggan (6 digit)<input name="customerPin" type="password" inputmode="numeric" pattern="[0-9]{6}" minlength="6" maxlength="6" required placeholder="Buat PIN 6 digit"></label>
           <label class="field">Tanggal mulai<input name="startDate" type="date"></label>
           <label class="field">Catatan<input name="notes"></label>
           <div><button class="primary" type="submit">Simpan kredit</button></div>
@@ -77,9 +77,9 @@
         <form id="paymentForm">
           <label class="field">ID kredit<input name="creditId" required placeholder="Masukkan ID kredit"></label>
           <label class="field">Jumlah pembayaran (Rp)<input name="amount" type="number" min="1" required></label>
-          <label class="field">Tanggal pembayaran<input name="paymentDate" type="date"></label>
+          <label class="field">Periode cicilan (opsional, format YYYY-MM)<input name="period" placeholder="2026-10"></label>
           <label class="field">Metode<select name="method"><option>Tunai</option><option>Transfer bank</option><option>QRIS</option><option>Lainnya</option></select></label>
-          <label class="field">Catatan / nomor bukti<input name="notes"></label>
+          <label class="field">Catatan / nomor bukti<input name="note"></label>
           <button class="primary" type="submit">Simpan pembayaran</button>
         </form>
       </div>
@@ -101,20 +101,22 @@ function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 function isAdmin(){return !!(currentUser&&(currentUser.role==='admin'||currentUser.isAdmin===true||currentUser.admin===true))}
 async function api(action,data={}){
   // text/plain avoids the browser's JSON preflight in many deployments; Google Apps Script CORS behavior must still be tested.
-  const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,data,token:sessionToken})});
+  const payload = {...data};
+  if (action !== 'login' && sessionToken) payload.token = sessionToken;
+  const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action,data:payload})});
   const raw=await res.text();
-  let result;try{result=JSON.parse(raw)}catch(e){throw new Error('Respons API bukan JSON. Periksa deployment Web App dan izin akses.')}
-  if(!res.ok||result.ok===false||result.success===false)throw new Error(result.message||result.error||'Permintaan gagal');
-  return result;
+  let result;try{result=JSON.parse(raw)}catch(e){throw new Error('Respons API bukan JSON. Kemungkinan koneksi GitHub Pages ke Apps Script terkena CORS atau izin deployment belum benar.')}
+  if(!res.ok||result.ok===false||result.success===false)throw new Error(result.error||result.message||'Permintaan gagal');
+  return result.data ?? result;
 }
 function extractArray(result,keys){for(const k of keys){if(Array.isArray(result[k]))return result[k]}if(result.data&&Array.isArray(result.data))return result.data;return []}
-function extractUser(result){return result.user||result.data?.user||result.data||null}
+function extractUser(result){return result.user||result.data?.user||result.data||result||null}
 document.getElementById('loginForm').addEventListener('submit',async e=>{
  e.preventDefault();status('loginStatus','Menghubungkan ke server…');
  try{
-  const result=await api('login',{username:document.getElementById('loginId').value.trim(),loginId:document.getElementById('loginId').value.trim(),phone:document.getElementById('loginId').value.trim(),password:document.getElementById('loginPin').value,pin:document.getElementById('loginPin').value});
-  sessionToken=result.token||result.sessionToken||result.data?.token||'';
-  currentUser=extractUser(result);
+  const result=await api('login',{login:document.getElementById('loginId').value.trim(),pin:document.getElementById('loginPin').value});
+  sessionToken=result.token||result.sessionToken||'';
+  currentUser=result.user||result;
   if(!sessionToken)throw new Error('Login merespons, tetapi token sesi tidak ditemukan. Periksa format respons fungsi login di Code.gs.');
   document.getElementById('loginPage').classList.add('hidden');document.getElementById('appPage').classList.remove('hidden');document.getElementById('logoutBtn').classList.remove('hidden');
   document.getElementById('welcome').textContent='Halo, '+(currentUser?.name||currentUser?.customerName||currentUser?.username||document.getElementById('loginId').value);
@@ -136,7 +138,7 @@ async function loadPayments(){
  catch(e){document.getElementById('paymentList').innerHTML='<div class="empty">Riwayat pembayaran belum bisa dimuat.</div>';status('appStatus','Gagal memuat pembayaran: '+e.message,true)}
 }
 function renderPayments(){const box=document.getElementById('paymentList');if(!cachedPayments.length){box.innerHTML='<div class="empty">Belum ada riwayat pembayaran.</div>';return}box.innerHTML=cachedPayments.map(p=>`<article class="item"><div class="itemtop"><div><h4>${money(p.amount||p.paymentAmount||0)}</h4><p>ID kredit: ${esc(p.creditId||p.credit_id||'-')}</p></div><span class="pill">Tercatat</span></div><p>Tanggal: ${esc(p.paymentDate||p.date||'-')} • Metode: ${esc(p.method||'-')}</p></article>`).join('')}
-document.getElementById('creditForm').addEventListener('submit',async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target).entries());['price','downPayment','tenor','monthlyPayment'].forEach(k=>d[k]=Number(d[k]||0));try{await api('createCredit',d);status('appStatus','Data kredit berhasil dikirim.');e.target.reset();await loadCredits()}catch(err){status('appStatus','Gagal menyimpan kredit: '+err.message,true)}});
+document.getElementById('creditForm').addEventListener('submit',async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target).entries());['price','downPayment','tenor'].forEach(k=>d[k]=Number(d[k]||0));try{await api('createCredit',d);status('appStatus','Data kredit berhasil dikirim.');e.target.reset();await loadCredits()}catch(err){status('appStatus','Gagal menyimpan kredit: '+err.message,true)}});
 document.getElementById('paymentForm').addEventListener('submit',async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target).entries());d.amount=Number(d.amount);try{await api('recordPayment',d);status('appStatus','Pembayaran berhasil dikirim.');e.target.reset();await refreshAll()}catch(err){status('appStatus','Gagal menyimpan pembayaran: '+err.message,true)}});
 async function logout(){try{if(sessionToken)await api('logout',{})}catch(e){}sessionToken='';currentUser=null;cachedCredits=[];cachedPayments=[];document.getElementById('appPage').classList.add('hidden');document.getElementById('loginPage').classList.remove('hidden');document.getElementById('logoutBtn').classList.add('hidden');document.getElementById('loginPin').value='';status('loginStatus','Anda sudah keluar.');}
 </script>
