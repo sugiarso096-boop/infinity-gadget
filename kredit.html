@@ -20,141 +20,141 @@
 </head>
 <body class="flex justify-center items-center min-h-screen bg-gray-200 sm:p-6">
 
-    <!-- Container Utama: Full Layar Komputer -->
+    <!-- Container Utama -->
     <div class="w-full max-w-[1400px] bg-white shadow-2xl relative sm:rounded-[40px] overflow-hidden flex flex-col h-screen sm:h-[92vh]">
         
         <div class="flex-1 overflow-y-auto pb-24">
             <!-- Header Merah -->
-            <div class="bg-gradient-to-r from-red-600 to-red-800 p-8 md:p-14 rounded-b-[40px] md:rounded-b-[60px] text-white shadow-lg relative z-10">
-                <div class="flex items-center justify-between mb-6 md:mb-10">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-black text-red-500 font-bold p-2 rounded-lg text-xl md:text-2xl shadow-md">IG</div>
+            <div class="bg-gradient-to-r from-red-600 to-red-800 p-6 md:p-14 rounded-b-[30px] md:rounded-b-[60px] text-white shadow-lg relative z-10">
+                <div class="flex items-center justify-between mb-4 md:mb-10">
+                    <div class="flex items-center gap-3 md:gap-4">
+                        <div class="bg-black text-red-500 font-bold p-1.5 md:p-2 rounded-lg text-lg md:text-2xl shadow-md">IG</div>
                         <div>
-                            <h1 class="font-bold text-2xl md:text-3xl leading-tight">INFINITY GADGET</h1>
-                            <p class="text-sm md:text-base text-red-200">Smart Credit Center</p>
+                            <h1 class="font-bold text-xl md:text-3xl leading-tight">INFINITY GADGET</h1>
+                            <p class="text-[11px] md:text-base text-red-200">Smart Credit Center</p>
                         </div>
                     </div>
-                    <!-- Tombol Keluar (Kembali ke Kasir) -->
-                    <a href="index.html?tab=kasir" class="bg-white/20 hover:bg-white/30 text-white text-sm font-semibold px-5 py-2.5 rounded-full backdrop-blur-sm transition border border-white/30 flex items-center gap-2 cursor-pointer shadow-sm">
-                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Keluar
+                    <!-- Tombol Keluar -->
+                    <a href="index.html?tab=kasir" class="bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm font-semibold px-3 py-1.5 md:px-5 md:py-2.5 rounded-full backdrop-blur-sm transition border border-white/30 flex items-center gap-1.5 md:gap-2 cursor-pointer shadow-sm">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> <span class="hidden sm:inline">Keluar</span>
                     </a>
                 </div>
                 
-                <p class="text-base md:text-lg font-medium mt-4 text-red-100 tracking-wider">TOTAL SISA KREDIT</p>
-                <h2 id="total-sisa" class="text-5xl md:text-7xl font-extrabold mb-6 drop-shadow-md tracking-tight">Memuat...</h2>
-                <div class="bg-white/20 inline-block px-5 py-2.5 rounded-full backdrop-blur-sm border border-white/20 shadow-sm">
-                    <p class="text-sm md:text-base font-medium">Dari <span id="count-aktif-label" class="font-bold">...</span> pelanggan aktif</p>
+                <p class="text-sm md:text-lg font-medium mt-4 text-red-100 tracking-wider">TOTAL SISA KREDIT</p>
+                <h2 id="total-sisa" class="text-4xl md:text-7xl font-extrabold mb-4 md:mb-6 drop-shadow-md tracking-tight">Memuat...</h2>
+                <div class="bg-white/20 inline-block px-4 py-1.5 md:px-5 md:py-2.5 rounded-full backdrop-blur-sm border border-white/20 shadow-sm">
+                    <p class="text-[11px] md:text-base font-medium">Dari <span id="count-aktif-label" class="font-bold">...</span> pelanggan aktif</p>
                 </div>
             </div>
 
             <!-- Stats Boxes (3 Kotak Putih) -->
-            <div class="flex justify-between bg-white mx-6 md:mx-16 -mt-10 md:-mt-14 rounded-3xl shadow-xl p-6 md:p-10 relative z-20 border border-gray-100">
-                <div class="text-center w-1/3 border-r border-gray-100 px-4">
-                    <div class="bg-red-50 text-red-600 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-sm"><i class="fa-solid fa-users text-xl md:text-2xl"></i></div>
-                    <p class="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-widest mb-1 md:mb-2">Aktif</p>
-                    <p id="count-aktif" class="text-3xl md:text-5xl font-extrabold text-gray-800">...</p>
+            <div class="flex justify-between bg-white mx-4 md:mx-16 -mt-8 md:-mt-14 rounded-2xl md:rounded-3xl shadow-xl p-4 md:p-10 relative z-20 border border-gray-100">
+                <div class="text-center w-1/3 border-r border-gray-100 px-1 md:px-4">
+                    <div class="bg-red-50 text-red-600 w-10 h-10 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-4 shadow-sm"><i class="fa-solid fa-users text-base md:text-2xl"></i></div>
+                    <p class="text-[9px] md:text-sm text-gray-500 font-bold uppercase tracking-widest mb-1 md:mb-2">Aktif</p>
+                    <p id="count-aktif" class="text-2xl md:text-5xl font-extrabold text-gray-800">...</p>
                 </div>
-                <div class="text-center w-1/3 border-r border-gray-100 px-4">
-                    <div class="bg-orange-50 text-orange-500 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-sm"><i class="fa-solid fa-triangle-exclamation text-xl md:text-2xl"></i></div>
-                    <p class="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-widest mb-1 md:mb-2">Terlambat</p>
-                    <p id="count-terlambat" class="text-3xl md:text-5xl font-extrabold text-gray-800">...</p>
+                <div class="text-center w-1/3 border-r border-gray-100 px-1 md:px-4">
+                    <div class="bg-orange-50 text-orange-500 w-10 h-10 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-4 shadow-sm"><i class="fa-solid fa-triangle-exclamation text-base md:text-2xl"></i></div>
+                    <p class="text-[9px] md:text-sm text-gray-500 font-bold uppercase tracking-widest mb-1 md:mb-2">Terlambat</p>
+                    <p id="count-terlambat" class="text-2xl md:text-5xl font-extrabold text-gray-800">...</p>
                 </div>
-                <div class="text-center w-1/3 px-4">
-                    <div class="bg-green-50 text-green-500 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-sm"><i class="fa-solid fa-check text-xl md:text-2xl"></i></div>
-                    <p class="text-xs md:text-sm text-gray-500 font-bold uppercase tracking-widest mb-1 md:mb-2">Lunas</p>
-                    <p id="count-lunas" class="text-3xl md:text-5xl font-extrabold text-gray-800">...</p>
+                <div class="text-center w-1/3 px-1 md:px-4">
+                    <div class="bg-green-50 text-green-500 w-10 h-10 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-4 shadow-sm"><i class="fa-solid fa-check text-base md:text-2xl"></i></div>
+                    <p class="text-[9px] md:text-sm text-gray-500 font-bold uppercase tracking-widest mb-1 md:mb-2">Lunas</p>
+                    <p id="count-lunas" class="text-2xl md:text-5xl font-extrabold text-gray-800">...</p>
                 </div>
             </div>
 
-            <!-- Tombol Aksi Utama (Membentang Penuh) -->
-            <div class="flex flex-col md:flex-row gap-5 md:gap-8 px-6 md:px-16 mt-10 md:mt-12">
-                <button onclick="toggleModal('modal-kredit')" class="bg-red-600 hover:bg-red-700 text-white rounded-3xl p-6 md:p-8 w-full flex items-center gap-6 cursor-pointer shadow-lg shadow-red-500/30 transition transform hover:-translate-y-1 text-left">
-                    <div class="bg-white/20 text-white rounded-full w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shrink-0"><i class="fa-solid fa-plus text-3xl"></i></div>
+            <!-- Tombol Aksi Utama -->
+            <div class="flex flex-col md:flex-row gap-3 md:gap-8 px-5 md:px-16 mt-6 md:mt-12">
+                <button onclick="toggleModal('modal-kredit')" class="bg-red-600 hover:bg-red-700 text-white rounded-2xl md:rounded-3xl p-4 md:p-8 w-full flex items-center gap-4 md:gap-6 cursor-pointer shadow-lg shadow-red-500/30 transition transform hover:-translate-y-1 text-left">
+                    <div class="bg-white/20 text-white rounded-full w-12 h-12 md:w-20 md:h-20 flex items-center justify-center shrink-0"><i class="fa-solid fa-plus text-xl md:text-3xl"></i></div>
                     <div>
-                        <p class="font-bold text-xl md:text-2xl mb-1">Buat kredit baru</p>
-                        <p class="text-sm md:text-base text-red-200">Daftarkan HP & Pelanggan</p>
+                        <p class="font-bold text-base md:text-2xl mb-0.5 md:mb-1">Buat kredit baru</p>
+                        <p class="text-[11px] md:text-base text-red-200">Daftarkan HP & Pelanggan</p>
                     </div>
                 </button>
-                <button onclick="toggleModal('modal-cicilan')" class="bg-[#f0f4f8] hover:bg-[#e1e8f0] text-blue-900 border-2 border-blue-100 rounded-3xl p-6 md:p-8 w-full flex items-center gap-6 cursor-pointer shadow-md transition transform hover:-translate-y-1 text-left">
-                    <div class="bg-blue-900 text-white rounded-full w-16 h-16 md:w-20 md:h-20 flex items-center justify-center shrink-0 shadow-inner"><i class="fa-solid fa-wallet text-2xl md:text-3xl"></i></div>
+                <button onclick="toggleModal('modal-cicilan')" class="bg-[#f0f4f8] hover:bg-[#e1e8f0] text-blue-900 border-2 border-blue-100 rounded-2xl md:rounded-3xl p-4 md:p-8 w-full flex items-center gap-4 md:gap-6 cursor-pointer shadow-md transition transform hover:-translate-y-1 text-left">
+                    <div class="bg-blue-900 text-white rounded-full w-12 h-12 md:w-20 md:h-20 flex items-center justify-center shrink-0 shadow-inner"><i class="fa-solid fa-wallet text-lg md:text-3xl"></i></div>
                     <div>
-                        <p class="font-bold text-xl md:text-2xl mb-1">Terima cicilan</p>
-                        <p class="text-sm md:text-base text-blue-500">Catat pembayaran masuk</p>
+                        <p class="font-bold text-base md:text-2xl mb-0.5 md:mb-1">Terima cicilan</p>
+                        <p class="text-[11px] md:text-base text-blue-500">Catat pembayaran masuk</p>
                     </div>
                 </button>
             </div>
 
             <!-- Daftar Pantauan Kredit -->
-            <div class="px-6 md:px-16 mt-10 md:mt-12 mb-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bold text-gray-800 text-xl md:text-2xl">Pantauan kredit</h3>
-                    <button class="text-sm md:text-base text-red-600 font-bold hover:underline flex items-center gap-2">Semua data <i class="fa-solid fa-chevron-right text-xs"></i></button>
+            <div class="px-5 md:px-16 mt-8 md:mt-12 mb-8">
+                <div class="flex justify-between items-center mb-4 md:mb-6">
+                    <h3 class="font-bold text-gray-800 text-lg md:text-2xl">Pantauan kredit</h3>
+                    <button class="text-xs md:text-base text-red-600 font-bold hover:underline flex items-center gap-1.5 md:gap-2">Semua data <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
                 </div>
                 
-                <div id="pantauan-list" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <div id="pantauan-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
                     <!-- Loading placeholder -->
                     <div class="col-span-1 md:col-span-2 text-center py-10 text-gray-400">
-                        <i class="fa-solid fa-circle-notch fa-spin mb-3 text-3xl"></i><br>
-                        <span class="text-lg">Memuat data pelanggan...</span>
+                        <i class="fa-solid fa-circle-notch fa-spin mb-3 text-2xl md:text-3xl"></i><br>
+                        <span class="text-sm md:text-lg">Memuat data pelanggan...</span>
                     </div>
                 </div>
             </div>
         </div>
         
         <!-- Bottom Navigation -->
-        <div class="absolute bottom-0 w-full bg-white border-t border-gray-100 flex justify-around px-4 py-5 z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] sm:rounded-b-[40px]">
+        <div class="absolute bottom-0 w-full bg-white border-t border-gray-100 flex justify-around px-2 md:px-4 py-3 md:py-5 z-30 shadow-[0_-10px_30px_rgba(0,0,0,0.05)] sm:rounded-b-[40px]">
             <a href="index.html?tab=kasir" class="text-red-600 flex flex-col items-center w-1/4 transition hover:scale-105 cursor-pointer">
-                <i class="fa-solid fa-house text-2xl md:text-3xl mb-2"></i>
-                <span class="text-xs md:text-sm font-bold">Beranda</span>
+                <i class="fa-solid fa-house text-xl md:text-3xl mb-1 md:mb-2"></i>
+                <span class="text-[10px] md:text-sm font-bold">Beranda</span>
             </a>
             <button class="text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition hover:scale-105" onclick="alert('Fitur sedang dikembangkan')">
-                <i class="fa-solid fa-users text-2xl md:text-3xl mb-2"></i>
-                <span class="text-xs md:text-sm font-medium">Pelanggan</span>
+                <i class="fa-solid fa-users text-xl md:text-3xl mb-1 md:mb-2"></i>
+                <span class="text-[10px] md:text-sm font-medium">Pelanggan</span>
             </button>
             <button class="text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition hover:scale-105" onclick="alert('Fitur sedang dikembangkan')">
-                <i class="fa-solid fa-receipt text-2xl md:text-3xl mb-2"></i>
-                <span class="text-xs md:text-sm font-medium">Cicilan</span>
+                <i class="fa-solid fa-receipt text-xl md:text-3xl mb-1 md:mb-2"></i>
+                <span class="text-[10px] md:text-sm font-medium">Cicilan</span>
             </button>
             <button class="text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition hover:scale-105" onclick="alert('Fitur sedang dikembangkan')">
-                <i class="fa-solid fa-chart-simple text-2xl md:text-3xl mb-2"></i>
-                <span class="text-xs md:text-sm font-medium">Laporan</span>
+                <i class="fa-solid fa-chart-simple text-xl md:text-3xl mb-1 md:mb-2"></i>
+                <span class="text-[10px] md:text-sm font-medium">Laporan</span>
             </button>
         </div>
     </div>
 
     <!-- MODAL 1: FORM BUAT KREDIT -->
     <div id="modal-kredit" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex justify-center items-end sm:items-center p-4">
-        <div class="bg-white w-full max-w-2xl rounded-t-[30px] sm:rounded-[30px] p-8 md:p-10 transform transition-all max-h-[90vh] overflow-y-auto shadow-2xl">
-            <div class="flex justify-between items-center mb-8">
-                <h3 class="font-bold text-2xl md:text-3xl text-gray-800">Buat Kredit Baru</h3>
-                <button onclick="toggleModal('modal-kredit')" class="bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-600 w-12 h-12 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+        <div class="bg-white w-full max-w-2xl rounded-t-[25px] sm:rounded-[30px] p-6 md:p-10 transform transition-all max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div class="flex justify-between items-center mb-6 md:mb-8">
+                <h3 class="font-bold text-xl md:text-3xl text-gray-800">Buat Kredit Baru</h3>
+                <button onclick="toggleModal('modal-kredit')" class="bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-600 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <form id="form-kredit" onsubmit="submitKredit(event)" class="space-y-5">
-                <div><label class="block text-sm font-bold text-gray-600 mb-2">Nama Lengkap</label><input type="text" id="k_nama" required class="w-full p-4 border-2 border-gray-100 rounded-2xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-base"></div>
-                <div><label class="block text-sm font-bold text-gray-600 mb-2">No. WhatsApp</label><input type="number" id="k_hp" required class="w-full p-4 border-2 border-gray-100 rounded-2xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-base"></div>
-                <div><label class="block text-sm font-bold text-gray-600 mb-2">Tipe HP / Barang</label><input type="text" id="k_tipe" required class="w-full p-4 border-2 border-gray-100 rounded-2xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-base"></div>
-                <div class="flex gap-4">
-                    <div class="w-1/2"><label class="block text-sm font-bold text-gray-600 mb-2">Total Harga</label><input type="number" id="k_harga" required class="w-full p-4 border-2 border-gray-100 rounded-2xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-base"></div>
-                    <div class="w-1/2"><label class="block text-sm font-bold text-gray-600 mb-2">Sisa Kredit Awal</label><input type="number" id="k_sisa" required class="w-full p-4 border-2 border-gray-100 rounded-2xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-base"></div>
+            <form id="form-kredit" onsubmit="submitKredit(event)" class="space-y-4 md:space-y-5">
+                <div><label class="block text-xs md:text-sm font-bold text-gray-600 mb-1.5 md:mb-2">Nama Lengkap</label><input type="text" id="k_nama" required class="w-full p-3 md:p-4 border-2 border-gray-100 rounded-xl md:rounded-2xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-sm md:text-base"></div>
+                <div><label class="block text-xs md:text-sm font-bold text-gray-600 mb-1.5 md:mb-2">No. WhatsApp</label><input type="number" id="k_hp" required class="w-full p-3 md:p-4 border-2 border-gray-100 rounded-xl md:rounded-2xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-sm md:text-base"></div>
+                <div><label class="block text-xs md:text-sm font-bold text-gray-600 mb-1.5 md:mb-2">Tipe HP / Barang</label><input type="text" id="k_tipe" required class="w-full p-3 md:p-4 border-2 border-gray-100 rounded-xl md:rounded-2xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-sm md:text-base"></div>
+                <div class="flex gap-3 md:gap-4">
+                    <div class="w-1/2"><label class="block text-xs md:text-sm font-bold text-gray-600 mb-1.5 md:mb-2">Total Harga</label><input type="number" id="k_harga" required class="w-full p-3 md:p-4 border-2 border-gray-100 rounded-xl md:rounded-2xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-sm md:text-base"></div>
+                    <div class="w-1/2"><label class="block text-xs md:text-sm font-bold text-gray-600 mb-1.5 md:mb-2">Sisa Kredit Awal</label><input type="number" id="k_sisa" required class="w-full p-3 md:p-4 border-2 border-gray-100 rounded-xl md:rounded-2xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-sm md:text-base"></div>
                 </div>
-                <div><label class="block text-sm font-bold text-gray-600 mb-2">Jatuh Tempo (Cth: 15/11/2026)</label><input type="text" id="k_tempo" required class="w-full p-4 border-2 border-gray-100 rounded-2xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-base"></div>
-                <button type="submit" id="btn-kredit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold p-5 rounded-2xl mt-4 transition shadow-lg text-lg shadow-red-500/30">Simpan Data Kredit</button>
+                <div><label class="block text-xs md:text-sm font-bold text-gray-600 mb-1.5 md:mb-2">Jatuh Tempo (Cth: 15/11/2026)</label><input type="text" id="k_tempo" required class="w-full p-3 md:p-4 border-2 border-gray-100 rounded-xl md:rounded-2xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-sm md:text-base"></div>
+                <button type="submit" id="btn-kredit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold p-4 md:p-5 rounded-xl md:rounded-2xl mt-4 transition shadow-lg text-base md:text-lg shadow-red-500/30">Simpan Data Kredit</button>
             </form>
         </div>
     </div>
 
     <!-- MODAL 2: FORM TERIMA CICILAN -->
     <div id="modal-cicilan" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex justify-center items-end sm:items-center p-4">
-        <div class="bg-white w-full max-w-2xl rounded-t-[30px] sm:rounded-[30px] p-8 md:p-10 transform transition-all shadow-2xl">
-            <div class="flex justify-between items-center mb-8">
-                <h3 class="font-bold text-2xl md:text-3xl text-gray-800">Terima Cicilan</h3>
-                <button onclick="toggleModal('modal-cicilan')" class="bg-gray-100 hover:bg-blue-100 text-gray-500 hover:text-blue-600 w-12 h-12 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+        <div class="bg-white w-full max-w-2xl rounded-t-[25px] sm:rounded-[30px] p-6 md:p-10 transform transition-all shadow-2xl">
+            <div class="flex justify-between items-center mb-6 md:mb-8">
+                <h3 class="font-bold text-xl md:text-3xl text-gray-800">Terima Cicilan</h3>
+                <button onclick="toggleModal('modal-cicilan')" class="bg-gray-100 hover:bg-blue-100 text-gray-500 hover:text-blue-600 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <form id="form-cicilan" onsubmit="submitCicilan(event)" class="space-y-5">
-                <div><label class="block text-sm font-bold text-gray-600 mb-2">ID Kredit (Cth: KR-001)</label><input type="text" id="c_id" required class="w-full p-4 border-2 border-gray-100 rounded-2xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition uppercase font-mono text-base tracking-wider"></div>
-                <div><label class="block text-sm font-bold text-gray-600 mb-2">Nominal Pembayaran</label><input type="number" id="c_nominal" required class="w-full p-4 border-2 border-gray-100 rounded-2xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition text-base"></div>
-                <div><label class="block text-sm font-bold text-gray-600 mb-2">Keterangan / Catatan</label><input type="text" id="c_ket" required placeholder="Cth: Cicilan Bulan 1" class="w-full p-4 border-2 border-gray-100 rounded-2xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition text-base"></div>
-                <button type="submit" id="btn-cicilan" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-5 rounded-2xl mt-4 transition shadow-lg text-lg shadow-blue-500/30">Catat Pembayaran</button>
+            <form id="form-cicilan" onsubmit="submitCicilan(event)" class="space-y-4 md:space-y-5">
+                <div><label class="block text-xs md:text-sm font-bold text-gray-600 mb-1.5 md:mb-2">ID Kredit (Cth: KR-001)</label><input type="text" id="c_id" required class="w-full p-3 md:p-4 border-2 border-gray-100 rounded-xl md:rounded-2xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition uppercase font-mono text-sm md:text-base tracking-wider"></div>
+                <div><label class="block text-xs md:text-sm font-bold text-gray-600 mb-1.5 md:mb-2">Nominal Pembayaran</label><input type="number" id="c_nominal" required class="w-full p-3 md:p-4 border-2 border-gray-100 rounded-xl md:rounded-2xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition text-sm md:text-base"></div>
+                <div><label class="block text-xs md:text-sm font-bold text-gray-600 mb-1.5 md:mb-2">Keterangan / Catatan</label><input type="text" id="c_ket" required placeholder="Cth: Cicilan Bulan 1" class="w-full p-3 md:p-4 border-2 border-gray-100 rounded-xl md:rounded-2xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition text-sm md:text-base"></div>
+                <button type="submit" id="btn-cicilan" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-4 md:p-5 rounded-xl md:rounded-2xl mt-4 transition shadow-lg text-base md:text-lg shadow-blue-500/30">Catat Pembayaran</button>
             </form>
         </div>
     </div>
@@ -162,7 +162,7 @@
     <!-- LOADING SPINNER -->
     <div id="loading-overlay" class="fixed inset-0 bg-black/60 z-[60] hidden flex-col items-center justify-center backdrop-blur-sm">
         <div class="spinner mb-4"></div>
-        <p class="text-white font-semibold text-lg" id="loading-text">Memproses...</p>
+        <p class="text-white font-semibold text-base md:text-lg" id="loading-text">Memproses...</p>
     </div>
 
     <script>
@@ -200,26 +200,25 @@
                             const d = new Date(tanggalTeks); tanggalTeks = d.toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
                         }
 
-                        // Mengubah list menjadi Box Grid 2 Kolom untuk menyesuaikan ukuran Desktop
                         listContainer.innerHTML += `
-                            <div class="bg-white border-2 border-gray-50 hover:border-gray-100 rounded-3xl p-5 md:p-6 flex items-center justify-between transition cursor-pointer shadow-sm hover:shadow-md">
-                                <div class="flex items-center gap-4 md:gap-5">
-                                    <div class="${iconColor} text-white rounded-2xl w-14 h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 shadow-md"><i class="fa-solid ${icon} text-xl md:text-2xl"></i></div>
+                            <div class="bg-white border-2 border-gray-50 hover:border-gray-100 rounded-2xl md:rounded-3xl p-4 md:p-6 flex items-center justify-between transition cursor-pointer shadow-sm hover:shadow-md">
+                                <div class="flex items-center gap-3 md:gap-5">
+                                    <div class="${iconColor} text-white rounded-xl md:rounded-2xl w-10 h-10 md:w-16 md:h-16 flex items-center justify-center shrink-0 shadow-md"><i class="fa-solid ${icon} text-lg md:text-2xl"></i></div>
                                     <div>
-                                        <div class="flex items-center gap-2 mb-1">
-                                            <p class="font-bold text-base md:text-lg text-gray-800">${item.nama}</p>
-                                            <span class="text-[10px] md:text-xs font-mono text-gray-500 bg-gray-50 px-2 py-0.5 rounded-md border">${item.id}</span>
+                                        <div class="flex items-center gap-2 mb-0.5 md:mb-1">
+                                            <p class="font-bold text-sm md:text-lg text-gray-800">${item.nama}</p>
+                                            <span class="text-[9px] md:text-xs font-mono text-gray-500 bg-gray-50 px-1.5 md:px-2 py-0.5 rounded-md border">${item.id}</span>
                                         </div>
-                                        <p class="text-xs md:text-sm text-gray-500">${item.tipe} • Tempo: <span class="font-semibold">${tanggalTeks}</span></p>
+                                        <p class="text-[11px] md:text-sm text-gray-500">${item.tipe} • Tempo: <span class="font-semibold">${tanggalTeks}</span></p>
                                     </div>
                                 </div>
-                                <span class="${statusColor} text-xs md:text-sm font-extrabold px-4 py-2 rounded-full uppercase tracking-wide">${item.status}</span>
+                                <span class="${statusColor} text-[10px] md:text-sm font-extrabold px-2.5 py-1.5 md:px-4 md:py-2 rounded-full uppercase tracking-wide">${item.status}</span>
                             </div>`;
                     });
-                } else { listContainer.innerHTML = '<div class="col-span-1 md:col-span-2 text-center py-10 text-gray-400 text-lg">Belum ada data kredit aktif.</div>'; }
+                } else { listContainer.innerHTML = '<div class="col-span-1 md:col-span-2 text-center py-10 text-gray-400 text-sm md:text-lg">Belum ada data kredit aktif.</div>'; }
             } catch (error) {
                 document.getElementById('total-sisa').innerText = "Gagal memuat";
-                listContainer.innerHTML = '<div class="col-span-1 md:col-span-2 text-center py-10 text-red-400 text-lg">Koneksi ke database gagal.</div>';
+                listContainer.innerHTML = '<div class="col-span-1 md:col-span-2 text-center py-10 text-red-400 text-sm md:text-lg">Koneksi ke database gagal.</div>';
             }
         }
 
