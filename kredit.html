@@ -8,11 +8,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Custom animations */
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Loading overlay */
         #loading-overlay { backdrop-filter: blur(4px); }
         .spinner {
             border: 4px solid rgba(255, 255, 255, 0.3);
@@ -23,139 +31,278 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Responsive Sidebar */
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); position: absolute; z-index: 40; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0 !important; width: 100% !important; }
+        }
     </style>
 </head>
-<body class="flex justify-center min-h-screen bg-gray-200 sm:p-4 md:p-8">
+<body class="flex h-screen overflow-hidden text-gray-800">
 
-    <!-- Container Utama: Diperlebar menjadi max-w-2xl untuk tampilan komputer yang lebih nyaman -->
-    <div class="w-full max-w-2xl bg-white shadow-2xl relative sm:rounded-3xl overflow-hidden flex flex-col h-screen sm:h-[800px]">
+    <!-- ==================== SIDEBAR (KIRI) ==================== -->
+    <aside class="sidebar w-64 bg-[#1e293b] text-gray-300 flex flex-col h-full transition-transform duration-300 flex-shrink-0 relative z-30 shadow-xl">
+        <!-- Logo Area -->
+        <div class="h-20 flex items-center justify-center border-b border-gray-700/50 pt-4 pb-2">
+            <div class="text-center">
+                <i class="fa-solid fa-infinity text-3xl text-white mb-1"></i>
+                <h1 class="text-white font-bold tracking-widest text-lg leading-none">INFINITY</h1>
+                <p class="text-red-500 font-bold tracking-[0.2em] text-[10px] mt-1">G A D G E T</p>
+            </div>
+        </div>
+
+        <!-- Menu Utama -->
+        <div class="flex-1 overflow-y-auto py-6 px-4 space-y-8">
+            <div>
+                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-3 ml-2">MENU UTAMA</p>
+                <div class="space-y-1">
+                    <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition group">
+                        <i class="fa-solid fa-house w-5 text-center group-hover:text-red-500 transition"></i>
+                        <span class="font-medium text-sm">Dashboard Utama</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition group">
+                        <i class="fa-solid fa-cart-shopping w-5 text-center group-hover:text-red-500 transition"></i>
+                        <span class="font-medium text-sm">Kasir & Input</span>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-3 ml-2">SMART CREDIT</p>
+                <div class="space-y-1">
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-red-600 text-white shadow-md shadow-red-900/20">
+                        <i class="fa-solid fa-hand-holding-dollar w-5 text-center"></i>
+                        <span class="font-medium text-sm">Credit Center</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition group">
+                        <i class="fa-solid fa-users w-5 text-center group-hover:text-red-500 transition"></i>
+                        <span class="font-medium text-sm">Data Pelanggan</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition group">
+                        <i class="fa-solid fa-receipt w-5 text-center group-hover:text-red-500 transition"></i>
+                        <span class="font-medium text-sm">Riwayat Cicilan</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div>
+                <p class="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-3 ml-2">PUBLIK</p>
+                <div class="space-y-1">
+                    <a href="katalog.html" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition group">
+                        <i class="fa-solid fa-store w-5 text-center group-hover:text-red-500 transition"></i>
+                        <span class="font-medium text-sm">Buka Web Katalog</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ==================== MAIN CONTENT (KANAN) ==================== -->
+    <main class="main-content flex-1 flex flex-col h-full bg-[#f8fafc] w-[calc(100%-16rem)] relative overflow-hidden">
         
-        <div class="flex-1 overflow-y-auto pb-24">
-            <!-- Header -->
-            <div class="bg-gradient-to-r from-red-600 to-red-800 p-6 md:p-8 rounded-b-3xl text-white shadow-md relative z-10">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-black text-red-500 font-bold p-1.5 rounded text-lg">IG</div>
-                        <div>
-                            <h1 class="font-bold text-xl md:text-2xl leading-tight">INFINITY GADGET</h1>
-                            <p class="text-xs md:text-sm text-red-200">Smart Credit Center</p>
-                        </div>
-                    </div>
-                    <button class="bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-1.5 rounded-full backdrop-blur-sm transition border border-white/30">
-                        <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Keluar
-                    </button>
+        <!-- Navbar Atas -->
+        <header class="h-20 bg-white flex items-center justify-between px-8 border-b border-gray-100 flex-shrink-0 z-20 shadow-sm">
+            <!-- Search Bar (Dummy) -->
+            <div class="flex items-center max-w-md w-full relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 text-gray-400"></i>
+                <input type="text" placeholder="Cari pelanggan kredit..." class="w-full bg-gray-50 border-none rounded-full py-2.5 pl-11 pr-4 text-sm focus:ring-2 focus:ring-red-100 focus:bg-white transition outline-none">
+            </div>
+            
+            <!-- Profil Kasir -->
+            <div class="flex items-center gap-4">
+                <div class="text-right hidden sm:block">
+                    <p class="font-bold text-sm text-gray-800 leading-tight">Admin / Kasir</p>
+                    <p class="text-[11px] text-gray-500">Karyawan</p>
+                </div>
+                <div class="w-10 h-10 rounded-full bg-[#1e293b] text-white flex items-center justify-center font-bold text-sm shadow-md">
+                    AD
+                </div>
+            </div>
+        </header>
+
+        <!-- Area Konten Utama -->
+        <div class="flex-1 overflow-y-auto p-6 md:p-8 space-y-6">
+            
+            <!-- Banner / Hero Section -->
+            <div class="bg-gradient-to-r from-red-600 to-red-800 rounded-2xl p-8 text-white shadow-xl relative overflow-hidden flex justify-between items-center">
+                <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-white opacity-5"></div>
+                <div class="absolute bottom-0 right-32 -mb-10 w-32 h-32 rounded-full bg-black opacity-10"></div>
+                
+                <div class="relative z-10">
+                    <p class="text-red-200 font-semibold tracking-wider text-xs mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-bolt"></i> SMART CREDIT CENTER
+                    </p>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-2 drop-shadow-md">Ringankan Beban,<br>Tingkatkan Penjualan</h2>
+                    <p class="text-red-100 max-w-md text-sm leading-relaxed mt-4">
+                        Kelola cicilan pelanggan dengan mudah. Catat pendaftaran kredit baru dan terima pembayaran dalam satu dashboard terintegrasi.
+                    </p>
                 </div>
                 
-                <p class="text-sm md:text-base font-medium mt-6 text-red-100">TOTAL SISA KREDIT</p>
-                <h2 id="total-sisa" class="text-4xl md:text-5xl font-bold mb-4 drop-shadow-md">Memuat...</h2>
-                <div class="bg-white/20 inline-block px-4 py-2 rounded-full backdrop-blur-sm border border-white/20">
-                    <p class="text-sm md:text-base font-medium">Dari <span id="count-aktif-label" class="font-bold">...</span> pelanggan aktif</p>
+                <div class="hidden lg:flex relative z-10 pr-10">
+                    <div class="w-40 h-40 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 shadow-2xl">
+                         <i class="fa-solid fa-handshake-angle text-6xl text-white drop-shadow-lg"></i>
+                    </div>
                 </div>
             </div>
 
-            <!-- Stats Boxes -->
-            <div class="flex justify-between bg-white mx-5 md:mx-8 -mt-8 rounded-2xl shadow-lg p-4 md:p-6 relative z-20 border border-gray-100">
-                <div class="text-center w-1/3 border-r border-gray-100 px-1">
-                    <div class="bg-red-100 text-red-600 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-users md:text-lg"></i></div>
-                    <p class="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Aktif</p>
-                    <p id="count-aktif" class="text-2xl md:text-3xl font-bold text-gray-800">...</p>
-                </div>
-                <div class="text-center w-1/3 border-r border-gray-100 px-1">
-                    <div class="bg-orange-100 text-orange-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-triangle-exclamation md:text-lg"></i></div>
-                    <p class="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Terlambat</p>
-                    <p id="count-terlambat" class="text-2xl md:text-3xl font-bold text-gray-800">...</p>
-                </div>
-                <div class="text-center w-1/3 px-1">
-                    <div class="bg-green-100 text-green-500 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-2"><i class="fa-solid fa-check md:text-lg"></i></div>
-                    <p class="text-[10px] md:text-xs text-gray-500 font-semibold uppercase tracking-wider mb-1">Lunas</p>
-                    <p id="count-lunas" class="text-2xl md:text-3xl font-bold text-gray-800">...</p>
-                </div>
-            </div>
-
-            <!-- Tombol Aksi Utama -->
-            <div class="flex gap-4 px-5 md:px-8 mt-8">
-                <button onclick="toggleModal('modal-kredit')" class="bg-red-600 hover:bg-red-700 text-white rounded-2xl p-4 md:p-5 w-1/2 flex items-center gap-4 cursor-pointer shadow-md transition transform hover:scale-105 text-left">
-                    <div class="bg-white/20 text-white rounded-full w-12 h-12 flex items-center justify-center shrink-0"><i class="fa-solid fa-plus text-xl"></i></div>
+            <!-- Tombol Aksi Cepat -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button onclick="toggleModal('modal-kredit')" class="bg-white hover:bg-gray-50 border border-gray-100 rounded-2xl p-6 flex items-center gap-5 cursor-pointer shadow-sm transition transform hover:-translate-y-1 text-left group">
+                    <div class="bg-red-50 text-red-600 rounded-2xl w-16 h-16 flex items-center justify-center shrink-0 group-hover:bg-red-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-user-plus text-2xl"></i>
+                    </div>
                     <div>
-                        <p class="font-bold text-sm md:text-base">Buat kredit</p>
-                        <p class="text-[10px] md:text-xs text-red-200 mt-1">Daftarkan HP & User</p>
+                        <p class="font-bold text-gray-800 text-lg">Buat Kredit Baru</p>
+                        <p class="text-xs text-gray-500 mt-1">Daftarkan pelanggan dan barang yang dikredit.</p>
                     </div>
                 </button>
-                <button onclick="toggleModal('modal-cicilan')" class="bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-100 rounded-2xl p-4 md:p-5 w-1/2 flex items-center gap-4 cursor-pointer shadow-sm transition transform hover:scale-105 text-left">
-                    <div class="bg-blue-900 text-white rounded-full w-12 h-12 flex items-center justify-center shrink-0"><i class="fa-solid fa-wallet text-xl"></i></div>
+                <button onclick="toggleModal('modal-cicilan')" class="bg-white hover:bg-gray-50 border border-gray-100 rounded-2xl p-6 flex items-center gap-5 cursor-pointer shadow-sm transition transform hover:-translate-y-1 text-left group">
+                    <div class="bg-blue-50 text-blue-600 rounded-2xl w-16 h-16 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                        <i class="fa-solid fa-money-bill-wave text-2xl"></i>
+                    </div>
                     <div>
-                        <p class="font-bold text-sm md:text-base">Terima cicilan</p>
-                        <p class="text-[10px] md:text-xs text-blue-500 mt-1">Catat pembayaran</p>
+                        <p class="font-bold text-gray-800 text-lg">Terima Cicilan</p>
+                        <p class="text-xs text-gray-500 mt-1">Catat pembayaran angsuran dari pelanggan.</p>
                     </div>
                 </button>
             </div>
 
-            <!-- Daftar Pantauan Kredit -->
-            <div class="px-5 md:px-8 mt-8 mb-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-gray-800 text-lg md:text-xl">Pantauan kredit</h3>
-                    <button class="text-sm text-red-600 font-semibold hover:underline flex items-center">Semua data <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i></button>
+            <!-- Statistik & Summary -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Box Sisa Piutang -->
+                <div class="lg:col-span-2 bg-white border border-gray-100 rounded-2xl p-6 shadow-sm flex flex-col justify-center relative overflow-hidden">
+                    <div class="absolute right-0 bottom-0 opacity-5"><i class="fa-solid fa-coins text-9xl"></i></div>
+                    <div class="relative z-10 flex items-center justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span> TOTAL PIUTANG BERJALAN
+                            </p>
+                            <h3 id="total-sisa" class="text-4xl md:text-5xl font-extrabold text-gray-800 mb-2">Memuat...</h3>
+                            <p class="text-sm text-gray-500">Dari <span id="count-aktif-label" class="font-bold text-gray-700">...</span> pelanggan yang masih aktif.</p>
+                        </div>
+                    </div>
                 </div>
-                <div id="pantauan-list" class="space-y-3">
-                    <div class="text-center py-6 text-gray-400 text-sm">
-                        <i class="fa-solid fa-circle-notch fa-spin mb-2 text-2xl"></i><br>
-                        Memuat data pelanggan...
+
+                <!-- Box Status -->
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm flex flex-col gap-4 justify-center">
+                    <div class="flex justify-between items-center border-b border-gray-50 pb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-orange-100 text-orange-500 flex items-center justify-center"><i class="fa-solid fa-triangle-exclamation text-xs"></i></div>
+                            <span class="text-sm font-semibold text-gray-600">Terlambat Bayar</span>
+                        </div>
+                        <span id="count-terlambat" class="text-2xl font-bold text-gray-800">...</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-gray-50 pb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center"><i class="fa-solid fa-rotate text-xs"></i></div>
+                            <span class="text-sm font-semibold text-gray-600">Cicilan Lancar</span>
+                        </div>
+                        <span id="count-aktif" class="text-xl font-bold text-gray-800">...</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-green-100 text-green-500 flex items-center justify-center"><i class="fa-solid fa-check text-xs"></i></div>
+                            <span class="text-sm font-semibold text-gray-600">Telah Lunas</span>
+                        </div>
+                        <span id="count-lunas" class="text-xl font-bold text-gray-800">...</span>
                     </div>
                 </div>
             </div>
+
+            <!-- Tabel Data Pelanggan -->
+            <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden flex flex-col fade-in">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                    <h3 class="font-bold text-gray-800 text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-list-ul text-red-500"></i> Pantauan Kredit Pelanggan
+                    </h3>
+                    <button class="text-sm text-red-600 font-semibold hover:text-red-700 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg transition">Lihat Semua Data</button>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                                <th class="p-4 font-semibold w-1/4">Pelanggan</th>
+                                <th class="p-4 font-semibold w-1/4">Barang / Tipe</th>
+                                <th class="p-4 font-semibold w-1/4">Jatuh Tempo</th>
+                                <th class="p-4 font-semibold w-1/4 text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pantauan-list" class="divide-y divide-gray-100">
+                            <!-- Data akan dimuat dari JS -->
+                            <tr><td colspan="4" class="p-8 text-center text-gray-400 text-sm"><i class="fa-solid fa-circle-notch fa-spin mb-2 text-2xl"></i><br>Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="h-10"></div>
         </div>
-        
-        <!-- Bottom Nav -->
-        <div class="absolute bottom-0 w-full bg-white border-t border-gray-100 flex justify-around px-2 py-4 z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.05)] sm:rounded-b-3xl">
-            <button class="text-red-600 flex flex-col items-center w-1/4 transition"><i class="fa-solid fa-house text-xl md:text-2xl mb-1"></i><span class="text-[10px] md:text-xs font-bold">Beranda</span></button>
-            <button class="text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition"><i class="fa-solid fa-users text-xl md:text-2xl mb-1"></i><span class="text-[10px] md:text-xs font-medium">Pelanggan</span></button>
-            <button class="text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition"><i class="fa-solid fa-receipt text-xl md:text-2xl mb-1"></i><span class="text-[10px] md:text-xs font-medium">Cicilan</span></button>
-            <button class="text-gray-400 hover:text-red-500 flex flex-col items-center w-1/4 transition"><i class="fa-solid fa-chart-simple text-xl md:text-2xl mb-1"></i><span class="text-[10px] md:text-xs font-medium">Laporan</span></button>
-        </div>
-    </div>
+    </main>
+
+    <!-- ==================== MODAL OVERLAYS ==================== -->
 
     <!-- MODAL 1: FORM BUAT KREDIT -->
-    <div id="modal-kredit" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex justify-center items-end sm:items-center">
-        <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 md:p-8 transform transition-all max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold text-xl md:text-2xl text-gray-800">Buat Kredit Baru</h3>
+    <div id="modal-kredit" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex justify-center items-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-2xl p-8 transform transition-all shadow-2xl relative">
+            <div class="absolute top-0 left-0 w-full h-2 bg-red-600 rounded-t-2xl"></div>
+            <div class="flex justify-between items-center mb-6 mt-2">
+                <div>
+                    <h3 class="font-bold text-2xl text-gray-800">Buat Kredit Baru</h3>
+                    <p class="text-xs text-gray-500 mt-1">Masukkan detail pelanggan dan barang.</p>
+                </div>
                 <button onclick="toggleModal('modal-kredit')" class="bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-600 w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form id="form-kredit" onsubmit="submitKredit(event)" class="space-y-4">
-                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Nama Lengkap</label><input type="text" id="k_nama" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition"></div>
-                <div><label class="block text-xs font-semibold text-gray-600 mb-1">No. WhatsApp</label><input type="number" id="k_hp" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition"></div>
-                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Tipe HP / Barang</label><input type="text" id="k_tipe" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition"></div>
-                <div class="flex gap-3">
-                    <div class="w-1/2"><label class="block text-xs font-semibold text-gray-600 mb-1">Total Harga</label><input type="number" id="k_harga" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition"></div>
-                    <div class="w-1/2"><label class="block text-xs font-semibold text-gray-600 mb-1">Sisa Kredit</label><input type="number" id="k_sisa" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition"></div>
+                <div><label class="block text-xs font-bold text-gray-700 mb-1">Nama Lengkap</label><input type="text" id="k_nama" required class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-sm"></div>
+                <div><label class="block text-xs font-bold text-gray-700 mb-1">No. WhatsApp</label><input type="number" id="k_hp" required class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-sm"></div>
+                <div><label class="block text-xs font-bold text-gray-700 mb-1">Tipe HP / Barang</label><input type="text" id="k_tipe" required class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-sm"></div>
+                <div class="flex gap-4">
+                    <div class="w-1/2"><label class="block text-xs font-bold text-gray-700 mb-1">Total Harga (Rp)</label><input type="number" id="k_harga" required class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-sm"></div>
+                    <div class="w-1/2"><label class="block text-xs font-bold text-gray-700 mb-1">Sisa Kredit Awal (Rp)</label><input type="number" id="k_sisa" required class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-sm"></div>
                 </div>
-                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Jatuh Tempo (DD/MM/YYYY)</label><input type="text" id="k_tempo" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition"></div>
-                <button type="submit" id="btn-kredit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold p-4 rounded-xl mt-4 transition shadow-lg">Simpan Data Kredit</button>
+                <div><label class="block text-xs font-bold text-gray-700 mb-1">Jatuh Tempo Bulanan</label><input type="text" id="k_tempo" required placeholder="Contoh: Tanggal 15" class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-red-500 outline-none transition text-sm"></div>
+                <div class="pt-2">
+                    <button type="submit" id="btn-kredit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold p-4 rounded-xl transition shadow-lg shadow-red-600/30">Simpan Data Kredit</button>
+                </div>
             </form>
         </div>
     </div>
 
     <!-- MODAL 2: FORM TERIMA CICILAN -->
-    <div id="modal-cicilan" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex justify-center items-end sm:items-center">
-        <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl p-6 md:p-8 transform transition-all">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold text-xl md:text-2xl text-gray-800">Terima Cicilan</h3>
+    <div id="modal-cicilan" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] hidden flex justify-center items-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-2xl p-8 transform transition-all shadow-2xl relative">
+            <div class="absolute top-0 left-0 w-full h-2 bg-blue-600 rounded-t-2xl"></div>
+            <div class="flex justify-between items-center mb-6 mt-2">
+                <div>
+                    <h3 class="font-bold text-2xl text-gray-800">Terima Cicilan</h3>
+                    <p class="text-xs text-gray-500 mt-1">Catat pembayaran angsuran masuk.</p>
+                </div>
                 <button onclick="toggleModal('modal-cicilan')" class="bg-gray-100 hover:bg-blue-100 text-gray-500 hover:text-blue-600 w-10 h-10 rounded-full flex items-center justify-center transition"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form id="form-cicilan" onsubmit="submitCicilan(event)" class="space-y-4">
-                <div><label class="block text-xs font-semibold text-gray-600 mb-1">ID Kredit</label><input type="text" id="c_id" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition uppercase font-mono"></div>
-                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Nominal Pembayaran</label><input type="number" id="c_nominal" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition"></div>
-                <div><label class="block text-xs font-semibold text-gray-600 mb-1">Keterangan</label><input type="text" id="c_ket" required class="w-full p-3 border rounded-xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition"></div>
-                <button type="submit" id="btn-cicilan" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-4 rounded-xl mt-4 transition shadow-lg">Catat Pembayaran</button>
+                <div><label class="block text-xs font-bold text-gray-700 mb-1">ID Kredit Pelanggan</label><input type="text" id="c_id" required placeholder="Contoh: KR-001" class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition uppercase font-mono text-sm tracking-wider"></div>
+                <div><label class="block text-xs font-bold text-gray-700 mb-1">Nominal Pembayaran (Rp)</label><input type="number" id="c_nominal" required class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition text-sm"></div>
+                <div><label class="block text-xs font-bold text-gray-700 mb-1">Keterangan / Catatan</label><input type="text" id="c_ket" required placeholder="Contoh: Cicilan Bulan 1" class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-blue-500 outline-none transition text-sm"></div>
+                <div class="pt-2">
+                    <button type="submit" id="btn-cicilan" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold p-4 rounded-xl transition shadow-lg shadow-blue-600/30">Catat Pembayaran</button>
+                </div>
             </form>
         </div>
     </div>
     
-    <div id="loading-overlay" class="fixed inset-0 bg-black/50 z-[60] hidden flex-col items-center justify-center"><div class="spinner mb-4"></div><p class="text-white font-medium" id="loading-text">Memproses...</p></div>
+    <!-- LOADING SPINNER -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black/50 z-[200] hidden flex-col items-center justify-center">
+        <div class="spinner mb-4"></div>
+        <p class="text-white font-medium" id="loading-text">Memproses...</p>
+    </div>
 
     <script>
+        // =========================================================================
         // GANTI LINK DI BAWAH INI DENGAN LINK APPS SCRIPT ANDA
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwW4j4fNXHs1lWznqzcOkBjooh2lO-Mtaj5RjLXaWP6NXcbHCjAJDFAF1S6Lool9IPkTA/exec';
+        // =========================================================================
 
         function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
@@ -174,6 +321,7 @@
                 const data = await response.json();
                 
                 document.getElementById('total-sisa').innerText = formatRupiah(data.totalSisaKredit);
+                
                 document.getElementById('count-aktif').innerText = data.pelangganAktif;
                 document.getElementById('count-aktif-label').innerText = data.pelangganAktif;
                 document.getElementById('count-terlambat').innerText = data.terlambat;
@@ -184,44 +332,68 @@
                 
                 if (data.listPelanggan && data.listPelanggan.length > 0) {
                     data.listPelanggan.forEach(item => {
-                        let statusColor = "bg-gray-100 text-gray-600", iconColor = "bg-gray-400", icon = "fa-user";
-                        if(item.status === 'Terlambat') { statusColor = "bg-red-100 text-red-600"; iconColor = "bg-orange-500"; icon = "fa-triangle-exclamation"; } 
-                        else if(item.status === 'Berjalan') { statusColor = "bg-blue-100 text-blue-600"; iconColor = "bg-blue-500"; icon = "fa-rotate"; }
+                        let statusHtml = "";
                         
-                        // Perbaikan Bug Format Tanggal
+                        if(item.status === 'Terlambat') { 
+                            statusHtml = `<span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-[10px] font-bold bg-red-100 text-red-700 border border-red-200 uppercase tracking-wider"><span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>Terlambat</span>`; 
+                        } 
+                        else if(item.status === 'Berjalan') { 
+                            statusHtml = `<span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200 uppercase tracking-wider">Berjalan</span>`; 
+                        }
+                        
                         let tanggalTeks = item.tempo;
                         if (typeof tanggalTeks === 'string' && tanggalTeks.includes('T')) {
                             const d = new Date(tanggalTeks);
                             tanggalTeks = d.toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
                         }
 
+                        // Format baris tabel Desktop
                         listContainer.innerHTML += `
-                            <div class="bg-gray-50 hover:bg-gray-100 border border-gray-100 rounded-2xl p-4 md:p-5 flex items-center justify-between transition cursor-pointer">
-                                <div class="flex items-center gap-3 md:gap-4">
-                                    <div class="${iconColor} text-white rounded-xl w-10 h-10 md:w-12 md:h-12 flex items-center justify-center shrink-0 shadow-sm"><i class="fa-solid ${icon} md:text-lg"></i></div>
-                                    <div>
-                                        <div class="flex items-center gap-2">
-                                            <p class="font-bold text-sm md:text-base text-gray-800">${item.nama}</p>
-                                            <span class="text-[9px] md:text-[10px] font-mono text-gray-400 bg-white px-1.5 py-0.5 rounded border">${item.id}</span>
+                            <tr class="hover:bg-gray-50/50 transition cursor-pointer group">
+                                <td class="p-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center shrink-0 border border-gray-200 group-hover:bg-red-50 group-hover:text-red-500 group-hover:border-red-100 transition"><i class="fa-solid fa-user"></i></div>
+                                        <div>
+                                            <p class="font-bold text-sm text-gray-800">${item.nama}</p>
+                                            <p class="text-[10px] font-mono text-gray-400 mt-0.5">${item.id}</p>
                                         </div>
-                                        <p class="text-[11px] md:text-xs text-gray-500 mt-1">${item.tipe} • Tempo ${tanggalTeks}</p>
                                     </div>
-                                </div>
-                                <span class="${statusColor} text-[10px] md:text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide">${item.status}</span>
-                            </div>`;
+                                </td>
+                                <td class="p-4">
+                                    <p class="text-sm text-gray-700 font-medium">${item.tipe}</p>
+                                    <p class="text-xs text-gray-400">Sisa: <span class="font-semibold text-gray-600">${formatRupiah(item.sisa)}</span></p>
+                                </td>
+                                <td class="p-4">
+                                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                                        <i class="fa-regular fa-calendar text-gray-400"></i> ${tanggalTeks}
+                                    </div>
+                                </td>
+                                <td class="p-4 text-right">
+                                    ${statusHtml}
+                                </td>
+                            </tr>`;
                     });
                 } else {
-                    listContainer.innerHTML = '<div class="text-center py-6 text-gray-400 text-sm">Belum ada data kredit aktif.</div>';
+                    listContainer.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-gray-400 text-sm">Belum ada data kredit aktif.</td></tr>';
                 }
             } catch (error) {
                 document.getElementById('total-sisa').innerText = "Gagal memuat";
-                document.getElementById('pantauan-list').innerHTML = '<div class="text-center py-6 text-red-400 text-sm">Koneksi gagal.</div>';
+                document.getElementById('pantauan-list').innerHTML = '<tr><td colspan="4" class="p-8 text-center text-red-400 text-sm"><i class="fa-solid fa-triangle-exclamation mb-2 text-2xl"></i><br>Koneksi gagal. Periksa URL Apps Script.</td></tr>';
             }
         }
 
         window.onload = loadDashboardData;
 
-        function toggleModal(modalID) { document.getElementById(modalID).classList.toggle('hidden'); }
+        function toggleModal(modalID) { 
+            const modal = document.getElementById(modalID);
+            modal.classList.toggle('hidden'); 
+            if(!modal.classList.contains('hidden')) {
+                setTimeout(() => {
+                    const firstInput = modal.querySelector('input');
+                    if(firstInput) firstInput.focus();
+                }, 100);
+            }
+        }
 
         async function submitKredit(e) {
             e.preventDefault();
