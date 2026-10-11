@@ -314,16 +314,29 @@
                 foto_base64: fotoBase64
             };
             try { 
-                await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }); 
-                alert('Berhasil disimpan!'); document.getElementById('form-kredit').reset(); loadDashboardData(); 
-            } catch (err) { alert('Gagal mengirim data.'); } finally { showLoading(false); }
+                const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+                const result = await res.json();
+                
+                if(result.status === 'sukses') {
+                    alert('Berhasil disimpan ke Server!'); 
+                    document.getElementById('form-kredit').reset(); 
+                    loadDashboardData(); 
+                } else {
+                    alert('GAGAL TERSIMPAN: ' + result.pesan);
+                }
+            } catch (err) { alert('Gagal mengirim data. Cek koneksi Anda.'); } finally { showLoading(false); }
         }
 
         async function submitCicilan(e) {
             e.preventDefault(); toggleModal('modal-cicilan'); showLoading(true, "Mencatat Pembayaran...");
             const payload = { action: 'terima_cicilan', id_kredit: document.getElementById('c_id').value.toUpperCase(), nominal: document.getElementById('c_nominal').value, keterangan: document.getElementById('c_ket').value };
-            try { await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }); alert('Cicilan berhasil dicatat!'); document.getElementById('form-cicilan').reset(); loadDashboardData(); } 
-            catch (err) { alert('Gagal mengirim data cicilan.'); } finally { showLoading(false); }
+            try { 
+                const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) }); 
+                const result = await res.json();
+                if(result.status === 'sukses') {
+                    alert('Cicilan berhasil dicatat!'); document.getElementById('form-cicilan').reset(); loadDashboardData(); 
+                } else { alert('Gagal: ' + result.pesan); }
+            } catch (err) { alert('Gagal mengirim data cicilan.'); } finally { showLoading(false); }
         }
 
         async function submitEdit(e) {
