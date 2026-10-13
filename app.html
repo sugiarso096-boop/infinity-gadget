@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Infinity Gadget | Pencatatan Kredit HP</title>
+<style>
+:root{--red:#c8101e;--red2:#ef233c;--ink:#202431;--muted:#687084;--bg:#f4f6fa;--line:#e7eaf0;--green:#159957}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;overflow-x:hidden;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.sidebar{background:linear-gradient(160deg,#a80915,#e51b2b);color:#fff;padding:22px 14px}.brand{font-weight:900;font-size:19px;line-height:1.1;padding:5px 10px 26px}.brand small{display:block;font-size:10px;letter-spacing:2px;margin-top:5px;opacity:.85}.nav{display:grid;gap:7px}.nav button{border:0;color:white;background:transparent;text-align:left;padding:13px 14px;border-radius:12px;font-weight:650}.nav button.active,.nav button:hover{background:#ffffff2b}
+main{min-width:0;width:100%;max-width:100vw;overflow-x:hidden}
+.top{height:66px;background:white;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;gap:12px;width:100%}
+.top input{max-width:540px;width:100%;border:1px solid var(--line);background:#f8f9fb;border-radius:11px;padding:11px 14px;min-width:0}
+.content{padding:24px;max-width:1500px;margin:auto;width:100%}
+.heading{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.heading h1{margin:0;font-size:26px}.sub{color:var(--muted);font-size:13px;margin-top:5px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}.card,.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:17px;box-shadow:0 3px 14px #20243108;width:100%;overflow-x:auto}.stat{display:flex;align-items:center;gap:12px}.ico{height:44px;width:44px;border-radius:13px;background:#ffe7e9;color:var(--red);display:grid;place-items:center;font-size:21px}.stat strong{display:block;font-size:25px;margin-top:3px}.muted{color:var(--muted);font-size:12px}.layout{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.panel h2{font-size:16px;margin:0 0 15px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;padding:10px 14px;border-radius:10px;font-weight:700}.btn.primary{background:var(--red);color:#fff;border-color:var(--red)}.btn.danger{background:#fff0f1;color:#b5121b;border-color:#ffc9ce}.btn.danger:disabled{opacity:.55;cursor:wait}.btn:hover{filter:brightness(.97)}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px;margin-bottom:10px}.field label{font-size:12px;font-weight:700}.field input,.field select,.field textarea{width:100%;border:1px solid #dfe3eb;border-radius:10px;padding:11px;background:#fff;min-width:0}.field textarea{min-height:72px;resize:vertical}.tablewrap{overflow-x:auto;width:100%}table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:12px}th,td{padding:12px 10px;text-align:left;border-bottom:1px solid #edf0f4}th{background:#fafbfc;color:#626b7c;font-weight:750}.pill{padding:5px 8px;border-radius:99px;background:#e7f8ef;color:#137b46;font-size:11px;font-weight:800}.pill.warn{background:#fff1d6;color:#986100}.pill.gray{background:#edf0f5;color:#687084}.empty{padding:28px;text-align:center;color:var(--muted)}.hidden{display:none!important}.mobile-nav{display:none}.notice{padding:12px 14px;background:#fff5e6;border:1px solid #ffe1aa;border-radius:10px;color:#825900;font-size:12px;margin-bottom:16px}.toast{position:fixed;bottom:22px;right:22px;background:#202431;color:white;padding:13px 18px;border-radius:12px;box-shadow:0 6px 30px #0002;z-index:10;max-width:calc(100% - 44px)}.progress{height:8px;background:#eceff4;border-radius:99px;overflow:hidden}.progress span{display:block;height:100%;background:var(--red);width:0}
+
+#dashboardPage{animation:dashIn .28s ease-out}
+#dashboardPage .cards .card{position:relative;overflow:hidden;border:1px solid #eceef4;background:linear-gradient(145deg,#fff 0%,#fff 72%,#fff7f8 100%);box-shadow:0 8px 24px rgba(30,36,52,.045);transition:transform .18s ease,box-shadow .18s ease}
+#dashboardPage .cards .card:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(30,36,52,.08)}
+#dashboardPage .cards .card:after{content:"";position:absolute;width:74px;height:74px;border-radius:50%;right:-26px;top:-28px;background:rgba(200,16,30,.045)}
+#dashboardPage .stat{min-height:106px}
+#dashboardPage .stat .ico{flex:0 0 44px;box-shadow:inset 0 0 0 1px rgba(200,16,30,.04)}
+#dashboardPage .stat strong{font-size:27px;letter-spacing:-.6px;color:#202431}
+#dashboardPage .layout{align-items:stretch;gap:18px}
+#dashboardPage .layout>.panel{border-radius:18px;box-shadow:0 8px 24px rgba(30,36,52,.045);padding:20px}
+#dashboardPage .layout>.panel h2{font-size:16px;letter-spacing:-.2px}
+#dashboardPage #totalBayar{display:inline-block;background:linear-gradient(110deg,#fff0f1,#fff);border:1px solid #ffe1e4;border-radius:13px;padding:12px 14px;max-width:100%}
+#dashboardPage .panel .btn.primary{box-shadow:0 6px 14px rgba(200,16,30,.15)}
+#dashboardPage #recentTable table{min-width:480px}
+#dashboardPage #recentTable th{background:#fff7f8;color:#8c2028}
+@keyframes dashIn{from{opacity:.7;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){
+ #dashboardPage .cards{gap:10px}
+ #dashboardPage .stat{min-height:98px;align-items:flex-start}
+ #dashboardPage .stat .ico{width:38px;height:38px;flex-basis:38px;border-radius:11px;font-size:18px}
+ #dashboardPage .stat strong{font-size:22px;overflow-wrap:anywhere}
+ #dashboardPage .layout>.panel{padding:15px;border-radius:16px}
+ #dashboardPage #totalBayar{font-size:22px!important;padding:10px 11px}
+}
+
+.loading-overlay{position:fixed;inset:0;background:rgba(24,29,41,.42);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:9999;opacity:1;transition:opacity .18s ease}
+.loading-overlay.hidden{display:none!important}
+.loading-card{width:min(330px,100%);background:#fff;border-radius:20px;padding:28px 24px;text-align:center;box-shadow:0 18px 60px #0003;animation:loadingPop .22s ease-out}
+.loading-spinner{width:48px;height:48px;border:4px solid #ffe0e3;border-top-color:var(--red);border-radius:50%;margin:0 auto 16px;animation:loadingSpin .8s linear infinite}
+.loading-title{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:7px}
+.loading-message{font-size:13px;color:var(--muted);line-height:1.5}
+.btn:disabled{cursor:wait;opacity:.75;filter:none}
+@keyframes loadingSpin{to{transform:rotate(360deg)}}
+@keyframes loadingPop{from{transform:translateY(6px) scale(.98);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+
+@media(max-width:900px){
+  .app{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .top{height:58px;padding:0 12px;gap:8px}
+  .top input{padding:9px 12px}
+  .content{padding:14px 12px 85px}
+  .heading h1{font-size:22px}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .card,.panel{padding:13px}
+  .layout{grid-template-columns:1fr}
+  .mobile-nav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);padding:8px 4px;z-index:5}
+  .mobile-nav button{border:0;background:transparent;font-size:10px;color:#687084;padding:5px 0;display:grid;gap:3px;justify-items:center}
+  .mobile-nav button.active{color:var(--red);font-weight:800}
+  .mobile-nav b{font-size:19px}
+  .formgrid{grid-template-columns:1fr}
+  .stat strong{font-size:21px}
+  .top .adminlabel{display:none}
+  .btn{padding:8px 12px;font-size:13px}
+}
+
+.auth-screen{position:fixed;inset:0;z-index:20000;background:linear-gradient(145deg,#fff7f8,#f4f6fa);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;overflow-y:auto}
+.auth-card{width:100%;max-width:380px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 18px 55px #20243118;box-sizing:border-box;margin:auto}
+.auth-card h1{font-size:24px;margin:0 0 6px}
+.auth-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}
+.auth-choice button{border:1px solid var(--line);border-radius:12px;padding:12px 6px;background:white;font-weight:800;font-size:14px}
+.auth-choice button.active{border-color:var(--red);background:#fff0f1;color:var(--red)}
+.auth-fields{display:grid;gap:10px}
+.auth-fields input{width:100%;border:1px solid #dfe3eb;border-radius:10px;padding:12px;box-sizing:border-box}
+.auth-error{color:#b5121b;font-size:12px;min-height:18px;margin-top:8px}
+.auth-customer{padding:20px;max-width:1000px;margin:0 auto}
+.auth-customer .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+.photo-preview{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px}
+.photo-preview img{width:110px;height:110px;object-fit:contain;border:1px solid var(--line);border-radius:12px;background:#fff;padding:5px}
+.phone-thumb{width:48px;height:48px;object-fit:contain;border:1px solid var(--line);border-radius:9px;background:#fff;padding:2px;vertical-align:middle}
+.credit-photo{display:block;max-width:260px;width:100%;max-height:300px;object-fit:contain;border:1px solid var(--line);border-radius:16px;background:#fff;padding:8px;margin:12px 0}
+
+.detail-shell{display:grid;gap:18px;animation:dashIn .25s ease-out}
+.detail-topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.detail-hero{display:grid;grid-template-columns:minmax(220px,300px) minmax(0,1fr);gap:22px;align-items:stretch;background:linear-gradient(135deg,#fff 0%,#fff8f9 100%);border:1px solid #f0dfe2;border-radius:20px;padding:20px;box-shadow:0 8px 24px rgba(30,36,52,.045)}
+.detail-photo-wrap{min-height:250px;border-radius:16px;background:linear-gradient(145deg,#fff,#f7f8fb);border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;padding:14px}
+.detail-photo{width:100%;height:260px;object-fit:contain;display:block}
+.detail-photo-placeholder{color:var(--muted);text-align:center;font-size:13px}
+.detail-eyebrow{font-size:11px;font-weight:850;letter-spacing:1.5px;color:var(--red);text-transform:uppercase;margin:2px 0 8px}
+.detail-product-title{font-size:clamp(23px,3vw,32px);line-height:1.15;letter-spacing:-.7px;margin:0 0 10px}
+.detail-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:13px;margin:0 0 18px}
+.detail-meta span{background:#fff;border:1px solid var(--line);padding:7px 10px;border-radius:9px}
+.detail-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0}
+.detail-kpi{border:1px solid var(--line);border-radius:14px;background:#fff;padding:15px;min-width:0}
+.detail-kpi .muted{margin-bottom:8px}
+.detail-kpi strong{font-size:clamp(15px,1.8vw,21px);letter-spacing:-.3px;overflow-wrap:anywhere;display:block}
+.detail-kpi.emphasis{background:linear-gradient(145deg,#fff1f2,#fff);border-color:#ffdadd}
+.detail-progress-panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.detail-progress-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.detail-progress-head strong{font-size:15px}
+.detail-progress-panel .progress{height:11px;background:#f1e8e9}
+.detail-progress-panel .progress span{background:linear-gradient(90deg,#c8101e,#f43f5e);border-radius:99px}
+.detail-section{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}
+.detail-section-title{font-size:16px;font-weight:850;margin:0 0 14px;display:flex;align-items:center;gap:9px}
+.detail-section-title:before{content:"";width:5px;height:19px;border-radius:99px;background:var(--red);display:inline-block}
+.detail-two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.detail-info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.detail-info{padding:12px;border-radius:11px;background:#f8f9fb;min-width:0}
+.detail-info label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}
+.detail-info strong{font-size:13px;overflow-wrap:anywhere}
+.detail-actions{display:flex;gap:9px;flex-wrap:wrap}
+.detail-table{overflow:auto}
+.detail-table table{min-width:480px}
+.detail-table th{background:#fff6f7;color:#8c2028}
+
+.customer-credit-list{display:grid;gap:14px}
+.customer-credit-card{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:0 4px 16px #20243108}
+.customer-credit-photo-wrap{height:150px;border:1px solid var(--line);border-radius:13px;background:linear-gradient(145deg,#fff,#f7f8fb);display:grid;place-items:center;overflow:hidden;padding:8px}
+.customer-credit-photo{width:100%;height:100%;object-fit:contain;display:block}
+.customer-credit-photo-placeholder{font-size:12px;color:var(--muted);text-align:center}
+.customer-credit-title{font-size:18px;font-weight:850;margin:0 0 7px}
+.customer-credit-meta{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.customer-credit-meta span{font-size:11px;color:var(--muted);background:#f7f8fa;border:1px solid var(--line);padding:5px 8px;border-radius:8px}
+.customer-credit-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.customer-credit-kpi{background:#f8f9fb;border-radius:10px;padding:10px;min-width:0}
+.customer-credit-kpi small{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
+.customer-credit-kpi strong{font-size:13px;overflow-wrap:anywhere}
+.customer-credit-progress{height:8px;background:#eceff4;border-radius:99px;overflow:hidden;margin-top:10px}
+.customer-credit-progress span{display:block;height:100%;background:linear-gradient(90deg,#c8101e,#f43f5e);border-radius:99px}
+@media(max-width:650px){.customer-credit-card{grid-template-columns:1fr}.customer-credit-photo-wrap{height:190px}.customer-credit-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.auth-customer{padding:14px}.auth-customer h1{font-size:23px}}
+</style>
+</head>
+<body>
+
+<section id="authScreen" class="auth-screen"><div class="auth-card"><div style="font-size:13px;font-weight:900;letter-spacing:2px;color:#c8101e;margin-bottom:12px">∞ INFINITY GADGET</div><h1 id="authTitle">Selamat Datang</h1><div class="muted">Pilih jenis akun untuk melanjutkan.</div><div class="auth-choice"><button type="button" id="chooseAdmin" class="active" onclick="chooseRole('admin')">👤 Admin</button><button type="button" id="chooseCustomer" onclick="chooseRole('pelanggan')">📱 Pelanggan</button></div><form id="authForm" onsubmit="loginSubmit(event)"><div class="auth-fields"><input id="authPhone" class="hidden" inputmode="tel" autocomplete="username" placeholder="Nomor HP pelanggan"><input id="authPin" type="password" inputmode="numeric" autocomplete="current-password" required placeholder="PIN login"><button class="btn primary" type="submit" id="authSubmit">Masuk sebagai Admin</button></div></form><div id="authError" class="auth-error"></div><div class="muted" style="margin-top:10px">Pelanggan harus meminta PIN kepada admin.</div></div></section><section id="customerPortal" class="hidden" style="min-height:100vh;background:var(--bg)"><header class="top"><strong>∞ INFINITY GADGET · Portal Pelanggan</strong><button class="btn" onclick="logoutNow()">Keluar</button></header><div class="auth-customer"><h1>Informasi Cicilan Saya</h1><p class="muted">Data yang ditampilkan hanya untuk akun yang sedang login.</p><div id="customerPortalData"></div></div></section>
+
+<div class="app hidden" id="appShell">
+<aside class="sidebar"><div class="brand">∞ INFINITY GADGET<small>PENCATATAN KREDIT HP</small></div><nav class="nav" id="sideNav">
+<button class="active" data-page="dashboard">▦ Dashboard</button><button data-page="kredit">▤ Data Kredit</button><button data-page="pelanggan">♙ Pelanggan</button><button data-page="pembayaran">＋ Catat Cicilan</button><button data-page="jatuhTempo">◷ Jatuh Tempo</button><button data-page="laporan">▥ Laporan</button>
+</nav></aside>
+
+<main><header class="top"><input id="globalSearch" placeholder="Cari nama pelanggan, nomor HP, atau produk..." oninput="render()"><button class="adminlabel" type="button" onclick="openLogin()" style="border:0;background:transparent;cursor:pointer;font-weight:700;color:#202431;padding:8px 10px;border-radius:10px">👤 <span id="accountLabel">Admin · Infinity Gadget</span></button></header>
+
+<div class="content">
+<div class="heading"><div><h1 id="pageTitle">Dashboard</h1><div class="sub">Kelola kredit dan pembayaran pelanggan dalam satu tempat.</div></div><button class="btn primary" onclick="openCredit()">＋ Tambah Kredit</button></div>
+<div id="notice" class="notice">Mulai dengan menyiapkan sheet dan menambahkan data kredit. Data yang disimpan akan masuk ke Google Spreadsheet.</div>
+
+<section id="dashboardPage">
+<div class="cards">
+<div class="card stat"><div class="ico">♙</div><div><div class="muted">Total Pelanggan</div><strong id="sPelanggan">0</strong></div></div>
+<div class="card stat"><div class="ico" style="background:#e6f0ff;color:#1769e0">▤</div><div><div class="muted">Kredit Aktif</div><strong id="sAktif">0</strong></div></div>
+<div class="card stat"><div class="ico" style="background:#fff1d6;color:#ad7100">◷</div><div><div class="muted">Jatuh Tempo</div><strong id="sTempo">0</strong></div></div>
+<div class="card stat"><div class="ico" style="background:#e7f8ef;color:#13834d">✓</div><div><div class="muted">Kredit Lunas</div><strong id="sLunas">0</strong></div></div>
+</div>
+<div class="layout"><div class="panel"><h2>Kredit Terbaru</h2><div id="recentTable" class="tablewrap"></div></div><div class="panel"><h2>Ringkasan Pembayaran</h2><div class="muted">Total pembayaran tercatat</div><h2 id="totalBayar" style="font-size:26px;color:var(--red);margin:8px 0 18px">Rp0</h2><div class="muted">Jumlah data pembayaran</div><h2 id="jumlahBayar" style="font-size:24px;margin-top:7px">0 transaksi</h2><button class="btn primary" onclick="go('pembayaran')">Catat Pembayaran</button></div></div>
+</section>
+
+<section id="kreditPage" class="hidden"><div class="panel"><div class="actions" style="justify-content:space-between;margin-bottom:14px"><h2>Daftar Kredit</h2><button class="btn primary" onclick="openCredit()">＋ Tambah Kredit</button></div><div id="creditTable" class="tablewrap"></div></div></section>
+
+<section id="pelangganPage" class="hidden"><div class="panel"><div class="actions" style="justify-content:space-between"><h2>Data Pelanggan</h2><button class="btn primary" onclick="setCustomerPinPrompt()">Atur PIN Pelanggan</button></div><div id="customerTable" class="tablewrap"></div></div></section>
+
+<section id="pembayaranPage" class="hidden"><div class="panel"><h2>Catat Pembayaran Cicilan</h2><form id="paymentForm" onsubmit="submitPayment(event)"><div class="formgrid"><div class="field"><label>Data Kredit *</label><select id="payCredit" required><option value="">Pilih pelanggan / kredit</option></select></div><div class="field"><label>Tanggal Bayar *</label><input type="date" id="payDate" required></div><div class="field"><label>Jumlah Bayar (Rp) *</label><input type="number" id="payAmount" min="1" required placeholder="Contoh: 500000"></div><div class="field"><label>Metode Pembayaran</label><select id="payMethod"><option>Tunai</option><option>Transfer Bank</option><option>QRIS</option><option>Lainnya</option></select></div><div class="field"><label>Bulan Ke</label><input type="number" id="payMonth" min="1" placeholder="Contoh: 1"></div><div class="field"><label>Catatan</label><input id="payNote" placeholder="Catatan opsional"></div></div><button class="btn primary" type="submit">Simpan Pembayaran</button></form></div><div class="panel" style="margin-top:16px"><h2>Riwayat Pembayaran</h2><div id="paymentTable" class="tablewrap"></div></div></section>
+
+<section id="jatuhTempoPage" class="hidden"><div class="panel"><h2>Jatuh Tempo (7 hari ke depan / terlambat)</h2><div id="dueTable" class="tablewrap"></div></div></section>
+
+<section id="laporanPage" class="hidden"><div class="cards"><div class="card"><div class="muted">Total Pokok Kredit</div><h2 id="totalPokok">Rp0</h2></div><div class="card"><div class="muted">Total Pembayaran</div><h2 id="reportBayar">Rp0</h2></div><div class="card"><div class="muted">Estimasi Sisa Kredit</div><h2 id="totalSisa">Rp0</h2></div><div class="card"><div class="muted">Jumlah Kontrak</div><h2 id="totalKontrak">0</h2></div></div><div class="panel"><h2>Catatan</h2><p class="muted">Laporan dihitung dari data kredit dan pembayaran yang tersimpan di spreadsheet.</p></div></section>
+
+<section id="formCreditPage" class="hidden"><div class="panel"><div class="actions" style="justify-content:space-between"><h2>Tambah Kredit Baru</h2><button class="btn" onclick="go('kredit')">Kembali</button></div><form id="creditForm" onsubmit="submitCredit(event)"><h2>Data Pelanggan</h2><div class="formgrid"><div class="field"><label>Nama Lengkap *</label><input id="cNama" required placeholder="Nama pelanggan"></div><div class="field"><label>Nomor HP *</label><input id="cHp" required inputmode="tel" placeholder="08xxxxxxxxxx"></div><div class="field"><label>Alamat</label><textarea id="cAlamat" placeholder="Alamat pelanggan"></textarea></div><div class="field"><label>Catatan</label><input id="cCatatan" placeholder="Catatan opsional"></div></div><h2>Data HP dan Kredit</h2><div class="formgrid"><div class="field"><label>Nama HP *</label><input id="cProduk" required placeholder="Contoh: Samsung Galaxy A15"></div><div class="field"><label>Foto HP (opsional)</label><input id="cFoto" type="file" accept="image/*" onchange="previewCreditPhoto(event)"><div class="muted">Foto akan disimpan ke Google Drive dan ditampilkan di detail kredit.</div><div id="cFotoPreview" class="photo-preview"></div></div><div class="field"><label>Harga HP (Rp) *</label><input id="cHarga" type="number" min="1" required oninput="calcInstallment()" placeholder="0"></div><div class="field"><label>Uang Muka (Rp) *</label><input id="cDp" type="number" min="0" required value="0" oninput="calcInstallment()"></div><div class="field"><label>Tenor (Berapa Bulan?) *</label><input id="cTenor" type="number" min="1" max="60" required placeholder="Ketik angka (contoh: 5)" value="12" oninput="calcInstallment()"></div><div class="field"><label>Jatuh Tempo Pertama *</label><input id="cDue" type="date" required></div><div class="field"><label>Estimasi Cicilan / Bulan</label><input id="cEstimate" readonly value="Rp0" style="background:#f8f9fb; font-weight:bold; color:var(--red);"></div></div><button class="btn primary" type="submit">Simpan Data Kredit</button></form></div></section>
+
+<section id="detailPage" class="hidden"><div class="panel" id="detailContent"></div></section>
+
+</div>
+
+<nav class="mobile-nav" id="mobileNav"><button class="active" data-page="dashboard"><b>⌂</b>Beranda</button><button data-page="kredit"><b>▤</b>Data Kredit</button><button onclick="openCredit()"><b style="background:#c8101e;color:white;border-radius:50%;width:35px;height:35px;display:grid;place-items:center;margin-top:-14px">＋</b>Tambah</button><button data-page="jatuhTempo"><b>◷</b>Jatuh Tempo</button><button data-page="pembayaran"><b>≡</b>Lainnya</button></nav>
+
+</main></div><div id="loadingOverlay" class="loading-overlay hidden" role="status" aria-live="polite" aria-label="Sedang menyimpan data">
+  <div class="loading-card">
+    <div class="loading-spinner" aria-hidden="true"></div>
+    <div class="loading-title">Sedang menyimpan...</div>
+    <div id="loadingMessage" class="loading-message">Mohon tunggu, data sedang diproses dan disimpan ke Google Spreadsheet.</div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+<script>
+// ==========================================
+// PENTING: MASUKKAN URL WEB APP ANDA DI SINI
+// ==========================================
+const URL_API_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbx8-MhcLoneAfQDUfKGIuUiZ_eKNO9gG6crF88xwD219e0JNXcY8SCkuwK0QhmkrcaBNw/exec'; 
+
+let DATA={pelanggan:[],produk:[],kredit:[],pembayaran:[],jadwal:[],dashboard:{}}, currentPage='dashboard';
+const money=n=>'Rp'+Number(n||0).toLocaleString('id-ID');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const val=(o,k)=>o[k]??'';
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.remove('hidden');setTimeout(()=>t.classList.add('hidden'),3200)}
+function showLoading(message){const overlay=document.getElementById('loadingOverlay');document.getElementById('loadingMessage').textContent=message||'Mohon tunggu, data sedang diproses dan disimpan ke Google Spreadsheet.';overlay.classList.remove('hidden')}
+function hideLoading(){document.getElementById('loadingOverlay').classList.add('hidden')}
+
+// ==========================================
+// FUNGSI API (PENGGANTI GOOGLE.SCRIPT.RUN)
+// ==========================================
+function callServer(fn, arg, done, fail) {
+  if (!URL_API_APPS_SCRIPT || URL_API_APPS_SCRIPT === 'MASUKKAN_URL_WEB_APP_YANG_BARU_DI_SINI') {
+    const err = new Error('URL Web App API belum diisi di kode HTML.');
+    toast(err.message); if (fail) fail(err); return;
+  }
+
+  let payload = arg;
+  if (fn !== 'apiLogin' && fn !== 'apiLogout') {
+    if (!AUTH || !AUTH.token) {
+      const err = new Error('Sesi login berakhir. Silakan login kembali.');
+      toast(err.message); if (fail) fail(err); logoutNow(); return;
+    }
+    payload = Object.assign({}, (arg && typeof arg === 'object') ? arg : {}, { _token: AUTH.token });
+  } else if (fn === 'apiLogin') {
+    payload = { role: arg.role, phone: arg.phone, pin: arg.pin };
+  } else if (fn === 'apiLogout') {
+    payload = { token: arg };
+  }
+
+  fetch(URL_API_APPS_SCRIPT, {
+    method: 'POST',
+    body: JSON.stringify({ action: fn, payload: payload }),
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' } // Menggunakan text/plain untuk menghindari limitasi preflight CORS
+  })
+  .then(response => response.json())
+  .then(res => {
+    if (res.status === 'success') {
+      if (done) done(res.data);
+    } else {
+      throw new Error(res.message || 'Terjadi kesalahan pada server.');
+    }
+  })
+  .catch(e => {
+    toast((e && e.message) || String(e));
+    if (fail) fail(e);
+  });
+}
+
+function load(){callServer('getData',null,d=>{DATA=d;document.getElementById('notice').classList.add('hidden');render()})}
+
+function go(page){currentPage=page;['dashboard','kredit','pelanggan','pembayaran','jatuhTempo','laporan','formCredit','detail'].forEach(p=>document.getElementById(p+'Page').classList.toggle('hidden',p!==page));document.getElementById('pageTitle').textContent=({dashboard:'Dashboard',kredit:'Data Kredit',pelanggan:'Data Pelanggan',pembayaran:'Pembayaran Cicilan',jatuhTempo:'Jatuh Tempo',laporan:'Laporan',formCredit:'Tambah Kredit',detail:'Detail Kredit'})[page]||'Dashboard';document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));render()}
+
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
+
+function openCredit(){document.getElementById('creditForm').reset();delete document.getElementById('creditForm').dataset.requestId;document.getElementById('cDp').value=0;document.getElementById('cTenor').value=12;document.getElementById('cDue').value=new Date(Date.now()+86400000*30).toISOString().slice(0,10);calcInstallment();go('formCredit')}
+function calcInstallment(){let h=+document.getElementById('cHarga').value||0,dp=+document.getElementById('cDp').value||0,t=+document.getElementById('cTenor').value||1;document.getElementById('cEstimate').value=money(Math.ceil(Math.max(0,h-dp)/t))}
+function matches(k){let q=document.getElementById('globalSearch').value.toLowerCase().trim();return !q||[k['Nama Pelanggan'],k['Nomor HP'],k['Nama HP'],k['ID Kredit']].some(v=>String(v||'').toLowerCase().includes(q))}
+function statusPill(s){let cls=s==='Jatuh Tempo'?'warn':(s==='Lunas'?'gray':'');return `<span class="pill ${cls}">${esc(s||'Aktif')}</span>`}
+function table(headers,rows){if(!rows.length)return '<div class="empty">Belum ada data.</div>';return '<table><thead><tr>'+headers.map(h=>'<th>'+h+'</th>').join('')+'</tr></thead><tbody>'+rows.join('')+'</tbody></table>'}
+
+function photoSrc(url){
+  const raw=String(url||'').trim();
+  if(!raw)return '';
+  let id='';
+  try{
+    const u=new URL(raw);
+    id=u.searchParams.get('id')||'';
+    if(!id){
+      const m=u.pathname.match(/\/file\/d\/([^/]+)/);
+      if(m)id=m[1];
+    }
+    if(!id && /drive\.google\.com/.test(u.hostname)){
+      const m=u.pathname.match(/\/d\/([^/]+)/);
+      if(m)id=m[1];
+    }
+  }catch(e){}
+  if(id && /drive\.google\.com/.test(raw)) return 'https\://drive.google.com/thumbnail?id='+encodeURIComponent(id)+'&sz=w600';
+  return raw;
+}
+
+function render(){if(!DATA)return;let k=DATA.kredit||[],p=DATA.pembayaran||[],pel=DATA.pelanggan||[];document.getElementById('sPelanggan').textContent=pel.length;document.getElementById('sAktif').textContent=k.filter(x=>x['Status']==='Aktif').length;document.getElementById('sTempo').textContent=(DATA.jadwal||[]).filter(x=>x['Status']!=='Lunas'&&x['Tanggal Jatuh Tempo']&&new Date(x['Tanggal Jatuh Tempo'])<=new Date(Date.now()+7*86400000)).length;document.getElementById('sLunas').textContent=k.filter(x=>x['Status']==='Lunas').length;let total=p.reduce((s,x)=>s+(+x['Jumlah Bayar']||0),0);document.getElementById('totalBayar').textContent=money(total);document.getElementById('jumlahBayar').textContent=p.length+' transaksi';document.getElementById('totalPokok').textContent=money(k.reduce((s,x)=>s+(+x['Pokok Kredit']||0),0));document.getElementById('reportBayar').textContent=money(total);document.getElementById('totalSisa').textContent=money(k.reduce((s,x)=>s+Math.max(0,(+x['Pokok Kredit']||0)-(+x['Total Dibayar']||0)),0));document.getElementById('totalKontrak').textContent=k.length;
+
+let list=k.filter(matches).slice().reverse();let rows=list.map(x=>`<tr><td>${x['Foto HP']?`<img class="phone-thumb" src="${esc(photoSrc(x['Foto HP']))}" alt="Foto HP" loading="lazy"> `:''}${esc(x['ID Kredit'])}</td><td>${esc(x['Nama Pelanggan'])}<div class="muted">${esc(x['Nomor HP'])}</div></td><td>${esc(x['Nama HP'])}</td><td>${money(x['Harga'])}</td><td>${money(x['Cicilan per Bulan'])}</td><td>${statusPill(x['Status'])}</td><td><div class="actions"><button class="btn" onclick="showDetail('${esc(x['ID Kredit'])}')">Detail</button><button class="btn danger" onclick="deleteCredit('${esc(x['ID Kredit'])}')">Hapus</button></div></td></tr>`);let tb=table(['ID Kredit','Pelanggan','Produk','Harga','Cicilan/bln','Status','Aksi'],rows);document.getElementById('creditTable').innerHTML=tb;document.getElementById('recentTable').innerHTML=table(['Pelanggan / HP','Sisa Kredit','Status','Aksi'],list.slice(0,5).map(x=>`<tr><td>${x['Foto HP']?`<img class="phone-thumb" src="${esc(photoSrc(x['Foto HP']))}" alt="Foto HP" loading="lazy"> `:''}${esc(x['Nama Pelanggan'])}<div class="muted">${esc(x['Nama HP'])}</div></td><td>${money(Math.max(0,(+x['Pokok Kredit']||0)-(+x['Total Dibayar']||0)))}</td><td>${statusPill(x['Status'])}</td><td><button class="btn" onclick="showDetail('${esc(x['ID Kredit'])}')">Lihat</button></td></tr>`));
+
+document.getElementById('customerTable').innerHTML=table(['Nama','Nomor HP','Alamat','Kredit','Aksi'],pel.filter(x=>!document.getElementById('globalSearch').value||String(x['Nama Lengkap']).toLowerCase().includes(document.getElementById('globalSearch').value.toLowerCase())).map(x=>`<tr><td>${esc(x['Nama Lengkap'])}</td><td>${esc(x['Nomor HP'])}</td><td>${esc(x['Alamat'])}</td><td>${k.filter(y=>y['ID Pelanggan']===x['ID Pelanggan']).length}</td><td><button class="btn danger" onclick="opsiHapusPelanggan('${esc(x['ID Pelanggan'])}')">Hapus</button></td></tr>`));
+
+document.getElementById('paymentTable').innerHTML=table(['Tanggal','Pelanggan','Jumlah','Metode','ID Kredit'],p.slice().reverse().map(x=>`<tr><td>${esc(x['Tanggal Bayar'])}</td><td>${esc(x['Nama Pelanggan'])}</td><td>${money(x['Jumlah Bayar'])}</td><td>${esc(x['Metode'])}</td><td>${esc(x['ID Kredit'])}</td></tr>`));let options=k.filter(x=>x['Status']!=='Lunas').map(x=>`<option value="${esc(x['ID Kredit'])}">${esc(x['Nama Pelanggan'])} — ${esc(x['Nama HP'])} (sisa ${money(Math.max(0,(+x['Pokok Kredit']||0)-(+x['Total Dibayar']||0)))})</option>`).join('');document.getElementById('payCredit').innerHTML='<option value="">Pilih pelanggan / kredit</option>'+options;
+
+let due=(DATA.jadwal||[]).filter(x=>x['Status']!=='Lunas'&&x['Tanggal Jatuh Tempo']&&new Date(x['Tanggal Jatuh Tempo']+'T00:00:00')<=new Date(Date.now()+7*86400000));document.getElementById('dueTable').innerHTML=table(['Jatuh Tempo','ID Kredit','Angsuran','Nominal','Status'],due.map(x=>`<tr><td>${esc(x['Tanggal Jatuh Tempo'])}</td><td>${esc(x['ID Kredit'])}</td><td>${esc(x['Angsuran Ke'])}</td><td>${money(x['Nominal'])}</td><td>${statusPill('Jatuh Tempo')}</td></tr>`))}
+
+function previewCreditPhoto(e){
+  const file=e.target.files&&e.target.files[0];
+  const root=document.getElementById('cFotoPreview');
+  root.innerHTML='';
+  if(!file)return;
+  if(!file.type.startsWith('image/')){toast('Pilih file gambar yang valid.');e.target.value='';return;}
+  if(file.size>10*1024*1024){toast('Ukuran foto maksimal 10 MB.');e.target.value='';return;}
+  const img=document.createElement('img');
+  img.alt='Pratinjau foto HP';
+  img.src=URL.createObjectURL(file);
+  root.appendChild(img);
+  const label=document.createElement('span');label.className='muted';label.textContent=file.name;root.appendChild(label);
+}
+
+function readCreditPhoto(){
+  const input=document.getElementById('cFoto');
+  const file=input&&input.files&&input.files[0];
+  if(!file)return Promise.resolve(null);
+  if(!file.type.startsWith('image/'))return Promise.reject(new Error('File foto harus berupa gambar.'));
+  if(file.size>10*1024*1024)return Promise.reject(new Error('Ukuran foto maksimal 10 MB.'));
+  return new Promise((resolve,reject)=>{
+    const img=new Image(),url=URL.createObjectURL(file);
+    img.onload=()=>{
+      try{
+        const max=1000,scale=Math.min(1,max/Math.max(img.width,img.height));
+        const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));
+        const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        const data=canvas.toDataURL('image/jpeg',0.78).split(',')[1];
+        URL.revokeObjectURL(url);
+        resolve({base64:data,mimeType:'image/jpeg',fileName:(file.name||'foto-hp').replace(/[^a-zA-Z0-9._-]/g,'_').replace(/\.[^.]+$/,'')+'.jpg'});
+      }catch(err){URL.revokeObjectURL(url);reject(err)}
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Foto tidak dapat dibaca. Coba pilih gambar lain.'))};
+    img.src=url;
+  });
+}
+
+function submitCredit(e){
+  e.preventDefault();
+  const form=document.getElementById('creditForm');
+  const btn=e.submitter || form.querySelector('button[type="submit"]');
+  if(form.dataset.submitting==='1') return;
+  let harga=+document.getElementById('cHarga').value, dp=+document.getElementById('cDp').value;
+  if(dp>=harga){toast('Uang muka harus lebih kecil dari harga HP.');return}
+  if(harga<=0 || dp<0){toast('Periksa harga HP dan uang muka.');return}
+  const f={
+    nama:document.getElementById('cNama').value.trim(),
+    nomorHp:document.getElementById('cHp').value.trim(),
+    alamat:document.getElementById('cAlamat').value,
+    namaHp:document.getElementById('cProduk').value.trim(),
+    harga,dp,tenor:+document.getElementById('cTenor').value,
+    jatuhTempo:document.getElementById('cDue').value,
+    catatan:document.getElementById('cCatatan').value
+  };
+  form.dataset.submitting='1';
+  showLoading('Sedang menyimpan data kredit ke Google Spreadsheet. Jangan tutup halaman dulu.');
+  if(btn){btn.disabled=true;btn.dataset.originalText=btn.textContent;btn.textContent='Menyimpan...';btn.style.opacity='.65'}
+  const unlock=()=>{
+    hideLoading();
+    delete form.dataset.submitting;
+    if(btn){btn.disabled=false;btn.textContent=btn.dataset.originalText||'Simpan Data Kredit';btn.style.opacity='';}
+  };
+  readCreditPhoto().then(photo=>{
+    if(photo)f.foto=photo;
+    callServer('saveCredit',f,r=>{
+      toast(r.message+' ID: '+r.idKredit);
+      load();
+      go('kredit');
+      form.reset();
+      document.getElementById('cFotoPreview').innerHTML='';
+      unlock();
+    },unlock);
+  }).catch(err=>{toast(err.message||'Gagal membaca foto.');unlock()});
+}
+
+function submitPayment(e){
+  e.preventDefault();
+  const form=document.getElementById('paymentForm');
+  const btn=e.submitter || form.querySelector('button[type="submit"]');
+  if(form.dataset.submitting==='1') return;
+  const f={
+    idKredit:document.getElementById('payCredit').value,
+    tanggal:document.getElementById('payDate').value,
+    jumlah:+document.getElementById('payAmount').value,
+    metode:document.getElementById('payMethod').value,
+    bulanKe:document.getElementById('payMonth').value,
+    catatan:document.getElementById('payNote').value
+  };
+  if(!f.idKredit || f.jumlah<=0){toast('Pilih kredit dan masukkan jumlah pembayaran yang benar.');return}
+  form.dataset.submitting='1';
+  showLoading('Sedang menyimpan pembayaran cicilan ke Google Spreadsheet. Jangan tutup halaman dulu.');
+  if(btn){btn.disabled=true;btn.dataset.originalText=btn.textContent;btn.textContent='Menyimpan...';btn.style.opacity='.65'}
+  const unlock=()=>{
+    hideLoading();
+    delete form.dataset.submitting;
+    if(btn){btn.disabled=false;btn.textContent=btn.dataset.originalText||'Simpan Pembayaran';btn.style.opacity='';}
+  };
+  callServer('savePayment',f,r=>{
+    toast(r.message+' Sisa: '+money(r.sisa));
+    form.reset();
+    document.getElementById('payDate').value=new Date().toISOString().slice(0,10);
+    load();
+    unlock();
+  },unlock);
+}
+
+function opsiHapusPelanggan(id) {
+  const customer = (DATA.pelanggan || []).find(x => String(x['ID Pelanggan']) === String(id));
+  if (!customer) { toast('Data pelanggan tidak ditemukan.'); return; }
+
+  const pilihan = prompt('Pilih metode hapus untuk: ' + (customer['Nama Lengkap'] || '-') + 
+    '\n\nKetik "1" = ARSIP\n(Sembunyikan dari daftar, riwayat keuangan tetap aman)\n\nKetik "2" = HAPUS PERMANEN\n(Hati-hati: Laporan bisa error jika pelanggan ini sudah punya riwayat cicilan)'
+  );
+
+  if (pilihan === '1') {
+    const ok = confirm('Data pelanggan akan diarsipkan (disembunyikan dari daftar). Lanjutkan?');
+    if (ok) {
+      showLoading('Mengarsipkan pelanggan...');
+      callServer('archiveCustomer', {idPelanggan: id, confirmation: 'ARSIPKAN PELANGGAN'}, result => {
+        hideLoading(); toast(result.message); load(); go('pelanggan');
+      }, error => { hideLoading(); toast(error.message); });
+    }
+  } else if (pilihan === '2') {
+    const confirmText = prompt('PERINGATAN!\nUntuk menghapus permanen, ketik persis kalimat ini:\n\nHAPUS PERMANEN');
+    if (confirmText === 'HAPUS PERMANEN') {
+      showLoading('Menghapus data permanen...');
+      callServer('deleteCustomerPermanent', {idPelanggan: id}, result => {
+        hideLoading(); toast(result.message); load(); go('pelanggan');
+      }, error => { hideLoading(); toast(error.message); });
+    } else {
+      toast('Batal. Konfirmasi ketikan tidak sesuai.');
+    }
+  } else if (pilihan !== null && pilihan !== '') {
+    toast('Pilihan dibatalkan. Ketik angka 1 atau 2.');
+  }
+}
+
+function deleteCredit(id){
+  const k=DATA.kredit.find(x=>String(x['ID Kredit'])===String(id));
+  if(!k){toast('Data kredit tidak ditemukan.');return}
+  
+  const ok=confirm('HAPUS DATA KREDIT PERMANEN?\n\nPelanggan: '+(k['Nama Pelanggan']||'-')+'\nHP: '+(k['Nama HP']||'-')+'\nID: '+id+'\n\nPERINGATAN: Semua data kredit, jadwal cicilan, dan RIWAYAT PEMBAYARAN untuk kredit ini akan ikut terhapus permanen dari sistem. Lanjutkan?');
+  if(!ok)return;
+  
+  showLoading('Sedang menghapus data kredit beserta riwayat pembayarannya...');
+  callServer('deleteCredit',{idKredit:id},r=>{
+    toast(r.message||'Data kredit berhasil dihapus.');
+    load();
+    go('kredit');
+    hideLoading();
+  },err=>{hideLoading();toast(err.message||'Gagal menghapus data kredit.')});
+}
+
+function showDetail(id){
+  const k=DATA.kredit.find(x=>String(x['ID Kredit'])===String(id));
+  if(!k)return;
+  const payments=(DATA.pembayaran||[]).filter(x=>String(x['ID Kredit'])===String(id)).slice().reverse();
+  const paid=payments.reduce((sum,x)=>sum+(Number(x['Jumlah Bayar'])||0),0);
+  const principal=Number(k['Pokok Kredit'])||0;
+  const sisa=Math.max(0,principal-paid);
+  const percent=principal>0?Math.min(100,Math.round(paid/principal*100)):0;
+  const jad=(DATA.jadwal||[]).filter(x=>String(x['ID Kredit'])===String(id));
+  const photo=k['Foto HP']?`<img class="detail-photo" src="${esc(photoSrc(k['Foto HP']))}" alt="Foto ${esc(k['Nama HP'])}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"> <div class="detail-photo-placeholder" style="display:none">Foto tidak dapat dimuat</div>`:`<div class="detail-photo-placeholder">📱<br>Foto HP belum tersedia</div>`;
+  const detailInfo=(label,value)=>`<div class="detail-info"><label>${label}</label><strong>${esc(value||'—')}</strong></div>`;
+  const paymentRows=payments.map(x=>`<tr><td>${esc(x['Tanggal Bayar'])}</td><td>${money(x['Jumlah Bayar'])}</td><td>${esc(x['Metode']||'—')}</td><td>${esc(x['Bulan Ke']||'—')}</td></tr>`);
+  const scheduleRows=jad.map(x=>`<tr><td>${esc(x['Angsuran Ke'])}</td><td>${esc(x['Tanggal Jatuh Tempo'])}</td><td>${money(x['Nominal'])}</td><td>${statusPill(x['Status'])}</td></tr>`);
+  document.getElementById('detailContent').innerHTML=`
+    <div class="detail-shell">
+      <div class="detail-topbar"><h2>Detail Kredit</h2><button class="btn" onclick="go('kredit')">← Kembali ke Data Kredit</button></div>
+      <section class="detail-hero">
+        <div class="detail-photo-wrap">${photo}</div>
+        <div style="min-width:0;display:flex;flex-direction:column;justify-content:center">
+          <div class="detail-eyebrow">Infinity Gadget · Kredit HP</div>
+          <h1 class="detail-product-title">${esc(k['Nama HP']||'Produk HP')}</h1>
+          <div class="detail-meta"><span>🧾 ${esc(k['ID Kredit'])}</span><span>${statusPill(sisa<=0&&principal>0?'Lunas':k['Status']||'Aktif')}</span></div>
+          <p style="font-weight:800;margin:0 0 5px">${esc(k['Nama Pelanggan']||'')}</p>
+          <p class="muted" style="margin:0 0 18px">☎ ${esc(k['Nomor HP']||'Nomor HP belum tersedia')}</p>
+          <div class="detail-actions"><button class="btn primary" onclick="go('pembayaran');document.getElementById('payCredit').value='${esc(id)}'">＋ Catat Pembayaran</button><button class="btn danger" onclick="deleteCredit('${esc(id)}')">Hapus Kredit</button></div>
+        </div>
+      </section>
+      <section class="detail-kpis">
+        <div class="detail-kpi"><div class="muted">Harga HP</div><strong>${money(k['Harga'])}</strong></div>
+        <div class="detail-kpi"><div class="muted">Uang Muka</div><strong>${money(k['Uang Muka'])}</strong></div>
+        <div class="detail-kpi"><div class="muted">Cicilan / Bulan</div><strong>${money(k['Cicilan per Bulan'])}</strong></div>
+        <div class="detail-kpi emphasis"><div class="muted">Sisa Kredit</div><strong style="color:var(--red)">${money(sisa)}</strong></div>
+      </section>
+      <section class="detail-progress-panel">
+        <div class="detail-progress-head"><strong>Progres Pembayaran</strong><strong style="color:var(--red)">${percent}%</strong></div>
+        <div class="progress"><span style="width:${percent}%"></span></div>
+        <p class="muted" style="margin:10px 0 0">Sudah dibayar ${money(paid)} dari pokok kredit ${money(principal)}.</p>
+      </section>
+      <div class="detail-two-col">
+        <section class="detail-section"><h3 class="detail-section-title">Informasi Kredit</h3><div class="detail-info-grid">
+          ${detailInfo('Tanggal Kredit',k['Tanggal Kredit'])}${detailInfo('Tenor',k['Tenor (Bulan)']?k['Tenor (Bulan)']+' bulan':'—')}${detailInfo('Jatuh Tempo Pertama',k['Tanggal Jatuh Tempo Pertama'])}${detailInfo('Jumlah Transaksi',payments.length+' pembayaran')}
+        </div></section>
+        <section class="detail-section"><h3 class="detail-section-title">Informasi Pelanggan</h3><div class="detail-info-grid">
+          ${detailInfo('Nama Pelanggan',k['Nama Pelanggan'])}${detailInfo('Nomor HP',k['Nomor HP'])}${detailInfo('Alamat',k['Alamat Pelanggan']||k['Alamat'])}${detailInfo('Catatan',k['Catatan'])}
+        </div></section>
+      </div>
+      <section class="detail-section"><h3 class="detail-section-title">Riwayat Pembayaran</h3><div class="detail-table">${table(['Tanggal Bayar','Jumlah','Metode','Cicilan Ke'],paymentRows)}</div></section>
+      <section class="detail-section"><h3 class="detail-section-title">Jadwal Cicilan</h3><div class="detail-table">${table(['Angsuran Ke','Jatuh Tempo','Nominal','Status'],scheduleRows)}</div></section>
+    </div>`;
+  go('detail');
+}
+
+let AUTH={token:'',role:'',label:''}, AUTH_ROLE='admin';
+
+function openLogin(){document.getElementById('authScreen').classList.remove('hidden');document.getElementById('appShell').classList.add('hidden');document.getElementById('customerPortal').classList.add('hidden');}
+function chooseRole(role){AUTH_ROLE=role;document.getElementById('chooseAdmin').classList.toggle('active',role==='admin');document.getElementById('chooseCustomer').classList.toggle('active',role==='pelanggan');document.getElementById('authPhone').classList.toggle('hidden',role!=='pelanggan');document.getElementById('authPhone').required=role==='pelanggan';document.getElementById('authSubmit').textContent=role==='admin'?'Masuk sebagai Admin':'Masuk sebagai Pelanggan';document.getElementById('authTitle').textContent=role==='admin'?'Login Admin':'Login Pelanggan';document.getElementById('authError').textContent='';}
+
+function loginSubmit(e){
+  e.preventDefault();
+  const pin=document.getElementById('authPin').value;
+  const phone=document.getElementById('authPhone').value;
+  const btn=document.getElementById('authSubmit');
+  
+  btn.disabled=true;
+  btn.textContent='Memeriksa...';
+  
+  callServer('apiLogin', {role: AUTH_ROLE, phone: phone, pin: pin}, res => {
+    btn.disabled=false;
+    btn.textContent=AUTH_ROLE==='admin'?'Masuk sebagai Admin':'Masuk sebagai Pelanggan';
+    if(!res||!res.ok||!res.token||!res.role){
+      document.getElementById('authError').textContent = 'Respons login tidak valid.';
+      return;
+    }
+    AUTH.token=res.token;
+    AUTH.role=res.role;
+    AUTH.label=res.label;
+    document.getElementById('authPin').value='';
+    document.getElementById('authError').textContent='';
+    document.getElementById('authScreen').classList.add('hidden');
+    if(res.role==='admin'){
+      document.getElementById('appShell').classList.remove('hidden');
+      document.getElementById('accountLabel').textContent='Admin · Infinity Gadget';
+      load();
+    } else {
+      document.getElementById('customerPortal').classList.remove('hidden');
+      loadCustomerPortal();
+    }
+  }, err => {
+    btn.disabled=false;
+    btn.textContent=AUTH_ROLE==='admin'?'Masuk sebagai Admin':'Masuk sebagai Pelanggan';
+    document.getElementById('authError').textContent=(err&&err.message)||'Login gagal.';
+  });
+}
+
+function logoutNow(){
+  const old=AUTH.token;
+  if (old) callServer('apiLogout', old);
+  AUTH={token:'',role:'',label:''};
+  DATA={pelanggan:[],produk:[],kredit:[],pembayaran:[],jadwal:[],dashboard:{}};
+  document.getElementById('appShell').classList.add('hidden');
+  document.getElementById('customerPortal').classList.add('hidden');
+  document.getElementById('authScreen').classList.remove('hidden');
+  chooseRole('admin');
+}
+
+function setCustomerPinPrompt(){const phone=prompt('Masukkan nomor HP pelanggan sesuai data:');if(!phone)return;const pin=prompt('Buat PIN pelanggan (4–12 angka):');if(!pin)return;callServer('adminSetCustomerPin',{phone:phone,pin:pin},r=>toast(r.message||'PIN tersimpan.'),e=>toast(e.message||'Gagal menyimpan PIN.'));}
+
+function loadCustomerPortal(){
+  callServer('getCustomerPortal',{},d=>{
+    const root=document.getElementById('customerPortalData');
+    const credits=d.kredit||[], payments=d.pembayaran||[], schedules=d.jadwal||[];
+    const total=credits.reduce((sum,k)=>sum+(+k['Pokok Kredit']||0),0);
+    const paid=payments.reduce((sum,p)=>sum+(+p['Jumlah Bayar']||0),0);
+    const remaining=Math.max(0,total-paid);
+    const pct=total>0?Math.min(100,Math.round(paid/total*100)):0;
+    const creditCards=credits.map(k=>{
+      const principal=Number(k['Pokok Kredit'])||0;
+      const creditPayments=payments.filter(p=>String(p['ID Kredit'])===String(k['ID Kredit']));
+      const creditPaid=creditPayments.reduce((sum,p)=>sum+(Number(p['Jumlah Bayar'])||0),0);
+      const creditRemaining=Math.max(0,principal-creditPaid);
+      const creditPct=principal>0?Math.min(100,Math.round(creditPaid/principal*100)):0;
+      const photo=k['Foto HP']?`<img class="customer-credit-photo" src="${esc(photoSrc(k['Foto HP']))}" alt="Foto ${esc(k['Nama HP']||'HP')}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">`:'';
+      return `<article class="customer-credit-card">
+        <div class="customer-credit-photo-wrap">${photo}<div class="customer-credit-photo-placeholder" style="${photo?'display:none':''}">📱<br>Foto HP belum tersedia</div></div>
+        <div>
+          <div class="detail-eyebrow">Infinity Gadget · Kredit HP</div>
+          <h2 class="customer-credit-title">${esc(k['Nama HP']||'Produk HP')}</h2>
+          <div class="customer-credit-meta"><span>ID: ${esc(k['ID Kredit']||'—')}</span>${statusPill(creditRemaining<=0&&principal>0?'Lunas':k['Status']||'Aktif')}</div>
+          <div class="customer-credit-kpis">
+            <div class="customer-credit-kpi"><small>Pokok Kredit</small><strong>${money(principal)}</strong></div>
+            <div class="customer-credit-kpi"><small>Cicilan / Bulan</small><strong>${money(k['Cicilan per Bulan'])}</strong></div>
+            <div class="customer-credit-kpi"><small>Sisa Kredit</small><strong style="color:var(--red)">${money(creditRemaining)}</strong></div>
+          </div>
+          <div class="customer-credit-progress"><span style="width:${creditPct}%"></span></div>
+          <div class="muted" style="margin-top:6px">Terbayar ${creditPct}% · ${money(creditPaid)} dari ${money(principal)}</div>
+        </div>
+      </article>`;
+    }).join('');
+
+    root.innerHTML=`<div class="cards">
+      <div class="card"><div class="muted">Kontrak Kredit</div><h2>${credits.length}</h2></div>
+      <div class="card"><div class="muted">Total Dibayar</div><h2>${money(paid)}</h2></div>
+      <div class="card"><div class="muted">Sisa Tagihan</div><h2 style="color:var(--red)">${money(remaining)}</h2></div>
+      <div class="card"><div class="muted">Progres Pembayaran</div><h2>${pct}%</h2><div class="progress"><span style="width:${pct}%"></span></div></div>
+    </div>
+    <section class="panel"><h2>HP yang Saya Kredit</h2>
+      ${credits.length?`<div class="customer-credit-list">${creditCards}</div>`:'<div class="empty">Belum ada data kredit untuk akun ini.</div>'}
+    </section>
+    <section class="panel" style="margin-top:14px"><h2>Jadwal Cicilan</h2>
+      ${table(['Jatuh Tempo','Angsuran','Nominal','Status'],schedules.map(j=>`<tr><td>${esc(j['Tanggal Jatuh Tempo'])}</td><td>${esc(j['Angsuran Ke'])}</td><td>${money(j['Nominal'])}</td><td>${statusPill(j['Status'])}</td></tr>`))}
+    </section>
+    <section class="panel" style="margin-top:14px"><h2>Riwayat Pembayaran</h2>
+      ${table(['Tanggal','Jumlah','Metode'],payments.map(p=>`<tr><td>${esc(p['Tanggal Bayar'])}</td><td>${money(p['Jumlah Bayar'])}</td><td>${esc(p['Metode']||'—')}</td></tr>`))}
+    </section>`;
+  },e=>{document.getElementById('customerPortalData').textContent=(e&&e.message)||'Gagal memuat data.';});
+}
+
+document.getElementById('payDate').value=new Date().toISOString().slice(0,10);chooseRole('admin');
+
+</script></body></html>
