@@ -240,8 +240,8 @@
                 <div class="stat-card" id="cardAset" style="display:none;" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset</div></div><div class="stat-value" id="angka-aset">Memuat...</div></div>
             </div>
 
-            <!-- TOMBOL LAPORAN TELEGRAM KHUSUS OWNER -->
-            <div id="sectionTelegramOwner" style="display:none; margin-top: 15px;">
+            <!-- TOMBOL LAPORAN TELEGRAM TERBUKA UNTUK KARYAWAN & OWNER -->
+            <div style="margin-top: 15px;">
                 <button type="button" class="btn btn-telegram" onclick="kirimRekapTelegram()"><i class="fab fa-telegram-plane"></i> Kirim Laporan Tutup Toko ke Telegram</button>
                 <p id="statusTelegram" style="font-size: 13px; margin-top: 8px; font-weight: 600;"></p>
             </div>
@@ -376,7 +376,6 @@
             document.getElementById('cardAset').style.display = 'none'; 
             document.getElementById('titleOwner').style.display = 'none'; 
             document.getElementById('menuEditBarang').style.display = 'none'; 
-            document.getElementById('sectionTelegramOwner').style.display = 'none';
             aturForm(); 
         }
         
@@ -390,7 +389,6 @@
                 document.getElementById('cardAset').style.display = 'flex'; 
                 document.getElementById('titleOwner').style.display = 'block'; 
                 document.getElementById('menuEditBarang').style.display = 'flex'; 
-                document.getElementById('sectionTelegramOwner').style.display = 'block';
                 aturForm(); 
             } else { 
                 document.getElementById('loginError').innerText = 'PIN Salah!'; 
@@ -514,7 +512,7 @@
         function kirimRekapTelegram() {
             let statusEl = document.getElementById("statusTelegram");
             statusEl.style.color = "#3b82f6";
-            statusEl.innerText = "Mengirim rekap ke Telegram...";
+            statusEl.innerText = "Mengirim laporan tutup toko ke Telegram...";
             
             let payload = { tipeForm: "kirim_rekap_telegram" };
             
@@ -524,7 +522,7 @@
                 statusEl.innerText = msg;
             }).catch(err => {
                 statusEl.style.color = "#ef4444";
-                statusEl.innerText = "Gagal mengirim rekap ke Telegram.";
+                statusEl.innerText = "Gagal mengirim laporan ke Telegram.";
             });
         }
 
