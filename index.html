@@ -120,6 +120,7 @@
         .btn { width: 100%; padding: 13px; border: none; border-radius: var(--radius-btn); font-size: 14.5px; font-weight: 600; cursor: pointer; color: white; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .btn-primary { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); }
         .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .btn-telegram { background: linear-gradient(135deg, #0088cc, #006699); margin-top: 15px; }
         
         #reader { width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 12px; display: none; background: #f1f5f9; border: 2px dashed #cbd5e1; }
         #previewFoto { width: 100%; max-height: 220px; object-fit: contain; margin-top: 12px; border-radius: 10px; display: none; background: #f1f5f9; padding: 8px; }
@@ -237,6 +238,12 @@
                     <div class="stat-value" id="angka-stok-menipis">Memuat...</div>
                 </div>
                 <div class="stat-card" id="cardAset" style="display:none;" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset</div></div><div class="stat-value" id="angka-aset">Memuat...</div></div>
+            </div>
+
+            <!-- TOMBOL LAPORAN TELEGRAM KHUSUS OWNER -->
+            <div id="sectionTelegramOwner" style="display:none; margin-top: 15px;">
+                <button type="button" class="btn btn-telegram" onclick="kirimRekapTelegram()"><i class="fab fa-telegram-plane"></i> Kirim Laporan Tutup Toko ke Telegram</button>
+                <p id="statusTelegram" style="font-size: 13px; margin-top: 8px; font-weight: 600;"></p>
             </div>
         </div>
 
@@ -359,8 +366,36 @@
         }
         
         function bukaMenuLogin() { if(confirm("Ganti peran login?")) document.getElementById('loginModal').style.display = 'flex'; }
-        function loginSebagaiKaryawan() { statusRole = 'karyawan'; document.getElementById('loginModal').style.display = 'none'; document.getElementById('userName').innerText = 'Admin / Kasir'; document.getElementById('userRole').innerText = 'Karyawan'; document.getElementById('userAvatar').innerText = 'AD'; document.getElementById('cardAset').style.display = 'none'; document.getElementById('titleOwner').style.display = 'none'; document.getElementById('menuEditBarang').style.display = 'none'; aturForm(); }
-        function loginSebagaiOwner() { if(document.getElementById('inputPin').value === PIN_RAHASIA) { statusRole = 'owner'; document.getElementById('loginModal').style.display = 'none'; document.getElementById('userName').innerText = 'Infinity Owner'; document.getElementById('userRole').innerText = 'Owner / Admin'; document.getElementById('userAvatar').innerText = 'OW'; document.getElementById('cardAset').style.display = 'flex'; document.getElementById('titleOwner').style.display = 'block'; document.getElementById('menuEditBarang').style.display = 'flex'; aturForm(); } else { document.getElementById('loginError').innerText = 'PIN Salah!'; } }
+        
+        function loginSebagaiKaryawan() { 
+            statusRole = 'karyawan'; 
+            document.getElementById('loginModal').style.display = 'none'; 
+            document.getElementById('userName').innerText = 'Admin / Kasir'; 
+            document.getElementById('userRole').innerText = 'Karyawan'; 
+            document.getElementById('userAvatar').innerText = 'AD'; 
+            document.getElementById('cardAset').style.display = 'none'; 
+            document.getElementById('titleOwner').style.display = 'none'; 
+            document.getElementById('menuEditBarang').style.display = 'none'; 
+            document.getElementById('sectionTelegramOwner').style.display = 'none';
+            aturForm(); 
+        }
+        
+        function loginSebagaiOwner() { 
+            if(document.getElementById('inputPin').value === PIN_RAHASIA) { 
+                statusRole = 'owner'; 
+                document.getElementById('loginModal').style.display = 'none'; 
+                document.getElementById('userName').innerText = 'Infinity Owner'; 
+                document.getElementById('userRole').innerText = 'Owner / Admin'; 
+                document.getElementById('userAvatar').innerText = 'OW'; 
+                document.getElementById('cardAset').style.display = 'flex'; 
+                document.getElementById('titleOwner').style.display = 'block'; 
+                document.getElementById('menuEditBarang').style.display = 'flex'; 
+                document.getElementById('sectionTelegramOwner').style.display = 'block';
+                aturForm(); 
+            } else { 
+                document.getElementById('loginError').innerText = 'PIN Salah!'; 
+            } 
+        }
         
         function aksesMenuEdit(filter = 'semua') { 
             if(statusRole === 'owner') switchPage('edit', document.querySelector('#menuEditBarang'), filter); 
@@ -372,9 +407,7 @@
         function formatGambarDrive(url) {
             if(!url || url === "" || url === "-") return "https://via.placeholder.com/45x45/f1f5f9/94a3b8?text=No+Foto";
             let match = url.match(/\/d\/(.+?)\//) || url.match(/id=([a-zA-Z0-9_-]+)/);
-            if(match && match[1]) {
-                return "https://lh3.googleusercontent.com/d/" + match[1];
-            }
+            if(match && match[1]) { return "https://lh3.googleusercontent.com/d/" + match[1]; }
             return url;
         }
 
@@ -476,6 +509,23 @@
                     document.getElementById("totalJual").value = harga * qty;
                 }
             }
+        }
+
+        function kirimRekapTelegram() {
+            let statusEl = document.getElementById("statusTelegram");
+            statusEl.style.color = "#3b82f6";
+            statusEl.innerText = "Mengirim rekap ke Telegram...";
+            
+            let payload = { tipeForm: "kirim_rekap_telegram" };
+            
+            fetch(baseUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+            .then(res => res.text()).then(msg => {
+                statusEl.style.color = "#10b981";
+                statusEl.innerText = msg;
+            }).catch(err => {
+                statusEl.style.color = "#ef4444";
+                statusEl.innerText = "Gagal mengirim rekap ke Telegram.";
+            });
         }
 
         function bukaScannerTop() {
