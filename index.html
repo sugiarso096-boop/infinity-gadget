@@ -3,160 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity Gadget - Kasir & Servis</title>
-    <!-- Bootstrap 5 CSS CDN (Lebih stabil dan pasti jalan) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Infinity Gadget System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    
+    <style>
+        :root { --bg-color: #f4f7fb; --sidebar-bg: #1a1c23; --primary-color: #4361ee; --text-main: #333; --text-muted: #888; --card-bg: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { display: flex; background-color: var(--bg-color); color: var(--text-main); height: 100vh; overflow: hidden; }
+        
+        /* MODAL PIN LOGIN */
+        #loginModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .login-card { background: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .login-card h3 { margin-bottom: 10px; color: var(--text-main); }
+        .login-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+        
+        .sidebar { width: 260px; background-color: var(--sidebar-bg); color: #fff; display: flex; flex-direction: column; padding: 20px 0; z-index: 999; transition: 0.3s; }
+        .logo-area { text-align: center; margin-bottom: 30px; }
+        .logo-area h2 { color: #fff; font-weight: 700; letter-spacing: 1px; }
+        .logo-area h2 span { color: #3b82f6; }
+        .menu-title { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 1px; margin: 15px 25px 10px; font-weight: 600; }
+        .nav-item { padding: 12px 25px; cursor: pointer; display: flex; align-items: center; color: #9ca3af; font-size: 14px; transition: 0.3s; margin: 0 15px; border-radius: 8px; }
+        .nav-item i { width: 25px; font-size: 16px; }
+        .nav-item:hover { color: #fff; background-color: rgba(255,255,255,0.05); }
+        .nav-item.active { background-color: var(--primary-color); color: #fff; }
+        
+        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 998; }
+        .sidebar-overlay.show { display: block; }
+        
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; width: 100%; }
+        
+        .topbar { background: var(--card-bg); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.02); gap: 15px; }
+        .topbar-left { display: flex; align-items: center; flex: 1; gap: 10px; }
+        .menu-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-main); margin-right: 5px; }
+        
+        .search-container { position: relative; width: 100%; max-width: 380px; display: flex; gap: 8px; align-items: center; }
+        .search-bar { background: #f3f4f6; padding: 10px 15px; border-radius: 20px; display: flex; align-items: center; flex: 1; }
+        .search-bar input { border: none; background: transparent; outline: none; margin-left: 8px; width: 100%; font-size: 13px; }
+        
+        .btn-scan-top { background: var(--primary-color); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; min-width: 40px; }
+        .btn-scan-top:hover { background: #3a56d4; }
+        
+        .search-result-box { position: absolute; top: 100%; left: 0; right: 0; background: white; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-top: 10px; display: none; z-index: 100; max-height: 350px; overflow-y: auto; border: 1px solid #eee; }
+        .search-item { padding: 12px 15px; border-bottom: 1px solid #f1f1f1; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .search-item:hover { background: #f9fafb; }
+        .search-item:last-child { border-bottom: none; }
+        .item-left { display: flex; align-items: center; gap: 12px; }
+        .item-info h5 { font-size: 13px; margin: 0; color: var(--text-main); font-weight: 600; }
+        .item-info p { font-size: 11px; margin: 0; margin-top: 2px; color: var(--text-muted); }
+        .item-price { font-size: 13px; font-weight: bold; color: var(--primary-color); text-align: right; }
+        
+        #scannerModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 9999; display: none; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
+        .scanner-card { background: white; padding: 20px; border-radius: 15px; width: 100%; max-width: 400px; text-align: center; }
+        #readerTop { width: 100%; border-radius: 8px; overflow: hidden; margin-bottom: 15px; }
+        
+        .user-profile { display: flex; align-items: center; gap: 10px; }
+        .avatar { width: 40px; height: 40px; background: #333; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; min-width: 40px; }
+        .user-info h4 { font-size: 14px; margin: 0; white-space: nowrap; }
+        .user-info p { font-size: 11px; color: var(--text-muted); margin: 0; }
+        
+        .page-content { padding: 30px; display: none; }
+        .page-content.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .banner { background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%); border-radius: 15px; padding: 30px; color: white; text-align: center; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(67, 97, 238, 0.2); }
+        .banner h1 { font-size: 30px; font-weight: 800; font-style: italic; letter-spacing: 2px; }
+        .banner p { font-size: 14px; opacity: 0.8; margin-top: 5px; }
+        
+        .form-card { background: var(--card-bg); padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
+        .form-control { width: 100%; padding: 12px 15px; border: 1px solid #e5e7eb; border-radius: 8px; font-size: 14px; outline: none; transition: 0.3s; }
+        .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1); }
+        
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-warning { background-color: #f59e0b; color: white; margin-bottom: 15px; }
+        
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); box-shadow: 2px 0 15px rgba(0,0,0,0.5); }
+            .sidebar.show { transform: translateX(0); }
+            .topbar { padding: 12px 15px; }
+            .user-info { display: none; }
+            .page-content { padding: 15px; }
+        }
+    </style>
 </head>
-<body class="bg-light">
+<body>
 
-    <!-- Header / Navbar -->
-    <nav class="navbar navbar-dark bg-dark shadow-sm px-4">
-        <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1 fw-bold text-info">INFINITY GADGET <small class="text-muted fs-6">Kasir v2.0</small></span>
-            <span class="badge bg-success">Bot Telegram: Online</span>
-        </div>
-    </nav>
-
-    <!-- Main Container -->
-    <div class="container my-4">
-        <div class="row g-4">
-            
-            <!-- KOLOM KIRI: Input Transaksi -->
-            <div class="col-lg-4">
-                <div class="card shadow-sm border-0 p-3">
-                    <h5 class="fw-bold text-secondary mb-3">🛒 Input Transaksi</h5>
-                    
-                    <div class="mb-3">
-                        <label class="form-label small text-muted">Cari Barcode / Nama Barang</label>
-                        <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Ketik nama barang...">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label small text-muted">Kategori</label>
-                        <div class="btn-group w-100" role="group">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="pilihKategori('Pulsa')">Pulsa</button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="pilihKategori('Servis')">Servis</button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="pilihKategori('LCD')">LCD</button>
-                        </div>
-                    </div>
-
-                    <div class="bg-white border rounded p-3 mb-3">
-                        <small class="text-muted">Produk Terpilih:</small>
-                        <div id="selectedProduct" class="fw-bold text-dark">- Belum dipilih -</div>
-                        <div id="selectedPrice" class="text-primary fw-semibold small mb-2">Rp 0</div>
-                        
-                        <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted">Jumlah:</small>
-                            <div class="input-group input-group-sm w-50">
-                                <button class="btn btn-outline-secondary" onclick="ubahQty(-1)">-</button>
-                                <span id="qtyVal" class="form-control text-center bg-white">1</span>
-                                <button class="btn btn-outline-secondary" onclick="ubahQty(1)">+</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button onclick="tambahKeKeranjang()" class="btn btn-primary btn-sm w-100 fw-bold py-2">
-                        + Tambah ke Keranjang
-                    </button>
-                </div>
+    <!-- KOTAK LOGIN / PILIH AKSES -->
+    <div id="loginModal">
+        <div class="login-card">
+            <h3>Infinity Gadget Access</h3>
+            <p>Pilih peran Anda untuk masuk ke sistem</p>
+            <button class="btn btn-primary" onclick="loginSebagaiKaryawan()" style="margin-bottom: 10px;">
+                <i class="fas fa-user"></i> Masuk Sebagai Karyawan (Kasir)
+            </button>
+            <hr style="margin: 15px 0; border:0; border-top:1px solid #eee;">
+            <div class="form-group">
+                <label>PIN Owner (Khusus Admin):</label>
+                <input type="password" id="inputPin" class="form-control" placeholder="Masukkan PIN 4 digit...">
             </div>
-
-            <!-- KOLOM KANAN: Keranjang & Laporan Telegram -->
-            <div class="col-lg-8">
-                <!-- Keranjang Belanja -->
-                <div class="card shadow-sm border-0 p-3 mb-4">
-                    <h5 class="fw-bold text-secondary mb-3">📦 Keranjang Belanja</h5>
-                    <div class="table-responsive">
-                        <table class="table table-sm align-middle">
-                            <thead>
-                                <tr class="text-muted small">
-                                    <th>Barang</th>
-                                    <th class="text-center">Qty</th>
-                                    <th class="text-end">Harga</th>
-                                    <th class="text-end">Subtotal</th>
-                                </tr>
-                            </thead>
-                            <tbody id="cartTableBody">
-                                <tr>
-                                    <td colspan="4" class="text-center text-muted fst-italic py-3">Keranjang masih kosong</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="border-top pt-3 mt-2">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="fw-bold fs-5">TOTAL:</span>
-                            <span id="grandTotal" class="fw-bold text-primary fs-4">Rp 0</span>
-                        </div>
-                        <div class="row g-2">
-                            <div class="col-sm-6">
-                                <button onclick="prosesBayar()" class="btn btn-success btn-sm w-100 fw-bold py-2">💳 Bayar & Simpan</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <button onclick="cetakStruk()" class="btn btn-dark btn-sm w-100 fw-bold py-2">🖨️ Cetak Struk Thermal</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Kontrol Telegram -->
-                <div class="card shadow-sm border-0 p-3">
-                    <h5 class="fw-bold text-secondary mb-3">⚡ Laporan & Kontrol Cepat (Telegram)</h5>
-                    <div class="row g-2">
-                        <div class="col-md-4">
-                            <button onclick="kirimLaporanTelegram('rekap')" class="btn btn-outline-primary btn-sm w-100 py-2">📊 Kirim Rekap Harian</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button onclick="kirimLaporanTelegram('stok')" class="btn btn-outline-warning btn-sm w-100 py-2">📦 Cek Stok LCD</button>
-                        </div>
-                        <div class="col-md-4">
-                            <button onclick="kirimLaporanTelegram('servis')" class="btn btn-outline-info btn-sm w-100 py-2">📝 Data Servis Masuk</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <button class="btn btn-warning" onclick="loginSebagaiOwner()">
+                <i class="fas fa-lock"></i> Masuk Sebagai Owner
+            </button>
+            <p id="loginError" style="color: red; font-size: 12px; margin-top: 10px;"></p>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="text-center py-3 text-muted small">
-        &copy; 2026 Infinity Gadget. All rights reserved.
-    </footer>
+    <!-- MODAL SCANNER BARCODE -->
+    <div id="scannerModal">
+        <div class="scanner-card">
+            <h4 style="margin-bottom: 15px;">Arahkan Kamera ke Barcode</h4>
+            <div id="readerTop"></div>
+            <button class="btn btn-warning" onclick="tutupScannerTop()">Tutup / Batal</button>
+        </div>
+    </div>
 
-    <!-- Bootstrap JS Bundle CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="logo-area"><h2>&infin; INFINITY<br><span>GADGET</span></h2></div>
+        <div class="menu-title">Menu Utama</div>
+        <div class="nav-item active" onclick="switchPage('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
+        <div class="nav-item" onclick="switchPage('kasir', this)"><i class="fas fa-shopping-cart"></i> Kasir & Input</div>
+        
+        <div class="menu-title" id="titleOwner" style="display:none;">Menu Owner</div>
+        <div class="nav-item" id="menuEditBarang" style="display:none;" onclick="switchPage('edit', this)">
+            <i class="fas fa-edit"></i> Kelola & Edit Stok
+        </div>
+
+        <div class="menu-title">Laporan & Data</div>
+        <div class="nav-item" onclick="kirimLaporanTelegram('rekap')"><i class="fas fa-chart-bar"></i> Kirim Rekap Harian</div>
+        <div class="nav-item" onclick="kirimLaporanTelegram('stok')"><i class="fas fa-boxes"></i> Cek Stok LCD</div>
+    </div>
+
+    <div class="main-content">
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="topbar-left">
+                <i class="fas fa-bars menu-toggle" onclick="toggleSidebar()"></i>
+                <div class="search-container">
+                    <div class="search-bar">
+                        <i class="fas fa-search" style="color:#999;"></i>
+                        <input type="text" id="searchInput" placeholder="Cek Stok & Harga..." onkeyup="cariBarang(event)">
+                    </div>
+                    <button class="btn-scan-top" onclick="bukaScannerTop()" title="Scan Barcode"><i class="fas fa-camera"></i></button>
+                    <div id="searchResultBox" class="search-result-box"></div>
+                </div>
+            </div>
+            <div class="user-profile">
+                <div class="avatar" id="userAvatar">K</div>
+                <div class="user-info">
+                    <h4 id="userName">Karyawan</h4>
+                    <p id="userRole">Kasir Toko</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE DASHBOARD -->
+        <div id="page-dashboard" class="page-content active">
+            <div class="banner">
+                <h1>INFINITY GADGET SYSTEM</h1>
+                <p>Kelola Penjualan, Stok, dan Servis dengan Cepat dan Terintegrasi</p>
+            </div>
+        </div>
+
+        <!-- PAGE KASIR -->
+        <div id="page-kasir" class="page-content">
+            <div class="form-card">
+                <h3 style="margin-bottom: 20px;">Form Transaksi Kasir</h3>
+                <p class="text-muted">Gunakan pencarian di atas atau pilih produk untuk melakukan transaksi.</p>
+            </div>
+        </div>
+
+        <!-- PAGE EDIT STOK -->
+        <div id="page-edit" class="page-content">
+            <div class="form-card">
+                <h3 style="margin-bottom: 20px;">Kelola & Edit Stok Barang</h3>
+                <p class="text-muted">Hanya dapat diakses oleh Owner.</p>
+            </div>
+        </div>
+    </div>
+
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgp_pzUFcer6xnCOwUs9b0dzwWCkFc9fEc7ntB8C5sPiPL1Xz69xgRX2M_0Ull65Ls9w/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxQfda4FHujvhnFNF2drig2wlk4DWgA_QBQHrCERqt671YCqEWn1C0fQMWhm8d335qUA/exec";
 
-        let currentQty = 1;
-
-        function ubahQty(nilai) {
-            currentQty += nilai;
-            if (currentQty < 1) currentQty = 1;
-            document.getElementById('qtyVal').innerText = currentQty;
+        function loginSebagaiKaryawan() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('userName').innerText = "Karyawan";
+            document.getElementById('userRole').innerText = "Kasir Toko";
+            document.getElementById('userAvatar').innerText = "K";
         }
 
-        function pilihKategori(kategori) {
-            document.getElementById('selectedProduct').innerText = "Contoh Produk " + kategori;
-            document.getElementById('selectedPrice').innerText = "Rp 150.000";
+        function loginSebagaiOwner() {
+            var pin = document.getElementById('inputPin').value;
+            if (pin === "1234") { // Sesuaikan PIN owner Anda
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('userName').innerText = "Owner";
+                document.getElementById('userRole').innerText = "Administrator";
+                document.getElementById('userAvatar').innerText = "O";
+                document.getElementById('titleOwner').style.display = 'block';
+                document.getElementById('menuEditBarang').style.display = 'flex';
+            } else {
+                document.getElementById('loginError').innerText = "PIN Salah!";
+            }
         }
 
-        function tambahKeKeranjang() {
-            alert("Fitur keranjang aktif.");
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('show');
+            document.querySelector('.sidebar-overlay').classList.toggle('show');
         }
 
-        function prosesBayar() {
-            alert("Transaksi berhasil disimpan!");
+        function switchPage(pageId, element) {
+            document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(element) element.classList.add('active');
+            
+            if (window.innerWidth <= 768) toggleSidebar();
         }
 
-        function cetakStruk() {
-            window.print();
+        function cariBarang(e) {
+            var keyword = document.getElementById('searchInput').value;
+            var box = document.getElementById('searchResultBox');
+            if (keyword.length > 1) {
+                box.style.display = 'block';
+                box.innerHTML = `<div class="search-item"><div class="item-info"><h5>Mencari: ${keyword}...</h5></div></div>`;
+                // Integrasi fetch data dari SCRIPT_URL bisa ditaruh di sini
+            } else {
+                box.style.display = 'none';
+            }
+        }
+
+        let html5QrCodeTop = null;
+        function bukaScannerTop() {
+            document.getElementById('scannerModal').style.display = 'flex';
+            html5QrCodeTop = new Html5Qrcode("readerTop");
+            html5QrCodeTop.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, 
+                decodedText => {
+                    document.getElementById('searchInput').value = decodedText;
+                    tutupScannerTop();
+                }
+            ).catch(err => { alert("Gagal membuka kamera: " + err); });
+        }
+
+        function tutupScannerTop() {
+            if (html5QrCodeTop) {
+                html5QrCodeTop.stop().then(() => {
+                    document.getElementById('scannerModal').style.display = 'none';
+                }).catch(err => { document.getElementById('scannerModal').style.display = 'none'; });
+            } else {
+                document.getElementById('scannerModal').style.display = 'none';
+            }
         }
 
         function kirimLaporanTelegram(jenis) {
             alert("Mengirim laporan " + jenis + " ke Telegram...");
+            // fetch(SCRIPT_URL + "?action=Kirim&type=" + jenis)...
         }
     </script>
 </body>
