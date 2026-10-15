@@ -4,140 +4,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infinity Gadget - Kasir & Servis</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap 5 CSS CDN (Lebih stabil dan pasti jalan) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
+<body class="bg-light">
 
     <!-- Header / Navbar -->
-    <header class="bg-slate-900 text-white shadow-md py-3 px-6 flex justify-between items-center">
-        <div class="flex items-center space-x-3">
-            <span class="text-xl font-bold tracking-wider text-cyan-400">INFINITY GADGET</span>
-            <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Sistem Kasir v2.0</span>
+    <nav class="navbar navbar-dark bg-dark shadow-sm px-4">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1 fw-bold text-info">INFINITY GADGET <small class="text-muted fs-6">Kasir v2.0</small></span>
+            <span class="badge bg-success">Bot Telegram: Online</span>
         </div>
-        <div class="flex items-center space-x-2">
-            <span class="inline-block w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
-            <span class="text-sm text-slate-300">Bot Telegram: Online</span>
-        </div>
-    </header>
+    </nav>
 
-    <!-- Main Content Container -->
-    <main class="flex-1 p-4 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-3 gap-4">
-        
-        <!-- KOLOM KIRI: Input Transaksi & Produk -->
-        <section class="lg:col-span-1 space-y-4">
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-                <h2 class="font-semibold text-slate-700 mb-3 flex items-center gap-2">
-                    🛒 Input Transaksi
-                </h2>
-                
-                <!-- Cari Produk -->
-                <div class="mb-3">
-                    <label class="block text-xs font-medium text-slate-500 mb-1">Cari Barcode / Nama Barang</label>
-                    <input type="text" id="searchInput" placeholder="Ketik nama barang..." class="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500">
-                </div>
-
-                <!-- Kategori Cepat -->
-                <div class="mb-3">
-                    <label class="block text-xs font-medium text-slate-500 mb-1">Kategori</label>
-                    <div class="grid grid-cols-3 gap-2">
-                        <button onclick="pilihKategori('Pulsa')" class="p-2 text-xs bg-slate-100 hover:bg-cyan-50 hover:text-cyan-600 font-medium rounded border transition">Pulsa</button>
-                        <button onclick="pilihKategori('Servis')" class="p-2 text-xs bg-slate-100 hover:bg-cyan-50 hover:text-cyan-600 font-medium rounded border transition">Servis</button>
-                        <button onclick="pilihKategori('LCD')" class="p-2 text-xs bg-slate-100 hover:bg-cyan-50 hover:text-cyan-600 font-medium rounded border transition">LCD</button>
-                    </div>
-                </div>
-
-                <!-- Info Produk Terpilih -->
-                <div class="bg-slate-50 p-3 rounded-lg border mb-3">
-                    <p class="text-xs text-slate-500">Produk Terpilih:</p>
-                    <p id="selectedProduct" class="font-bold text-slate-800 text-sm">- Belum dipilih -</p>
-                    <p id="selectedPrice" class="text-xs text-cyan-600 font-semibold mb-2">Rp 0</p>
+    <!-- Main Container -->
+    <div class="container my-4">
+        <div class="row g-4">
+            
+            <!-- KOLOM KIRI: Input Transaksi -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 p-3">
+                    <h5 class="fw-bold text-secondary mb-3">🛒 Input Transaksi</h5>
                     
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs text-slate-500">Jumlah:</span>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="ubahQty(-1)" class="px-2 py-1 bg-white border rounded text-sm font-bold">-</button>
-                            <span id="qtyVal" class="text-sm font-semibold w-6 text-center">1</span>
-                            <button onclick="ubahQty(1)" class="px-2 py-1 bg-white border rounded text-sm font-bold">+</button>
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">Cari Barcode / Nama Barang</label>
+                        <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Ketik nama barang...">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small text-muted">Kategori</label>
+                        <div class="btn-group w-100" role="group">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="pilihKategori('Pulsa')">Pulsa</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="pilihKategori('Servis')">Servis</button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="pilihKategori('LCD')">LCD</button>
                         </div>
                     </div>
+
+                    <div class="bg-white border rounded p-3 mb-3">
+                        <small class="text-muted">Produk Terpilih:</small>
+                        <div id="selectedProduct" class="fw-bold text-dark">- Belum dipilih -</div>
+                        <div id="selectedPrice" class="text-primary fw-semibold small mb-2">Rp 0</div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Jumlah:</small>
+                            <div class="input-group input-group-sm w-50">
+                                <button class="btn btn-outline-secondary" onclick="ubahQty(-1)">-</button>
+                                <span id="qtyVal" class="form-control text-center bg-white">1</span>
+                                <button class="btn btn-outline-secondary" onclick="ubahQty(1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="tambahKeKeranjang()" class="btn btn-primary btn-sm w-100 fw-bold py-2">
+                        + Tambah ke Keranjang
+                    </button>
                 </div>
-
-                <button onclick="tambahKeKeranjang()" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-sm">
-                    + Tambah ke Keranjang
-                </button>
             </div>
-        </section>
 
-        <!-- KOLOM KANAN: Keranjang & Kontrol Telegram -->
-        <section class="lg:col-span-2 space-y-4">
-            <!-- Keranjang Belanja -->
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between min-h-[300px]">
-                <div>
-                    <h2 class="font-semibold text-slate-700 mb-3">📦 Keranjang Belanja</h2>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
+            <!-- KOLOM KANAN: Keranjang & Laporan Telegram -->
+            <div class="col-lg-8">
+                <!-- Keranjang Belanja -->
+                <div class="card shadow-sm border-0 p-3 mb-4">
+                    <h5 class="fw-bold text-secondary mb-3">📦 Keranjang Belanja</h5>
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle">
                             <thead>
-                                <tr class="border-b text-xs text-slate-500">
-                                    <th class="pb-2">Barang</th>
-                                    <th class="pb-2 text-center">Qty</th>
-                                    <th class="pb-2 text-right">Harga</th>
-                                    <th class="pb-2 text-right">Subtotal</th>
+                                <tr class="text-muted small">
+                                    <th>Barang</th>
+                                    <th class="text-center">Qty</th>
+                                    <th class="text-end">Harga</th>
+                                    <th class="text-end">Subtotal</th>
                                 </tr>
                             </thead>
                             <tbody id="cartTableBody">
-                                <tr class="border-b text-slate-400 italic">
-                                    <td colspan="4" class="py-4 text-center">Keranjang masih kosong</td>
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted fst-italic py-3">Keranjang masih kosong</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="border-top pt-3 mt-2">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="fw-bold fs-5">TOTAL:</span>
+                            <span id="grandTotal" class="fw-bold text-primary fs-4">Rp 0</span>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-sm-6">
+                                <button onclick="prosesBayar()" class="btn btn-success btn-sm w-100 fw-bold py-2">💳 Bayar & Simpan</button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button onclick="cetakStruk()" class="btn btn-dark btn-sm w-100 fw-bold py-2">🖨️ Cetak Struk Thermal</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Bagian Total & Tombol Aksi Bayar -->
-                <div class="mt-4 pt-4 border-t">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="font-bold text-slate-700 text-lg">TOTAL:</span>
-                        <span id="grandTotal" class="font-bold text-cyan-600 text-xl">Rp 0</span>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <button onclick="prosesBayar()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-sm">
-                            💳 Bayar & Simpan
-                        </button>
-                        <button onclick="cetakStruk()" class="bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 rounded-lg text-sm transition shadow-sm">
-                            🖨️ Cetak Struk Thermal
-                        </button>
+                <!-- Kontrol Telegram -->
+                <div class="card shadow-sm border-0 p-3">
+                    <h5 class="fw-bold text-secondary mb-3">⚡ Laporan & Kontrol Cepat (Telegram)</h5>
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <button onclick="kirimLaporanTelegram('rekap')" class="btn btn-outline-primary btn-sm w-100 py-2">📊 Kirim Rekap Harian</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button onclick="kirimLaporanTelegram('stok')" class="btn btn-outline-warning btn-sm w-100 py-2">📦 Cek Stok LCD</button>
+                        </div>
+                        <div class="col-md-4">
+                            <button onclick="kirimLaporanTelegram('servis')" class="btn btn-outline-info btn-sm w-100 py-2">📝 Data Servis Masuk</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Panel Kontrol Telegram & Laporan -->
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-                <h2 class="font-semibold text-slate-700 mb-3">⚡ Laporan & Kontrol Cepat (Telegram)</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <button onclick="kirimLaporanTelegram('rekap')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium py-2 px-3 rounded-lg text-xs border border-indigo-200 transition text-center">
-                        📊 Kirim Rekap Harian
-                    </button>
-                    <button onclick="kirimLaporanTelegram('stok')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 font-medium py-2 px-3 rounded-lg text-xs border border-amber-200 transition text-center">
-                        📦 Cek Stok LCD
-                    </button>
-                    <button onclick="kirimLaporanTelegram('servis')" class="bg-teal-50 hover:bg-teal-100 text-teal-700 font-medium py-2 px-3 rounded-lg text-xs border border-teal-200 transition text-center">
-                        📝 Data Servis Masuk
-                    </button>
-                </div>
-            </div>
-        </section>
-
-    </main>
+        </div>
+    </div>
 
     <!-- Footer -->
-    <footer class="text-center py-4 text-xs text-slate-500">
+    <footer class="text-center py-3 text-muted small">
         &copy; 2026 Infinity Gadget. All rights reserved.
     </footer>
 
-    <!-- Script Integrasi -->
+    <!-- Bootstrap JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Ganti dengan URL Web App Google Apps Script terbaru Anda yang sudah di-deploy
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwgp_pzUFcer6xnCOwUs9b0dzwWCkFc9fEc7ntB8C5sPiPL1Xz69xgRX2M_0Ull65Ls9w/exec";
 
         let currentQty = 1;
@@ -154,7 +144,7 @@
         }
 
         function tambahKeKeranjang() {
-            alert("Fitur keranjang aktif. Silakan sesuaikan dengan fungsi database Apps Script Anda.");
+            alert("Fitur keranjang aktif.");
         }
 
         function prosesBayar() {
@@ -167,8 +157,6 @@
 
         function kirimLaporanTelegram(jenis) {
             alert("Mengirim laporan " + jenis + " ke Telegram...");
-            // Contoh pemanggilan ke Google Apps Script:
-            // fetch(SCRIPT_URL + "?action=Kirim&type=" + jenis)...
         }
     </script>
 </body>
