@@ -168,14 +168,13 @@
             .banner-text h2 { width: 50%; max-width: 50%; font-size: 22px; }
         }
     
-        .mobile-sticky-actions { display: none; position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 1500; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; padding: 8px; border: 1px solid rgba(226,232,240,.95); border-radius: 18px; background: rgba(255,255,255,.97); box-shadow: 0 8px 28px rgba(15,23,42,.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        .mobile-sticky-btn { min-width: 0; min-height: 55px; border: 0; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; font-family: inherit; font-size: 10px; line-height: 1.1; font-weight: 800; text-decoration: none; cursor: pointer; color: #fff; }
-        .mobile-sticky-btn i { font-size: 18px; }
-        .mobile-sticky-cashier { background: linear-gradient(135deg,#ff4350,#d91f2b); }
-        .mobile-sticky-stock { background: linear-gradient(135deg,#3b82f6,#2563eb); }
-        .mobile-sticky-scan { background: linear-gradient(135deg,#22c55e,#16a34a); }
-        .mobile-sticky-catalog { background: linear-gradient(135deg,#a855f7,#7c3aed); }
-        @media (max-width: 768px) { body { padding-bottom: 105px; } .mobile-sticky-actions { display: grid; } }
+        /* Menu bawah HP: ringkas, ringan, dan tidak menutupi konten */
+        .mobile-sticky-actions { display: none; position: fixed; left: 14px; right: 14px; bottom: calc(7px + env(safe-area-inset-bottom, 0px)); z-index: 1500; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; padding: 5px 6px; border: 1px solid #e5e7eb; border-radius: 16px; background: rgba(255,255,255,.97); box-shadow: 0 4px 16px rgba(15,23,42,.12); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .mobile-sticky-btn { min-width: 0; min-height: 47px; padding: 4px 2px; border: 0; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-family: inherit; font-size: 9px; line-height: 1.1; font-weight: 600; text-decoration: none; cursor: pointer; color: #64748b; background: transparent; }
+        .mobile-sticky-btn i { font-size: 17px; color: #ef3340; }
+        .mobile-sticky-btn:active { background: #fff1f2; }
+        .mobile-sticky-cashier, .mobile-sticky-stock, .mobile-sticky-scan, .mobile-sticky-catalog { background: transparent; }
+        @media (max-width: 768px) { body { padding-bottom: 72px; } .mobile-sticky-actions { display: grid; } }
         @media (min-width: 769px) { .mobile-sticky-actions { display: none !important; } }
     </style>
 </head>
