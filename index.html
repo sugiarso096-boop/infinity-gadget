@@ -240,7 +240,6 @@
                 <div class="stat-card" id="cardAset" style="display:none;" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset</div></div><div class="stat-value" id="angka-aset">Memuat...</div></div>
             </div>
 
-            <!-- TOMBOL LAPORAN TELEGRAM TERBUKA UNTUK KARYAWAN & OWNER -->
             <div style="margin-top: 15px;">
                 <button type="button" class="btn btn-telegram" onclick="kirimRekapTelegram()"><i class="fab fa-telegram-plane"></i> Kirim Laporan Tutup Toko ke Telegram</button>
                 <p id="statusTelegram" style="font-size: 13px; margin-top: 8px; font-weight: 600;"></p>
@@ -692,8 +691,22 @@
             };
 
             fetch(baseUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-            .then(res => res.text()).then(msg => { document.getElementById("status").innerText = msg; document.getElementById("formKaryawan").reset(); fileB64 = ""; document.getElementById("previewFoto").style.display = "none"; btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data'; muatDashboard(); aturForm(); })
-            .catch(err => { document.getElementById("status").innerText = "Gagal mengirim data."; btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data'; });
+            .then(res => res.text()).then(msg => { 
+                document.getElementById("status").innerText = msg; 
+                document.getElementById("formKaryawan").reset(); 
+                fileB64 = ""; 
+                document.getElementById("previewFoto").style.display = "none"; 
+                btn.disabled = false; 
+                btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data'; 
+                muatDashboard(); 
+                aturForm(); 
+            })
+            .catch(err => { 
+                document.getElementById("status").style.color = "#ef4444";
+                document.getElementById("status").innerText = "Gagal mengirim data."; 
+                btn.disabled = false; 
+                btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data'; 
+            });
         }
     </script>
 
