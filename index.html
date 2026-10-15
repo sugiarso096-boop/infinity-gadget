@@ -189,128 +189,37 @@
             .quick-menu-card { min-height: 94px; padding: 11px 4px 10px; gap: 8px; border-radius: 13px; }
             .quick-menu-icon { width: 38px; height: 38px; border-radius: 11px; font-size: 16px; }
             .quick-menu-label { font-size: 10px; line-height: 1.25; }
-
             
-            /* Banner HP: teks berada di atas, gambar mendapat ruang sendiri di bawah */
+            /* Banner HP */
             .banner {
-                display: block;
-                min-height: 0;
-                padding: 22px 16px 16px;
-                margin-bottom: 20px;
-                overflow: hidden;
-                background-color: #ffffff;
-                /* Gambar diperkecil dan ditempatkan di kanan agar tidak menutupi judul */
-                background-image: url('robot.png');
-                background-position: right top 4px;
-                background-size: 125% auto;
-                background-repeat: no-repeat;
+                display: block; min-height: 0; padding: 22px 16px 16px; margin-bottom: 20px; overflow: hidden; background-color: #ffffff;
+                background-image: url('robot.png'); background-position: right top 4px; background-size: 125% auto; background-repeat: no-repeat;
             }
-            .banner-text {
-                width: 100%;
-                max-width: 100%;
-                position: relative;
-                z-index: 2;
-            }
-            .banner-subtitle {
-                font-size: 11px;
-                letter-spacing: 1px;
-                margin-bottom: 10px;
-            }
-            .banner-text h2 {
-                width: 50%;
-                max-width: 50%;
-                font-size: clamp(22px, 5.8vw, 27px);
-                line-height: 1.12;
-                margin-bottom: 18px;
-                overflow-wrap: break-word;
-            }
-            .banner-text p {
-                display: block;
-                width: 100%;
-                max-width: 100%;
-                font-size: 12px;
-                line-height: 1.55;
-                color: #1e293b;
-                font-weight: 500;
-                text-shadow: none;
-                background: rgba(255, 255, 255, 0.97);
-                padding: 10px 11px;
-                margin: 0;
-                border-radius: 0 8px 8px 0;
-                border-left: 4px solid #ef4444;
-                position: relative;
-                z-index: 3;
-            }
+            .banner-text { width: 100%; max-width: 100%; position: relative; z-index: 2; }
+            .banner-subtitle { font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; }
+            .banner-text h2 { width: 50%; max-width: 50%; font-size: clamp(22px, 5.8vw, 27px); line-height: 1.12; margin-bottom: 18px; overflow-wrap: break-word; }
+            .banner-text p { display: block; width: 100%; max-width: 100%; font-size: 12px; line-height: 1.55; color: #1e293b; font-weight: 500; text-shadow: none; background: rgba(255, 255, 255, 0.97); padding: 10px 11px; margin: 0; border-radius: 0 8px 8px 0; border-left: 4px solid #ef4444; position: relative; z-index: 3; }
         }
 
         @media (max-width: 380px) {
-            .banner {
-                padding-left: 13px;
-                padding-right: 13px;
-                background-position: right top 4px;
-                background-size: 130% auto;
-            }
-            .banner-text h2 {
-                width: 50%;
-                max-width: 50%;
-                font-size: 22px;
-            }
+            .banner { padding-left: 13px; padding-right: 13px; background-position: right top 4px; background-size: 130% auto; }
+            .banner-text h2 { width: 50%; max-width: 50%; font-size: 22px; }
             .quick-menu-grid { gap: 6px; }
             .quick-menu-card { padding-left: 2px; padding-right: 2px; }
             .quick-menu-label { font-size: 9px; }
-
         }
     
-        /* Empat ikon menu utama selalu terlihat saat halaman HP di-scroll */
-        .mobile-sticky-actions {
-            display: none;
-            position: fixed;
-            left: 10px;
-            right: 10px;
-            bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-            z-index: 9999;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 7px;
-            padding: 8px;
-            border: 1px solid rgba(226,232,240,.95);
-            border-radius: 18px;
-            background: rgba(255,255,255,.97);
-            box-shadow: 0 8px 28px rgba(15,23,42,.18);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-        .mobile-sticky-btn {
-            min-width: 0;
-            min-height: 55px;
-            border: 0;
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-            font-family: inherit;
-            font-size: 10px;
-            line-height: 1.1;
-            font-weight: 800;
-            text-decoration: none;
-            cursor: pointer;
-            color: #fff;
-        }
+        /* Menu Utama HP */
+        .mobile-sticky-actions { display: none; position: fixed; left: 10px; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); z-index: 9999; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; padding: 8px; border: 1px solid rgba(226,232,240,.95); border-radius: 18px; background: rgba(255,255,255,.97); box-shadow: 0 8px 28px rgba(15,23,42,.18); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .mobile-sticky-btn { min-width: 0; min-height: 55px; border: 0; border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; font-family: inherit; font-size: 10px; line-height: 1.1; font-weight: 800; text-decoration: none; cursor: pointer; color: #fff; }
         .mobile-sticky-btn i { font-size: 18px; }
         .mobile-sticky-cashier { background: linear-gradient(135deg,#ff4350,#d91f2b); }
         .mobile-sticky-stock { background: linear-gradient(135deg,#3b82f6,#2563eb); }
         .mobile-sticky-scan { background: linear-gradient(135deg,#22c55e,#16a34a); }
         .mobile-sticky-catalog { background: linear-gradient(135deg,#a855f7,#7c3aed); }
-        @media (max-width: 768px) {
-            body { padding-bottom: 105px; }
-            .mobile-sticky-actions { display: grid; }
-        }
-        @media (min-width: 769px) {
-            .mobile-sticky-actions { display: none !important; }
-        }
-
-</style>
+        @media (max-width: 768px) { body { padding-bottom: 105px; } .mobile-sticky-actions { display: grid; } }
+        @media (min-width: 769px) { .mobile-sticky-actions { display: none !important; } }
+    </style>
 </head>
 <body>
 
@@ -337,11 +246,7 @@
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <div class="sidebar">
         <div class="logo-area">
-            <h2>
-                <span class="icon-infin">&infin;</span>
-                INFINITY
-                <span class="text-gadget">GADGET</span>
-            </h2>
+            <h2><span class="icon-infin">&infin;</span>INFINITY<span class="text-gadget">GADGET</span></h2>
         </div>
         <div class="menu-title">Menu Utama</div>
         <div class="nav-item active" onclick="switchPage('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
@@ -375,7 +280,6 @@
 
         <!-- DASHBOARD -->
         <div id="page-dashboard" class="page-content active">
-            
             <div class="banner">
                 <div class="banner-text">
                     <div class="banner-subtitle">INFINITY GADGET</div>
@@ -388,19 +292,12 @@
                 <div class="stat-card" onclick="switchPage('kasir', null)"><div class="stat-header"><div class="icon-box icon-blue"><i class="fas fa-shopping-bag"></i></div><div class="stat-title">Total Penjualan</div></div><div class="stat-value" id="angka-penjualan">Memuat...</div></div>
                 <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-purple"><i class="fas fa-box"></i></div><div class="stat-title">Total Produk</div></div><div class="stat-value" id="angka-produk">Memuat...</div></div>
                 <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-orange"><i class="fas fa-tags"></i></div><div class="stat-title">Kategori Barang</div></div><div class="stat-value" id="angka-kategori">Memuat...</div></div>
-                
                 <div class="stat-card" onclick="aksesMenuEdit('menipis')">
-                    <div class="stat-header">
-                        <div class="icon-box icon-red"><i class="fas fa-exclamation-triangle"></i></div>
-                        <div class="stat-title">Stok Menipis (&le; 2)</div>
-                    </div>
+                    <div class="stat-header"><div class="icon-box icon-red"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-title">Stok Menipis (&le; 2)</div></div>
                     <div class="stat-value" id="angka-stok-menipis">Memuat...</div>
                 </div>
-
                 <div class="stat-card" id="cardAset" style="display:none;" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset</div></div><div class="stat-value" id="angka-aset">Memuat...</div></div>
             </div>
-
-            
         </div>
 
         <!-- KASIR & INPUT -->
@@ -481,7 +378,9 @@
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbz396BaRreD4MVSzvoxIKNCV5yrhI52VuUnPuCI3YDjUodfSpbWMKwZb1KXm1f-oy6z5g/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyjUYfuAtipQ4jPGXaYvo6CI7SAwiSYqKhaziTsnGCxGaBYE_PeqcUiM3N2XsWLvJnN/exec';
+        const baseUrl = scriptURL.split('?')[0]; // URL dasar bebas cache untuk koneksi pencarian/dropdown
+        
         const PIN_RAHASIA = '1234';
         let statusRole = 'karyawan';
         let cacheDataEdit = [];
@@ -525,7 +424,7 @@
         }
 
         function muatDashboard() {
-            fetch(scriptURL).then(r => r.json()).then(d => {
+            fetch(baseUrl).then(r => r.json()).then(d => {
                 document.getElementById('angka-penjualan').innerText = formatRp(d.penjualan || 0);
                 document.getElementById('angka-produk').innerText = (d.produk || 0) + " Barang";
                 document.getElementById('angka-kategori').innerText = (d.kategoriCount || 0) + " Jenis";
@@ -536,7 +435,7 @@
         window.onload = muatDashboard;
 
         function muatDataDropdownBarang() {
-            fetch(scriptURL + "&action=search&keyword=").then(r => r.json()).then(data => {
+            fetch(baseUrl + "?action=search&keyword=").then(r => r.json()).then(data => {
                 dataMasterBarang = data;
                 aturForm(); 
                 
@@ -645,7 +544,7 @@
             box.style.display = 'block';
             box.innerHTML = "<div style='padding:15px; text-align:center;'>Mencari...</div>";
             
-            fetch(scriptURL + "&action=search&keyword=" + encodeURIComponent(kw)).then(r => r.json()).then(data => {
+            fetch(baseUrl + "?action=search&keyword=" + encodeURIComponent(kw)).then(r => r.json()).then(data => {
                 if(data.length === 0) { box.innerHTML = "<div style='padding:15px; text-align:center; color:red;'>Tidak ditemukan</div>"; return; }
                 let html = "";
                 data.forEach(item => {
@@ -688,7 +587,7 @@
             let resultList = document.getElementById("editResultList");
             resultList.innerHTML = "<div style='text-align:center; padding:20px;'><i class='fas fa-spinner fa-spin'></i> Memuat Data...</div>";
             
-            fetch(scriptURL + "&action=search&keyword=").then(r => r.json()).then(data => {
+            fetch(baseUrl + "?action=search&keyword=").then(r => r.json()).then(data => {
                 if (filter === 'menipis') {
                     data = data.filter(item => parseInt(item.stok) <= 2);
                     document.getElementById("searchEditInput").placeholder = "Cari di Stok Menipis...";
@@ -740,7 +639,7 @@
                 barcode: document.getElementById("editBarcode").value
             };
 
-            fetch(scriptURL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+            fetch(baseUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
             .then(res => res.text())
             .then(msg => {
                 statusEdit.style.color = "#10b981";
@@ -763,7 +662,7 @@
             if(event) event.stopPropagation();
             if(confirm("Yakin ingin menghapus barang ini secara permanen?")) {
                 let payload = { tipeForm: "hapus_barang", rowHapus: rowNum };
-                fetch(scriptURL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+                fetch(baseUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
                 .then(res => res.text())
                 .then(msg => {
                     alert(msg);
@@ -828,7 +727,7 @@
                 namaFile: namaFile
             };
 
-            fetch(scriptURL, {
+            fetch(baseUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify(payload)
