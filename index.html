@@ -124,7 +124,6 @@
         .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .btn-telegram { background: linear-gradient(135deg, #0088cc, #006699); margin-top: 15px; }
 
-        /* Tabel Khusus Stok LCD */
         .table-custom { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
         .table-custom th, .table-custom td { padding: 12px 15px; border-bottom: 1px solid #eee; text-align: left; }
         .table-custom th { background: #f8fafc; color: #64748b; font-weight: 600; }
@@ -232,11 +231,11 @@
             </div>
 
             <div class="stats-grid">
-                <div class="stat-card" onclick="switchPage('kasir', null)"><div class="stat-header"><div class="icon-box icon-blue"><i class="fas fa-shopping-bag"></i></div><div class="stat-title">Total Penjualan</div></div><div class="stat-value" id="angka-penjualan">Memuat...</div></div>
-                <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-purple"><i class="fas fa-box"></i></div><div class="stat-title">Total Produk</div></div><div class="stat-value" id="angka-produk">Memuat...</div></div>
-                <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-orange"><i class="fas fa-tags"></i></div><div class="stat-title">Kategori Barang</div></div><div class="stat-value" id="angka-kategori">Memuat...</div></div>
-                <div class="stat-card" onclick="aksesMenuEdit('menipis')"><div class="stat-header"><div class="icon-box icon-red"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-title">Stok Menipis (&le; 2)</div></div><div class="stat-value" id="angka-stok-menipis">Memuat...</div></div>
-                <div class="stat-card" id="cardAset" style="display:none;" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset</div></div><div class="stat-value" id="angka-aset">Memuat...</div></div>
+                <div class="stat-card" onclick="switchPage('kasir', null)"><div class="stat-header"><div class="icon-box icon-blue"><i class="fas fa-shopping-bag"></i></div><div class="stat-title">Total Penjualan</div></div><div class="stat-value" id="angka-penjualan">Rp 0</div></div>
+                <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-purple"><i class="fas fa-box"></i></div><div class="stat-title">Total Produk</div></div><div class="stat-value" id="angka-produk">0 Barang</div></div>
+                <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-orange"><i class="fas fa-tags"></i></div><div class="stat-title">Kategori Barang</div></div><div class="stat-value" id="angka-kategori">0 Jenis</div></div>
+                <div class="stat-card" onclick="aksesMenuEdit('menipis')"><div class="stat-header"><div class="icon-box icon-red"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-title">Stok Menipis (&le; 2)</div></div><div class="stat-value" id="angka-stok-menipis">0 Barang</div></div>
+                <div class="stat-card" id="cardAset" style="display:none;" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset</div></div><div class="stat-value" id="angka-aset">Rp 0</div></div>
             </div>
 
             <div style="margin-top: 15px;">
@@ -281,13 +280,6 @@
                                 <td><span style="background: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">Merah (M)</span></td>
                                 <td><b>3 Pcs</b></td>
                                 <td>Rp 150.000</td>
-                                <td><button class="btn btn-primary" style="padding: 5px 10px; font-size: 11px; width:auto;" onclick="switchPage('edit', null)">Edit</button></td>
-                            </tr>
-                            <tr>
-                                <td>Samsung A05</td>
-                                <td><span style="background: #f1f5f9; color: #334155; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">Hitam (H)</span></td>
-                                <td><b>5 Pcs</b></td>
-                                <td>Rp 160.000</td>
                                 <td><button class="btn btn-primary" style="padding: 5px 10px; font-size: 11px; width:auto;" onclick="switchPage('edit', null)">Edit</button></td>
                             </tr>
                         </tbody>
@@ -351,7 +343,6 @@
     </div>
 
     <script>
-        // URL Google Apps Script Anda yang baru dan aktif
         const scriptURL = 'https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec';
         const baseUrl = scriptURL.split('?')[0]; 
         const PIN_RAHASIA = '1234';
@@ -424,13 +415,24 @@
         }
 
         function muatDashboard() {
-            fetch(baseUrl + "?t=" + new Date().getTime()).then(r => r.json()).then(d => {
-                document.getElementById('angka-penjualan').innerText = formatRp(d.penjualan || 0);
-                document.getElementById('angka-produk').innerText = (d.produk || 0) + " Barang";
-                document.getElementById('angka-kategori').innerText = (d.kategoriCount || 0) + " Jenis";
-                document.getElementById('angka-aset').innerText = formatRp(d.aset || 0);
+            fetch(baseUrl + "?t=" + new Date().getTime())
+            .then(r => r.json())
+            .then(d => {
+                document.getElementById('angka-penjualan').innerText = formatRp(d.penjualan || d.omzet || 0);
+                document.getElementById('angka-produk').innerText = (d.produk || d.totalProduk || 0) + " Barang";
+                document.getElementById('angka-kategori').innerText = (d.kategoriCount || d.jumlahKategori || 0) + " Jenis";
+                document.getElementById('angka-aset').innerText = formatRp(d.aset || d.totalAset || 0);
                 muatDataDropdownBarang();
-            }).catch(e => { console.log(e); muatDataDropdownBarang(); });
+            })
+            .catch(e => { 
+                console.log("Dashboard fallback:", e);
+                // Jika fetch dashboard gagal, isi angka default agar tidak "Memuat..." terus
+                document.getElementById('angka-penjualan').innerText = "Rp 0";
+                document.getElementById('angka-produk').innerText = "0 Barang";
+                document.getElementById('angka-kategori').innerText = "0 Jenis";
+                document.getElementById('angka-aset').innerText = "Rp 0";
+                muatDataDropdownBarang(); 
+            });
         }
         window.onload = muatDashboard;
 
