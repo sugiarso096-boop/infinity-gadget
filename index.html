@@ -176,6 +176,58 @@
         .mobile-sticky-cashier, .mobile-sticky-stock, .mobile-sticky-scan, .mobile-sticky-catalog { background: transparent; }
         @media (max-width: 768px) { body { padding-bottom: 72px; } .mobile-sticky-actions { display: grid; } }
         @media (min-width: 769px) { .mobile-sticky-actions { display: none !important; } }
+
+        /* POS compact: formulir lebih ringkas dan cepat dipakai karyawan */
+        #page-kasir { padding-top: 20px; padding-bottom: 24px; }
+        #page-kasir .form-card {
+            max-width: 900px;
+            padding: 24px;
+            border: 1px solid #e8edf4;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, .045);
+        }
+        #page-kasir .form-card h3 {
+            font-size: 20px;
+            margin-bottom: 6px !important;
+        }
+        #page-kasir .form-card h3::after {
+            content: "Isi data transaksi, lalu tekan Simpan Data.";
+            display: block;
+            margin-top: 5px;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 400;
+        }
+        #formKaryawan {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 18px;
+            row-gap: 0;
+            margin-top: 18px;
+        }
+        #formKaryawan .form-group { margin-bottom: 13px; min-width: 0; }
+        #formKaryawan .form-group label { font-size: 12px; margin-bottom: 5px; }
+        #formKaryawan .form-control { padding: 10px 12px; min-height: 42px; font-size: 13px; }
+        #formKaryawan #divBarcodeScanner,
+        #formKaryawan #divFoto,
+        #formKaryawan #divTotalJual,
+        #formKaryawan #btnSubmit { grid-column: 1 / -1; }
+        #formKaryawan #btnScanForm { padding: 10px 12px; font-size: 13px; }
+        #formKaryawan #btnSubmit { margin-top: 2px !important; min-height: 46px; }
+        #page-kasir #status { font-size: 13px; }
+        @media (max-width: 768px) {
+            #page-kasir { padding: 12px 10px 20px; }
+            #page-kasir .form-card { padding: 17px 14px; border-radius: 16px; }
+            #page-kasir .form-card h3 { font-size: 17px; }
+            #formKaryawan { grid-template-columns: minmax(0, 1fr); gap: 0; margin-top: 15px; }
+            #formKaryawan .form-group { margin-bottom: 12px; }
+            #formKaryawan #divBarcodeScanner,
+            #formKaryawan #divFoto,
+            #formKaryawan #divTotalJual,
+            #formKaryawan #btnSubmit { grid-column: 1; }
+            #formKaryawan .form-control { min-height: 44px; }
+            #formKaryawan #btnSubmit { position: relative; z-index: 1; }
+        }
+
     </style>
 </head>
 <body>
