@@ -81,51 +81,16 @@
         .page-content.active { display: block; animation: slideFadeUp 0.3s; }
         @keyframes slideFadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* GAYA BANNER TERBARU - MIRIP KATALOG (DESKTOP) */
         .banner { 
-            width: 100%; 
-            height: auto;
-            min-height: 280px; 
-            background: url('robot.png') center right / cover no-repeat; 
-            background-color: #fff;
-            border-radius: var(--radius-card); 
-            margin-bottom: 25px; 
-            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.15); 
-            display: flex;
-            align-items: center;
-            padding: 40px 50px;
-            position: relative;
+            width: 100%; height: auto; min-height: 280px; background: url('robot.png') center right / cover no-repeat; 
+            background-color: #fff; border-radius: var(--radius-card); margin-bottom: 25px; box-shadow: 0 15px 35px -10px rgba(0,0,0,0.15); 
+            display: flex; align-items: center; padding: 40px 50px; position: relative;
         }
-        .banner-text { 
-            max-width: 50%; 
-            z-index: 2;
-        }
-        .banner-subtitle {
-            color: #ef4444;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-        .banner-text h2 { 
-            font-size: 36px; 
-            font-weight: 800; 
-            color: #0f172a; 
-            margin-bottom: 12px; 
-            line-height: 1.15; 
-        }
-        .banner-text h2 span { 
-            color: #ef4444; 
-        }
-        .banner-text p { 
-            font-size: 13px; 
-            color: #475569; 
-            line-height: 1.6; 
-            font-weight: 400; 
-            border-left: 4px solid #ef4444;
-            padding-left: 16px;
-        }
+        .banner-text { max-width: 50%; z-index: 2; }
+        .banner-subtitle { color: #ef4444; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+        .banner-text h2 { font-size: 36px; font-weight: 800; color: #0f172a; margin-bottom: 12px; line-height: 1.15; }
+        .banner-text h2 span { color: #ef4444; }
+        .banner-text p { font-size: 13px; color: #475569; line-height: 1.6; font-weight: 400; border-left: 4px solid #ef4444; padding-left: 16px; }
 
         .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 24px; }
         .stat-card { transition: transform .18s ease, box-shadow .18s ease; min-width: 0; }
@@ -133,17 +98,7 @@
         .stat-card:first-child .icon-box { background: #fff0f1; color: #ef3340; }
         .stat-title { line-height: 1.35; }
         .stat-value { overflow-wrap: anywhere; }
-        .dashboard-section-title { display:flex; align-items:center; gap:10px; margin: 4px 0 14px; font-size:17px; font-weight:800; color:#172033; }
-        .dashboard-section-title:before { content:''; width:5px; height:22px; border-radius:8px; background:#ef3340; display:block; }
-        .quick-menu-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin-bottom:26px; }
-        .quick-menu-card { border:1px solid #eef0f4; background:#fff; border-radius:16px; min-height:112px; padding:17px 10px 14px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center; color:#1e293b; text-decoration:none; cursor:pointer; box-shadow:0 5px 16px rgba(15,23,42,.04); transition:transform .18s ease,box-shadow .18s ease; }
-        .quick-menu-card:hover { transform:translateY(-2px); box-shadow:0 10px 24px rgba(15,23,42,.09); }
-        .quick-menu-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; color:white; font-size:20px; box-shadow:0 5px 12px rgba(15,23,42,.10); }
-        .quick-menu-label { font-size:12px; line-height:1.35; font-weight:700; }
-        .quick-red { background:linear-gradient(135deg,#ff4350,#d91f2b); }
-        .quick-blue { background:linear-gradient(135deg,#3b82f6,#2563eb); }
-        .quick-green { background:linear-gradient(135deg,#22c55e,#16a34a); }
-        .quick-purple { background:linear-gradient(135deg,#a855f7,#7c3aed); }
+        
         .stat-card { background: var(--card-bg); padding: 22px; border-radius: var(--radius-card); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); display: flex; flex-direction: column; cursor: pointer; border: 1px solid rgba(0,0,0,0.02); }
         .stat-header { display: flex; align-items: center; gap: 14px; margin-bottom: 15px; }
         .icon-box { width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
@@ -184,17 +139,8 @@
             .icon-box { width: 40px; height: 40px; min-width: 40px; font-size: 17px; border-radius: 12px; }
             .stat-title { font-size: 11px; }
             .stat-value { font-size: clamp(18px, 5vw, 23px); line-height: 1.25; }
-            .dashboard-section-title { font-size: 16px; margin: 0 0 12px; }
-            .quick-menu-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 22px; }
-            .quick-menu-card { min-height: 94px; padding: 11px 4px 10px; gap: 8px; border-radius: 13px; }
-            .quick-menu-icon { width: 38px; height: 38px; border-radius: 11px; font-size: 16px; }
-            .quick-menu-label { font-size: 10px; line-height: 1.25; }
             
-            /* Banner HP */
-            .banner {
-                display: block; min-height: 0; padding: 22px 16px 16px; margin-bottom: 20px; overflow: hidden; background-color: #ffffff;
-                background-image: url('robot.png'); background-position: right top 4px; background-size: 125% auto; background-repeat: no-repeat;
-            }
+            .banner { display: block; min-height: 0; padding: 22px 16px 16px; margin-bottom: 20px; overflow: hidden; background-color: #ffffff; background-image: url('robot.png'); background-position: right top 4px; background-size: 125% auto; background-repeat: no-repeat; }
             .banner-text { width: 100%; max-width: 100%; position: relative; z-index: 2; }
             .banner-subtitle { font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; }
             .banner-text h2 { width: 50%; max-width: 50%; font-size: clamp(22px, 5.8vw, 27px); line-height: 1.12; margin-bottom: 18px; overflow-wrap: break-word; }
@@ -204,9 +150,6 @@
         @media (max-width: 380px) {
             .banner { padding-left: 13px; padding-right: 13px; background-position: right top 4px; background-size: 130% auto; }
             .banner-text h2 { width: 50%; max-width: 50%; font-size: 22px; }
-            .quick-menu-grid { gap: 6px; }
-            .quick-menu-card { padding-left: 2px; padding-right: 2px; }
-            .quick-menu-label { font-size: 9px; }
         }
     
         /* Menu Utama HP */
@@ -245,9 +188,7 @@
 
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     <div class="sidebar">
-        <div class="logo-area">
-            <h2><span class="icon-infin">&infin;</span>INFINITY<span class="text-gadget">GADGET</span></h2>
-        </div>
+        <div class="logo-area"><h2><span class="icon-infin">&infin;</span>INFINITY<span class="text-gadget">GADGET</span></h2></div>
         <div class="menu-title">Menu Utama</div>
         <div class="nav-item active" onclick="switchPage('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
         <div class="nav-item" onclick="switchPage('kasir', this)"><i class="fas fa-shopping-cart"></i> Kasir & Input</div>
@@ -308,14 +249,20 @@
                     <div class="form-group">
                         <label>Jenis Input</label>
                         <select name="tipeForm" id="tipeForm" class="form-control" onchange="aturForm()">
-                            <option value="penjualan">Kasir - Penjualan</option>
+                            <option value="penjualan">Kasir - Penjualan Barang</option>
+                            <option value="pulsa_token">Kasir - Pulsa & Token PLN</option>
                             <option value="barang_masuk">Gudang - Barang Masuk</option>
                         </select>
                     </div>
 
                     <div class="form-group"><label>Nama Karyawan</label><input type="text" id="kasir" name="kasir" class="form-control" placeholder="Nama Anda..." required></div>
                     
-                    <div class="form-group">
+                    <div class="form-group" id="divNomorTujuan" style="display:none;">
+                        <label>Nomor HP / ID Meteran PLN</label>
+                        <input type="number" id="nomorTujuan" name="nomorTujuan" class="form-control" placeholder="0812xxx / 112233xxx">
+                    </div>
+
+                    <div class="form-group" id="divBarcodeScanner">
                         <label>Barcode / IMEI Barang</label>
                         <div id="reader"></div>
                         <button type="button" class="btn btn-warning" id="btnScanForm" onclick="mulaiScanForm()"><i class="fas fa-camera"></i> Scan Kamera HP</button>
@@ -335,9 +282,18 @@
                         <datalist id="pilihanKategori"><option value="TWS"><option value="Powerbank"><option value="LCD / Touchscreen"><option value="Casing / Softcase"><option value="Charger / Adaptor"><option value="Kabel Data"><option value="Handphone"><option value="Speaker"></datalist>
                     </div>
 
-                    <div class="form-group"><label>Jumlah (Qty)</label><input type="number" id="qty" name="qty" class="form-control" value="1" oninput="hitungTotalOtomatis()" required></div>
-                    <div class="form-group" id="divHargaModal" style="display:none;"><label>Harga Modal (Rp)</label><input type="number" id="hargaModal" name="hargaModal" class="form-control" value="0"></div>
-                    <div class="form-group" id="divHargaJualInput" style="display:none;"><label>Harga Jual (Rp)</label><input type="number" id="hargaJualInput" name="hargaJualInput" class="form-control" value="0"></div>
+                    <div class="form-group" id="divQty"><label>Jumlah (Qty)</label><input type="number" id="qty" name="qty" class="form-control" value="1" oninput="hitungTotalOtomatis()" required></div>
+                    
+                    <div class="form-group" id="divHargaModal" style="display:none;">
+                        <label id="labelHargaModal">Harga Modal (Rp)</label>
+                        <input type="number" id="hargaModal" name="hargaModal" class="form-control" value="0">
+                    </div>
+                    
+                    <div class="form-group" id="divHargaJualInput" style="display:none;">
+                        <label id="labelHargaJual">Harga Jual (Rp)</label>
+                        <input type="number" id="hargaJualInput" name="hargaJualInput" class="form-control" value="0" oninput="hitungTotalOtomatis()">
+                    </div>
+                    
                     <div class="form-group" id="divTotalJual"><label>Total Harga Jual (Rp)</label><input type="number" id="totalJual" name="totalJual" class="form-control" value="0" readonly style="background:#e2e8f0; font-weight:700;"></div>
 
                     <div class="form-group" id="divFoto" style="display:none;">
@@ -380,13 +336,12 @@
     <script>
         // =====================================================================
         // PENTING: GANTI BARIS DI BAWAH INI DENGAN URL APPS SCRIPT ANDA SENDIRI
-        // (URL yang berakhiran /exec yang biasa Anda dapatkan saat Deploy)
         // =====================================================================
         const scriptURL = 'https://script.google.com/macros/s/AKfycbz396BaRreD4MVSzvoxIKNCV5yrhI52VuUnPuCI3YDjUodfSpbWMKwZb1KXm1f-oy6z5g/exec';
         
         const baseUrl = scriptURL.split('?')[0]; 
         const PIN_RAHASIA = '1234';
-        let statusRole = 'owner'; // Disesuaikan dengan sesi Anda saat ini
+        let statusRole = 'owner'; 
         let cacheDataEdit = [];
         let dataMasterBarang = [];
         let fileB64 = "", mimeType = "", namaFile = "";
@@ -408,8 +363,8 @@
         }
         
         function bukaMenuLogin() { if(confirm("Ganti peran login?")) document.getElementById('loginModal').style.display = 'flex'; }
-        function loginSebagaiKaryawan() { statusRole = 'karyawan'; document.getElementById('loginModal').style.display = 'none'; document.getElementById('userName').innerText = 'Admin / Kasir'; document.getElementById('userRole').innerText = 'Karyawan'; document.getElementById('userAvatar').innerText = 'AD'; document.getElementById('cardAset').style.display = 'none'; document.getElementById('titleOwner').style.display = 'none'; document.getElementById('menuEditBarang').style.display = 'none'; }
-        function loginSebagaiOwner() { if(document.getElementById('inputPin').value === PIN_RAHASIA) { statusRole = 'owner'; document.getElementById('loginModal').style.display = 'none'; document.getElementById('userName').innerText = 'Infinity Owner'; document.getElementById('userRole').innerText = 'Owner / Admin'; document.getElementById('userAvatar').innerText = 'OW'; document.getElementById('cardAset').style.display = 'flex'; document.getElementById('titleOwner').style.display = 'block'; document.getElementById('menuEditBarang').style.display = 'flex'; } else { document.getElementById('loginError').innerText = 'PIN Salah!'; } }
+        function loginSebagaiKaryawan() { statusRole = 'karyawan'; document.getElementById('loginModal').style.display = 'none'; document.getElementById('userName').innerText = 'Admin / Kasir'; document.getElementById('userRole').innerText = 'Karyawan'; document.getElementById('userAvatar').innerText = 'AD'; document.getElementById('cardAset').style.display = 'none'; document.getElementById('titleOwner').style.display = 'none'; document.getElementById('menuEditBarang').style.display = 'none'; aturForm(); }
+        function loginSebagaiOwner() { if(document.getElementById('inputPin').value === PIN_RAHASIA) { statusRole = 'owner'; document.getElementById('loginModal').style.display = 'none'; document.getElementById('userName').innerText = 'Infinity Owner'; document.getElementById('userRole').innerText = 'Owner / Admin'; document.getElementById('userAvatar').innerText = 'OW'; document.getElementById('cardAset').style.display = 'flex'; document.getElementById('titleOwner').style.display = 'block'; document.getElementById('menuEditBarang').style.display = 'flex'; aturForm(); } else { document.getElementById('loginError').innerText = 'PIN Salah!'; } }
         
         function aksesMenuEdit(filter = 'semua') { 
             if(statusRole === 'owner') switchPage('edit', document.querySelector('#menuEditBarang'), filter); 
@@ -434,21 +389,13 @@
                 document.getElementById('angka-kategori').innerText = (d.kategoriCount || 0) + " Jenis";
                 document.getElementById('angka-aset').innerText = formatRp(d.aset || 0);
                 muatDataDropdownBarang();
-            }).catch(e => {
-                console.log(e);
-                muatDataDropdownBarang(); // Fallback agar dropdown tetap dimuat
-            });
+            }).catch(e => { console.log(e); muatDataDropdownBarang(); });
         }
         window.onload = muatDashboard;
 
         function muatDataDropdownBarang() {
-            // Anti cache dan antisipasi error data
             fetch(baseUrl + "?action=search&t=" + new Date().getTime()).then(r => r.json()).then(data => {
-                if(Array.isArray(data)) {
-                    dataMasterBarang = data;
-                } else {
-                    dataMasterBarang = [];
-                }
+                if(Array.isArray(data)) { dataMasterBarang = data; } else { dataMasterBarang = []; }
                 aturForm(); 
                 
                 let jumlahMenipis = dataMasterBarang.filter(item => parseInt(item.stok) <= 2).length;
@@ -457,43 +404,56 @@
                     elMenipis.innerText = jumlahMenipis + " Barang";
                     elMenipis.style.color = jumlahMenipis > 0 ? "#ef4444" : "var(--text-main)";
                 }
-            }).catch(e => {
-                console.log("Error Dropdown:", e);
-                dataMasterBarang = [];
-                aturForm();
-            });
+            }).catch(e => { console.log("Error Dropdown:", e); dataMasterBarang = []; aturForm(); });
         }
 
         function aturForm() {
             let tipe = document.getElementById("tipeForm").value;
             let container = document.getElementById("containerNamaBarang");
             
+            // Sembunyikan dan Seting Ulang Awal
+            document.getElementById("divNomorTujuan").style.display = "none";
+            document.getElementById("divKategori").style.display = "none";
+            document.getElementById("divFoto").style.display = "none";
+            document.getElementById("divHargaModal").style.display = "none";
+            document.getElementById("divHargaJualInput").style.display = "none";
+            document.getElementById("divTotalJual").style.display = "none";
+            document.getElementById("divBarcodeScanner").style.display = "block";
+            document.getElementById("labelNamaBarang").innerText = "Nama Barang / Tipe HP";
+            document.getElementById("labelHargaModal").innerText = "Harga Modal (Rp)";
+            document.getElementById("qty").parentElement.style.display = "block";
+
             if(tipe === "penjualan") {
                 document.getElementById("divTotalJual").style.display = "block";
-                document.getElementById("divHargaJualInput").style.display = "none";
-                document.getElementById("divKategori").style.display = "none";
-                document.getElementById("divFoto").style.display = "none";
-                document.getElementById("divHargaModal").style.display = "none";
-
-                let optHtml = `<select id="barang" name="barang" class="form-control" onchange="pilihBarangKasir(this)" required><option value="">-- Pilih Barang dari Gudang --</option>`;
                 
+                let optHtml = `<select id="barang" name="barang" class="form-control" onchange="pilihBarangKasir(this)" required><option value="">-- Pilih Barang dari Gudang --</option>`;
                 if(dataMasterBarang.length > 0) {
                     dataMasterBarang.forEach(item => {
                         optHtml += `<option value="${item.nama}" data-harga="${item.hargaJual}" data-stok="${item.stok}">📦 ${item.nama} (Stok: ${item.stok} | Rp ${Number(item.hargaJual).toLocaleString('id-ID')})</option>`;
                     });
-                } else {
-                    optHtml += `<option value="">(Menunggu Koneksi Data...)</option>`;
-                }
-                
+                } else { optHtml += `<option value="">(Menunggu Koneksi Data...)</option>`; }
                 optHtml += `</select><small style="color:var(--text-muted); display:block; margin-top:5px;">💡 Karyawan bisa melihat nama, sisa stok, dan harga jual langsung dari pilihan.</small>`;
                 container.innerHTML = optHtml;
-            } else {
-                document.getElementById("divTotalJual").style.display = "none";
+
+            } else if(tipe === "pulsa_token") {
+                document.getElementById("divNomorTujuan").style.display = "block";
+                document.getElementById("divHargaModal").style.display = "block"; 
+                document.getElementById("divHargaJualInput").style.display = "block";
+                document.getElementById("divBarcodeScanner").style.display = "none"; // Hilangkan barcode
+                document.getElementById("qty").parentElement.style.display = "none"; // Qty disembunyikan
+                document.getElementById("qty").value = 1;
+                
+                document.getElementById("labelNamaBarang").innerText = "Provider & Nominal (Misal: Telkomsel 20rb)";
+                document.getElementById("labelHargaModal").innerText = "Harga Modal (Potongan Saldo Server)";
+                
+                container.innerHTML = `<input type="text" id="barang" name="barang" class="form-control" placeholder="Contoh: Pulsa Telkomsel 20rb / Token PLN 50rb" required>`;
+                
+            } else if(tipe === "barang_masuk") {
                 document.getElementById("divHargaJualInput").style.display = "block";
                 document.getElementById("divKategori").style.display = "block";
                 document.getElementById("divFoto").style.display = "block";
                 document.getElementById("divHargaModal").style.display = statusRole === 'owner' ? "block" : "none";
-
+                
                 container.innerHTML = `<input type="text" id="barang" name="barang" class="form-control" placeholder="Contoh: LCD Oppo / Powerbank Baru" required>`;
             }
         }
@@ -512,12 +472,12 @@
 
         function hitungTotalOtomatis() {
             let tipe = document.getElementById("tipeForm").value;
+            let qty = Number(document.getElementById("qty").value) || 1;
             if(tipe === "penjualan") {
                 let sel = document.getElementById("barang");
                 if(sel && sel.selectedIndex > 0) {
                     let opt = sel.options[sel.selectedIndex];
                     let harga = Number(opt.getAttribute("data-harga")) || 0;
-                    let qty = Number(document.getElementById("qty").value) || 1;
                     document.getElementById("totalJual").value = harga * qty;
                 }
             }
@@ -533,9 +493,7 @@
             }, (err) => {});
         }
         function tutupScannerTop() {
-            if(html5QrScannerTop) {
-                html5QrScannerTop.stop().then(() => { document.getElementById('scannerModal').style.display = 'none'; }).catch(e => { document.getElementById('scannerModal').style.display = 'none'; });
-            } else { document.getElementById('scannerModal').style.display = 'none'; }
+            if(html5QrScannerTop) { html5QrScannerTop.stop().then(() => { document.getElementById('scannerModal').style.display = 'none'; }).catch(e => { document.getElementById('scannerModal').style.display = 'none'; }); } else { document.getElementById('scannerModal').style.display = 'none'; }
         }
 
         function mulaiScanForm() {
@@ -551,16 +509,12 @@
             });
         }
 
-        function cariBarang(e) {
-            let kw = document.getElementById('searchInput').value;
-            if(e && e.key === "Enter") jalankanPencarian(kw);
-        }
+        function cariBarang(e) { let kw = document.getElementById('searchInput').value; if(e && e.key === "Enter") jalankanPencarian(kw); }
 
         function jalankanPencarian(kw) {
             let box = document.getElementById('searchResultBox');
             if(kw.length < 1) { box.style.display = 'none'; return; }
-            box.style.display = 'block';
-            box.innerHTML = "<div style='padding:15px; text-align:center;'>Mencari...</div>";
+            box.style.display = 'block'; box.innerHTML = "<div style='padding:15px; text-align:center;'>Mencari...</div>";
             
             fetch(baseUrl + "?action=search&t=" + new Date().getTime() + "&keyword=" + encodeURIComponent(kw)).then(r => r.json()).then(data => {
                 if(data.length === 0) { box.innerHTML = "<div style='padding:15px; text-align:center; color:red;'>Tidak ditemukan</div>"; return; }
@@ -572,9 +526,7 @@
             });
         }
 
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.search-container')) { document.getElementById('searchResultBox').style.display = 'none'; }
-        });
+        document.addEventListener('click', function(event) { if (!event.target.closest('.search-container')) { document.getElementById('searchResultBox').style.display = 'none'; } });
 
         function muatSemuaBarangToTabel(data) {
             let resultList = document.getElementById("editResultList");
@@ -586,10 +538,7 @@
                 <div class="search-item">
                     <div class="item-left" onclick="pilihBarangEdit(${index})" style="cursor:pointer; flex:1;">
                         <img src="${formatGambarDrive(item.foto)}" class="item-img">
-                        <div>
-                            <b>${item.nama}</b> <span style="font-size:10px; background:#eff6ff; color:#3b82f6; padding:2px 6px; border-radius:4px;">${item.kategori}</span><br>
-                            <small style="color:#64748b;">Stok: <b>${item.stok}</b> pcs | Jual: ${formatRp(item.hargaJual)}</small>
-                        </div>
+                        <div><b>${item.nama}</b> <span style="font-size:10px; background:#eff6ff; color:#3b82f6; padding:2px 6px; border-radius:4px;">${item.kategori}</span><br><small style="color:#64748b;">Stok: <b>${item.stok}</b> pcs | Jual: ${formatRp(item.hargaJual)}</small></div>
                     </div>
                     <div>
                         <div onclick="pilihBarangEdit(${index})" style="cursor:pointer; font-size:12px; color:blue; background:#eff6ff; padding:5px 10px; border-radius:6px; margin-bottom:4px;"><i class="fas fa-edit"></i> Edit</div>
@@ -607,12 +556,7 @@
             
             fetch(baseUrl + "?action=search&t=" + new Date().getTime()).then(r => r.json()).then(data => {
                 if(!Array.isArray(data)) data = [];
-                if (filter === 'menipis') {
-                    data = data.filter(item => parseInt(item.stok) <= 2);
-                    document.getElementById("searchEditInput").placeholder = "Cari di Stok Menipis...";
-                } else {
-                    document.getElementById("searchEditInput").placeholder = "Cari barang...";
-                }
+                if (filter === 'menipis') { data = data.filter(item => parseInt(item.stok) <= 2); document.getElementById("searchEditInput").placeholder = "Cari di Stok Menipis..."; } else { document.getElementById("searchEditInput").placeholder = "Cari barang..."; }
                 muatSemuaBarangToTabel(data);
             });
         }
@@ -625,56 +569,21 @@
 
         function pilihBarangEdit(index) {
             let item = cacheDataEdit[index];
-            document.getElementById("editRow").value = item.row;
-            document.getElementById("editNama").value = item.nama;
-            document.getElementById("editKategori").value = item.kategori;
-            document.getElementById("editStok").value = item.stok;
-            document.getElementById("editHargaJual").value = item.hargaJual;
-            document.getElementById("editHargaModal").value = item.hargaModal;
-            document.getElementById("editBarcode").value = item.barcode;
-            document.getElementById("formEditBarang").style.display = "block";
-            window.scrollTo({ top: 400, behavior: 'smooth' });
+            document.getElementById("editRow").value = item.row; document.getElementById("editNama").value = item.nama; document.getElementById("editKategori").value = item.kategori; document.getElementById("editStok").value = item.stok; document.getElementById("editHargaJual").value = item.hargaJual; document.getElementById("editHargaModal").value = item.hargaModal; document.getElementById("editBarcode").value = item.barcode; document.getElementById("formEditBarang").style.display = "block"; window.scrollTo({ top: 400, behavior: 'smooth' });
         }
 
         function batalEdit() { document.getElementById("formEditBarang").style.display = "none"; }
 
         function simpanPerubahanBarang(e) {
             e.preventDefault();
-            let btn = document.getElementById("btnUpdate");
-            let statusEdit = document.getElementById("statusEdit");
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
-            statusEdit.style.color = "#3b82f6";
-            statusEdit.innerText = "Mengirim perubahan ke server...";
+            let btn = document.getElementById("btnUpdate"); let statusEdit = document.getElementById("statusEdit");
+            btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...'; statusEdit.style.color = "#3b82f6"; statusEdit.innerText = "Mengirim perubahan ke server...";
             
-            let payload = {
-                tipeForm: "edit_barang",
-                rowEdit: document.getElementById("editRow").value,
-                barang: document.getElementById("editNama").value,
-                kategori: document.getElementById("editKategori").value,
-                qty: document.getElementById("editStok").value,
-                hargaJualInput: document.getElementById("editHargaJual").value,
-                hargaModal: document.getElementById("editHargaModal").value,
-                barcode: document.getElementById("editBarcode").value
-            };
+            let payload = { tipeForm: "edit_barang", rowEdit: document.getElementById("editRow").value, barang: document.getElementById("editNama").value, kategori: document.getElementById("editKategori").value, qty: document.getElementById("editStok").value, hargaJualInput: document.getElementById("editHargaJual").value, hargaModal: document.getElementById("editHargaModal").value, barcode: document.getElementById("editBarcode").value };
 
             fetch(baseUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-            .then(res => res.text())
-            .then(msg => {
-                statusEdit.style.color = "#10b981";
-                statusEdit.innerText = msg;
-                document.getElementById("formEditBarang").style.display = "none";
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-check"></i> Simpan Perubahan';
-                muatSemuaBarangUntukEdit(currentEditFilter);
-                muatDashboard();
-            })
-            .catch(err => {
-                statusEdit.style.color = "#ef4444";
-                statusEdit.innerText = "Gagal menyimpan. Coba lagi.";
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-check"></i> Simpan Perubahan';
-            });
+            .then(res => res.text()).then(msg => { statusEdit.style.color = "#10b981"; statusEdit.innerText = msg; document.getElementById("formEditBarang").style.display = "none"; btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> Simpan Perubahan'; muatSemuaBarangUntukEdit(currentEditFilter); muatDashboard(); })
+            .catch(err => { statusEdit.style.color = "#ef4444"; statusEdit.innerText = "Gagal menyimpan. Coba lagi."; btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> Simpan Perubahan'; });
         }
 
         function hapusBarang(event, rowNum) {
@@ -682,42 +591,21 @@
             if(confirm("Yakin ingin menghapus barang ini secara permanen?")) {
                 let payload = { tipeForm: "hapus_barang", rowHapus: rowNum };
                 fetch(baseUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-                .then(res => res.text())
-                .then(msg => {
-                    alert(msg);
-                    muatSemuaBarangUntukEdit(currentEditFilter);
-                    muatDashboard();
-                })
-                .catch(err => {
-                    alert("Gagal menghapus barang. Periksa koneksi internet.");
-                });
+                .then(res => res.text()).then(msg => { alert(msg); muatSemuaBarangUntukEdit(currentEditFilter); muatDashboard(); }).catch(err => { alert("Gagal menghapus barang."); });
             }
         }
 
         document.getElementById("inputFoto").addEventListener("change", function(e) {
-            let file = e.target.files[0];
-            let btn = document.getElementById("btnSubmit");
+            let file = e.target.files[0]; let btn = document.getElementById("btnSubmit");
             if(file) {
-                btn.disabled = true;
-                btn.innerHTML = "Memproses Foto...";
-                namaFile = "compressed_" + file.name;
-                mimeType = "image/jpeg";
-
+                btn.disabled = true; btn.innerHTML = "Memproses Foto..."; namaFile = "compressed_" + file.name; mimeType = "image/jpeg";
                 let reader = new FileReader();
                 reader.onload = function(event) {
                     let img = new Image();
                     img.onload = function() {
-                        let canvas = document.createElement("canvas");
-                        let ctx = canvas.getContext("2d");
-                        canvas.width = 800; canvas.height = 800;
-                        ctx.drawImage(img, 0, 0, 800, 800);
-                        let dataUrl = canvas.toDataURL("image/jpeg", 0.6);
-                        fileB64 = dataUrl.split(',')[1];
-                        
-                        document.getElementById("previewFoto").src = dataUrl;
-                        document.getElementById("previewFoto").style.display = "block";
-                        btn.disabled = false;
-                        btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data';
+                        let canvas = document.createElement("canvas"); let ctx = canvas.getContext("2d"); canvas.width = 800; canvas.height = 800; ctx.drawImage(img, 0, 0, 800, 800);
+                        let dataUrl = canvas.toDataURL("image/jpeg", 0.6); fileB64 = dataUrl.split(',')[1];
+                        document.getElementById("previewFoto").src = dataUrl; document.getElementById("previewFoto").style.display = "block"; btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data';
                     };
                     img.src = event.target.result;
                 };
@@ -727,61 +615,50 @@
 
         function kirimData(e) {
             e.preventDefault();
-            let btn = document.getElementById("btnSubmit");
-            btn.disabled = true;
-            btn.innerHTML = "Menyimpan...";
+            let btn = document.getElementById("btnSubmit"); btn.disabled = true; btn.innerHTML = "Menyimpan...";
+
+            let tipe = document.getElementById("tipeForm").value;
+            let qtyVal = document.getElementById("qty").value || 1;
+            let totalJualVal = 0; let hargaModalVal = 0;
+            
+            if (tipe === "penjualan") {
+                totalJualVal = document.getElementById("totalJual").value || 0;
+                hargaModalVal = 0; 
+            } else if (tipe === "pulsa_token") {
+                totalJualVal = document.getElementById("hargaJualInput").value || 0;
+                hargaModalVal = document.getElementById("hargaModal").value || 0;
+            } else {
+                totalJualVal = (document.getElementById("hargaJualInput").value || 0) * qtyVal;
+                hargaModalVal = statusRole === 'karyawan' ? 0 : document.getElementById("hargaModal").value;
+            }
 
             let payload = {
-                tipeForm: document.getElementById("tipeForm").value,
+                tipeForm: tipe,
                 kasir: document.getElementById("kasir").value,
                 barcode: document.getElementById("barcode").value || "-",
                 barang: document.getElementById("barang").value,
                 kategori: document.getElementById("kategori").value || "Lainnya",
-                qty: document.getElementById("qty").value,
-                hargaModal: statusRole === 'karyawan' ? 0 : document.getElementById("hargaModal").value,
+                qty: qtyVal,
+                hargaModal: hargaModalVal,
                 hargaJualInput: document.getElementById("hargaJualInput").value || 0,
-                totalJual: document.getElementById("totalJual").value || 0,
+                totalJual: totalJualVal,
+                nomorTujuan: document.getElementById("nomorTujuan").value || "-",
                 fotoB64: fileB64,
                 mimeType: mimeType,
                 namaFile: namaFile
             };
 
-            fetch(baseUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload)
-            })
-            .then(res => res.text())
-            .then(msg => {
-                document.getElementById("status").innerText = msg;
-                document.getElementById("formKaryawan").reset();
-                fileB64 = "";
-                document.getElementById("previewFoto").style.display = "none";
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data';
-                muatDashboard();
-            })
-            .catch(err => {
-                document.getElementById("status").innerText = "Gagal mengirim data.";
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data';
-            });
+            fetch(baseUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+            .then(res => res.text()).then(msg => { document.getElementById("status").innerText = msg; document.getElementById("formKaryawan").reset(); fileB64 = ""; document.getElementById("previewFoto").style.display = "none"; btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data'; muatDashboard(); aturForm(); })
+            .catch(err => { document.getElementById("status").innerText = "Gagal mengirim data."; btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data'; });
         }
     </script>
 
     <nav class="mobile-sticky-actions" aria-label="Menu utama">
-        <button type="button" class="mobile-sticky-btn mobile-sticky-cashier" onclick="switchPage('kasir', null)">
-            <i class="fas fa-cash-register" aria-hidden="true"></i><span>Kasir</span>
-        </button>
-        <button type="button" class="mobile-sticky-btn mobile-sticky-stock" onclick="aksesMenuEdit()">
-            <i class="fas fa-box-open" aria-hidden="true"></i><span>Kelola Stok</span>
-        </button>
-        <button type="button" class="mobile-sticky-btn mobile-sticky-scan" onclick="bukaScannerTop()">
-            <i class="fas fa-barcode" aria-hidden="true"></i><span>Scan</span>
-        </button>
-        <a class="mobile-sticky-btn mobile-sticky-catalog" href="katalog.html" target="_blank" rel="noopener">
-            <i class="fas fa-store" aria-hidden="true"></i><span>Katalog</span>
-        </a>
+        <button type="button" class="mobile-sticky-btn mobile-sticky-cashier" onclick="switchPage('kasir', null)"><i class="fas fa-cash-register" aria-hidden="true"></i><span>Kasir</span></button>
+        <button type="button" class="mobile-sticky-btn mobile-sticky-stock" onclick="aksesMenuEdit()"><i class="fas fa-box-open" aria-hidden="true"></i><span>Kelola Stok</span></button>
+        <button type="button" class="mobile-sticky-btn mobile-sticky-scan" onclick="bukaScannerTop()"><i class="fas fa-barcode" aria-hidden="true"></i><span>Scan</span></button>
+        <a class="mobile-sticky-btn mobile-sticky-catalog" href="katalog.html" target="_blank" rel="noopener"><i class="fas fa-store" aria-hidden="true"></i><span>Katalog</span></a>
     </nav>
 </body>
 </html>
