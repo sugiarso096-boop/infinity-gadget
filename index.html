@@ -378,11 +378,15 @@
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyjUYfuAtipQ4jPGXaYvo6CI7SAwiSYqKhaziTsnGCxGaBYE_PeqcUiM3N2XsWLvJnN/exec';
-        const baseUrl = scriptURL.split('?')[0]; // URL dasar bebas cache untuk koneksi pencarian/dropdown
+        // =====================================================================
+        // PENTING: GANTI BARIS DI BAWAH INI DENGAN URL APPS SCRIPT ANDA SENDIRI
+        // (URL yang berakhiran /exec yang biasa Anda dapatkan saat Deploy)
+        // =====================================================================
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz396BaRreD4MVSzvoxIKNCV5yrhI52VuUnPuCI3YDjUodfSpbWMKwZb1KXm1f-oy6z5g/exec';
         
+        const baseUrl = scriptURL.split('?')[0]; 
         const PIN_RAHASIA = '1234';
-        let statusRole = 'karyawan';
+        let statusRole = 'owner'; // Disesuaikan dengan sesi Anda saat ini
         let cacheDataEdit = [];
         let dataMasterBarang = [];
         let fileB64 = "", mimeType = "", namaFile = "";
@@ -424,31 +428,39 @@
         }
 
         function muatDashboard() {
-            fetch(baseUrl).then(r => r.json()).then(d => {
+            fetch(baseUrl + "?t=" + new Date().getTime()).then(r => r.json()).then(d => {
                 document.getElementById('angka-penjualan').innerText = formatRp(d.penjualan || 0);
                 document.getElementById('angka-produk').innerText = (d.produk || 0) + " Barang";
                 document.getElementById('angka-kategori').innerText = (d.kategoriCount || 0) + " Jenis";
                 document.getElementById('angka-aset').innerText = formatRp(d.aset || 0);
                 muatDataDropdownBarang();
-            }).catch(e => console.log(e));
+            }).catch(e => {
+                console.log(e);
+                muatDataDropdownBarang(); // Fallback agar dropdown tetap dimuat
+            });
         }
         window.onload = muatDashboard;
 
         function muatDataDropdownBarang() {
-            fetch(baseUrl + "?action=search&keyword=").then(r => r.json()).then(data => {
-                dataMasterBarang = data;
+            // Anti cache dan antisipasi error data
+            fetch(baseUrl + "?action=search&t=" + new Date().getTime()).then(r => r.json()).then(data => {
+                if(Array.isArray(data)) {
+                    dataMasterBarang = data;
+                } else {
+                    dataMasterBarang = [];
+                }
                 aturForm(); 
                 
-                let jumlahMenipis = data.filter(item => parseInt(item.stok) <= 2).length;
+                let jumlahMenipis = dataMasterBarang.filter(item => parseInt(item.stok) <= 2).length;
                 let elMenipis = document.getElementById("angka-stok-menipis");
                 if (elMenipis) {
                     elMenipis.innerText = jumlahMenipis + " Barang";
-                    if (jumlahMenipis > 0) {
-                        elMenipis.style.color = "#ef4444"; 
-                    } else {
-                        elMenipis.style.color = "var(--text-main)";
-                    }
+                    elMenipis.style.color = jumlahMenipis > 0 ? "#ef4444" : "var(--text-main)";
                 }
+            }).catch(e => {
+                console.log("Error Dropdown:", e);
+                dataMasterBarang = [];
+                aturForm();
             });
         }
 
@@ -464,9 +476,15 @@
                 document.getElementById("divHargaModal").style.display = "none";
 
                 let optHtml = `<select id="barang" name="barang" class="form-control" onchange="pilihBarangKasir(this)" required><option value="">-- Pilih Barang dari Gudang --</option>`;
-                dataMasterBarang.forEach(item => {
-                    optHtml += `<option value="${item.nama}" data-harga="${item.hargaJual}" data-stok="${item.stok}">📦 ${item.nama} (Stok: ${item.stok} | Rp ${Number(item.hargaJual).toLocaleString('id-ID')})</option>`;
-                });
+                
+                if(dataMasterBarang.length > 0) {
+                    dataMasterBarang.forEach(item => {
+                        optHtml += `<option value="${item.nama}" data-harga="${item.hargaJual}" data-stok="${item.stok}">📦 ${item.nama} (Stok: ${item.stok} | Rp ${Number(item.hargaJual).toLocaleString('id-ID')})</option>`;
+                    });
+                } else {
+                    optHtml += `<option value="">(Menunggu Koneksi Data...)</option>`;
+                }
+                
                 optHtml += `</select><small style="color:var(--text-muted); display:block; margin-top:5px;">💡 Karyawan bisa melihat nama, sisa stok, dan harga jual langsung dari pilihan.</small>`;
                 container.innerHTML = optHtml;
             } else {
@@ -544,7 +562,7 @@
             box.style.display = 'block';
             box.innerHTML = "<div style='padding:15px; text-align:center;'>Mencari...</div>";
             
-            fetch(baseUrl + "?action=search&keyword=" + encodeURIComponent(kw)).then(r => r.json()).then(data => {
+            fetch(baseUrl + "?action=search&t=" + new Date().getTime() + "&keyword=" + encodeURIComponent(kw)).then(r => r.json()).then(data => {
                 if(data.length === 0) { box.innerHTML = "<div style='padding:15px; text-align:center; color:red;'>Tidak ditemukan</div>"; return; }
                 let html = "";
                 data.forEach(item => {
@@ -587,7 +605,8 @@
             let resultList = document.getElementById("editResultList");
             resultList.innerHTML = "<div style='text-align:center; padding:20px;'><i class='fas fa-spinner fa-spin'></i> Memuat Data...</div>";
             
-            fetch(baseUrl + "?action=search&keyword=").then(r => r.json()).then(data => {
+            fetch(baseUrl + "?action=search&t=" + new Date().getTime()).then(r => r.json()).then(data => {
+                if(!Array.isArray(data)) data = [];
                 if (filter === 'menipis') {
                     data = data.filter(item => parseInt(item.stok) <= 2);
                     document.getElementById("searchEditInput").placeholder = "Cari di Stok Menipis...";
@@ -750,7 +769,6 @@
         }
     </script>
 
-    <!-- Empat pintasan utama tetap terlihat di bawah layar HP -->
     <nav class="mobile-sticky-actions" aria-label="Menu utama">
         <button type="button" class="mobile-sticky-btn mobile-sticky-cashier" onclick="switchPage('kasir', null)">
             <i class="fas fa-cash-register" aria-hidden="true"></i><span>Kasir</span>
@@ -765,6 +783,5 @@
             <i class="fas fa-store" aria-hidden="true"></i><span>Katalog</span>
         </a>
     </nav>
-
 </body>
 </html>
