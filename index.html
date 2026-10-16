@@ -160,24 +160,29 @@
             .banner {
                 height: auto;
                 min-height: 0;
-                padding: 22px 20px;
-                background: linear-gradient(135deg, #ffffff 0%, #fff5f5 100%) !important;
+                padding: 18px 18px;
+                background: linear-gradient(135deg, #ffffff 0%, #fff7f7 58%, #ffe9eb 100%) !important;
+                background-image: none !important;
                 border: 1px solid #f1d9dc;
-                border-radius: 18px;
-                box-shadow: 0 8px 22px rgba(30, 41, 59, .06);
-                margin-bottom: 14px;
+                border-radius: 17px;
+                box-shadow: 0 6px 18px rgba(30, 41, 59, .055);
+                margin-bottom: 12px;
             }
             .banner-text { max-width: 100%; width: 100%; }
-            .banner-subtitle { font-size: 11px; letter-spacing: 1.6px; margin-bottom: 8px; }
-            .banner-text h2 { font-size: clamp(24px, 6vw, 30px); line-height: 1.12; margin: 0 0 9px; }
-            .banner-text p { font-size: 12px; line-height: 1.5; margin: 0; max-width: 38ch; }
-            .btn-scan-top { width: 36px; height: 36px; flex: 0 0 36px; font-size: 14px; box-shadow: 0 3px 8px rgba(59, 130, 246, .22); }
+            .banner-subtitle { font-size: 10px; letter-spacing: 1.5px; margin-bottom: 7px; }
+            .banner-text h2 { font-size: clamp(23px, 5.8vw, 28px); line-height: 1.12; margin: 0 0 8px; }
+            .banner-text p { font-size: 11px; line-height: 1.45; margin: 0; max-width: 42ch; }
+            .btn-scan-top { width: 32px; height: 32px; min-width: 32px; flex: 0 0 32px; font-size: 12px; border-radius: 50%; box-shadow: 0 3px 8px rgba(59, 130, 246, .18); }
             .avatar { font-size: 0 !important; }
             .avatar::before { content: "\f007"; font-family: "Font Awesome 6 Free", "Font Awesome 5 Free"; font-weight: 900; font-size: 19px; }
+            .btn-telegram { min-height: 48px; padding: 11px 14px; margin-top: 12px; font-size: 13px; line-height: 1.35; border-radius: 13px; }
+            #statusTelegram { overflow-wrap: anywhere; line-height: 1.4; }
             .mobile-sticky-actions { padding: 4px 3px; gap: 1px; }
             .mobile-sticky-btn { min-height: 43px; font-size: 8px; }
             .mobile-sticky-btn i { font-size: 15px; }
-            body { padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px)); }
+            body { padding-bottom: calc(98px + env(safe-area-inset-bottom, 0px)); }
+            .main-content { min-height: 100dvh; }
+            #page-dashboard { padding-bottom: 20px; }
         }
     </style>
 </head>
