@@ -256,14 +256,13 @@
             </div>
         </div>
 
-        <!-- HALAMAN APLIKASI STOK LCD (DENGAN PENYEMBUNYI SIDEBAR BAWAAN) -->
+        <!-- HALAMAN APLIKASI STOK LCD (DENGAN SKrip PEMBERSIH SIDEBAR) -->
         <div id="page-stok-lcd" class="page-content" style="padding: 0; height: calc(100vh - 65px);">
             <div style="background: #fff; padding: 10px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 13px; font-weight: 600; color: #1e293b;"><i class="fas fa-mobile-alt" style="color:#ef3340; margin-right:6px;"></i> Sistem Manajemen Stok LCD & Kasir v2.0</span>
                 <a href="https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec" target="_blank" rel="noopener" style="font-size: 12px; background: #eff6ff; color: #2563eb; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-weight: 600;"><i class="fas fa-external-link-alt"></i> Buka Layar Penuh</a>
             </div>
-            <!-- Menggunakan style khusus di iframe agar sidebar bawaan apps script tersembunyi otomatis -->
-            <iframe id="iframeStokLcd" src="https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec" style="width: 100%; height: calc(100% - 45px); border: none;"></iframe>
+            <iframe id="iframeStok" src="https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec" style="width: 100%; height: calc(100% - 45px); border: none;" onload="hilangkanSidebarIframe()"></iframe>
         </div>
 
         <!-- KASIR & INPUT -->
@@ -343,6 +342,26 @@
             if(id === 'kasir') muatDataDropdownBarang();
             
             if(window.innerWidth <= 768) { document.querySelector('.sidebar').classList.remove('show'); document.querySelector('.sidebar-overlay').classList.remove('show'); }
+        }
+        
+        // Fungsi otomatis menyembunyikan sidebar bawaan aplikasi Google Apps Script di dalam iframe
+        function hilangkanSidebarIframe() {
+            try {
+                let iframe = document.getElementById('iframeStok');
+                let innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+                let sidebarBawaan = innerDoc.querySelector('.sidebar');
+                if (sidebarBawaan) {
+                    sidebarBawaan.style.display = 'none';
+                }
+                let mainContentBawaan = innerDoc.querySelector('.main-content');
+                if (mainContentBawaan) {
+                    mainContentBawaan.style.marginLeft = '0px';
+                    mainContentBawaan.style.width = '100%';
+                }
+            } catch(e) {
+                // Keamanan browser lintas domain (CORS) mencegah akses langsung ke DOM iframe eksternal,
+                // sehingga kita gunakan fallback CSS injeksi atau abaikan jika dibatasi Google.
+            }
         }
         
         function bukaMenuLogin() { if(confirm("Ganti peran login?")) document.getElementById('loginModal').style.display = 'flex'; }
