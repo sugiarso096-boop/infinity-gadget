@@ -1,702 +1,569 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinity Gadget System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" type="text/javascript"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dashboard - Infinity Gadget</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --sidebar-bg: #0f111a;
+      --body-bg: #f5f6fa;
+      --card-bg: #ffffff;
+      --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      --text-main: #2d3436;
+      --text-muted: #636e72;
+    }
+    body { background-color: var(--body-bg); font-family: 'Poppins', sans-serif; color: var(--text-main); overflow-x: hidden; }
+
+    /* SIDEBAR */
+    .sidebar { width: 260px; background-color: var(--sidebar-bg); position: fixed; height: 100vh; top: 0; left: 0; display: flex; flex-direction: column; z-index: 1000; overflow-y: auto; }
+    .sidebar::-webkit-scrollbar { display: none; }
     
-    <style>
-        :root { 
-            --bg-color: #f8fafc; 
-            --primary-color: #ef3340; 
-            --primary-hover: #c91f2b;
-            --text-main: #1e293b; 
-            --text-muted: #64748b; 
-            --card-bg: #ffffff; 
-            --radius-card: 16px;
-            --radius-btn: 10px;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { display: flex; background-color: var(--bg-color); color: var(--text-main); height: 100vh; overflow: hidden; }
+    .sidebar-logo { padding: 30px 20px; text-align: center; color: white; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .sidebar-logo i { font-size: 40px; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .sidebar-menu { padding: 20px 15px; flex-grow: 1; }
+    .menu-label { font-size: 11px; color: #4b5563; font-weight: 700; letter-spacing: 1.5px; margin: 15px 0 5px 15px; }
+    .sidebar-link { display: flex; align-items: center; color: #8392a5; padding: 12px 20px; border-radius: 10px; text-decoration: none; margin-bottom: 2px; font-size: 14px; font-weight: 500; transition: 0.3s; cursor: pointer; }
+    .sidebar-link i { width: 25px; font-size: 16px; }
+    .sidebar-link:hover { color: #fff; background: rgba(255,255,255,0.05); }
+    .sidebar-link.active { background: var(--primary-gradient); color: #fff; box-shadow: 0 4px 15px rgba(37, 117, 252, 0.4); }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+    /* ANIMASI WIDGET BAWAH */
+    @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+    .floating-img { animation: float 3s ease-in-out infinite; filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.5)); margin-top: -35px; width: 75px; }
 
-        #loginModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(5px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .login-card { background: white; padding: 40px 30px; border-radius: var(--radius-card); width: 100%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+    /* MAIN CONTENT */
+    .main-content { margin-left: 260px; padding: 20px 30px; }
+    .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: var(--card-bg); padding: 15px 25px; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+    .search-box { background: var(--body-bg); border-radius: 25px; padding: 8px 20px; display: flex; align-items: center; width: 400px; }
+    .search-box input { border: none; background: transparent; outline: none; width: 100%; margin-left: 10px; font-size: 14px; }
+    
+    /* CARDS & TABLES */
+    .custom-card { background: var(--card-bg); border-radius: 16px; border: none; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); height: 100%; }
+    .stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-right: 15px; flex-shrink: 0; }
+    
+    /* GRID KATEGORI */
+    .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .category-item { text-align: center; padding: 15px 5px; border-radius: 12px; background: #f8f9fc; cursor: pointer; transition: 0.2s; overflow: hidden; }
+    .category-item:hover { background: #eef2fa; transform: translateY(-3px); box-shadow: 0 5px 10px rgba(0,0,0,0.05); }
+    
+    .table-custom { font-size: 13px; }
+    .table-custom th { color: var(--text-muted); font-weight: 600; border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 12px; letter-spacing: 0.5px;}
+    .table-custom td { padding: 12px 5px; vertical-align: middle; border-bottom: 1px solid #f8f9fa; }
+    
+    /* SCROLLBAR */
+    #isi_stok_menipis::-webkit-scrollbar { width: 6px; }
+    #isi_stok_menipis::-webkit-scrollbar-track { background: #f8f9fa; border-radius: 10px; }
+    #isi_stok_menipis::-webkit-scrollbar-thumb { background: #fca5a5; border-radius: 10px; }
 
-        #scannerModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15,23,42,0.9); backdrop-filter: blur(5px); z-index: 2000; display: none; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
-        .scanner-card { background: white; padding: 25px; border-radius: var(--radius-card); width: 100%; max-width: 400px; text-align: center; }
-        #readerTop { width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 20px; background: #f8fafc; }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+    img, canvas, video { max-width: 100%; }
+    .main-content { min-width: 0; }
+    .table-responsive { max-width: 100%; -webkit-overflow-scrolling: touch; }
+    .mobile-sidebar-overlay { display: none; }
 
-        .sidebar { 
-            width: 260px; 
-            background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), url('robot.png');
-            background-size: cover; background-position: left center;
-            color: #fff; display: flex; flex-direction: column; padding: 25px 0; z-index: 1500; 
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 4px 0 20px rgba(0,0,0,0.05); 
-        }
-        
-        .logo-area { text-align: center; margin-bottom: 35px; padding-top: 15px; }
-        .logo-area h2 { color: #fff; font-weight: 800; letter-spacing: 2px; font-size: 26px; line-height: 1.1; }
-        .logo-area h2 .icon-infin { display: block; font-size: 50px; color: #fff; font-weight: 300; line-height: 0.8; }
-        .logo-area h2 .text-gadget { display: block; color: var(--primary-color); font-size: 15px; letter-spacing: 6px; font-weight: 600; margin-top: 4px; }
-        
-        .menu-title { font-size: 11px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 1.5px; margin: 15px 25px 10px; font-weight: 600; }
-        .nav-item { padding: 12px 25px; cursor: pointer; display: flex; align-items: center; color: #cbd5e1; font-size: 14px; transition: all 0.2s ease; margin: 4px 15px; border-radius: var(--radius-btn); font-weight: 500; text-decoration: none; }
-        .nav-item i { width: 28px; font-size: 16px; }
-        .nav-item:hover { color: #f8fafc; background-color: rgba(255,255,255,0.15); }
-        .nav-item.active { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); color: #fff; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+    /* RESPONSIVE MOBILE */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: min(280px, 84vw);
+        max-width: 84vw;
+        height: 100dvh;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        transform: translateX(-105%);
+        transition: transform .25s ease;
+        box-shadow: 12px 0 35px rgba(0,0,0,.22);
+        z-index: 2000;
+      }
+      .sidebar.mobile-open { transform: translateX(0); }
+      .mobile-sidebar-overlay.active {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(15,17,26,.48);
+        z-index: 1990;
+      }
+      .main-content {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        margin-left: 0 !important;
+        padding: 10px;
+      }
+      .top-header {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px;
+        margin-bottom: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        border-radius: 12px;
+      }
+      .top-header > .d-flex:first-child { flex: 1 1 100%; min-width: 0; }
+      .top-header > .d-flex:last-child { margin-left: auto; }
+      .search-box {
+        order: 3;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding: 9px 12px;
+      }
+      .search-box input { min-width: 0; font-size: 14px; }
+      #btnMenuMobile { border: 0; background: transparent; padding: 6px 10px 6px 0; color: #2d3436; }
+      .row.g-4 { --bs-gutter-x: .75rem; --bs-gutter-y: .75rem; }
+      .custom-card { padding: 13px; min-width: 0; overflow-wrap: anywhere; }
+      .stat-icon { flex: 0 0 42px; width: 42px; height: 42px; margin-right: 10px; font-size: 17px; }
+      .custom-card h4 { font-size: 1rem; overflow-wrap: anywhere; }
+      .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .category-item { min-width: 0; padding: 12px 4px; overflow-wrap: anywhere; }
+      .table-responsive { width: 100%; overflow-x: auto; }
+      .table-custom { min-width: 650px; font-size: 12px; }
+      #tabelRiwayat .table-custom, #tabelBukuKas .table-custom { min-width: 760px; }
+      #halaman-stok .d-flex.justify-content-between { align-items: flex-start !important; gap: 10px; flex-wrap: wrap; }
+      #halaman-stok h4 { font-size: 1.05rem; }
+      #halaman-stok .btn { white-space: nowrap; }
+      #halaman-penjualan .col-md-7 { width: 100%; }
+      #salesChart { max-width: 100%; }
+      .modal-dialog { margin: 10px; }
+      .modal-content { max-width: calc(100vw - 20px); }
+    }
 
-        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15,23,42,0.5); backdrop-filter: blur(3px); z-index: 1400; }
-        .sidebar-overlay.show { display: block; }
-
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; width: 100%; position: relative; }
-        .topbar { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); padding: 11px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05); gap: 15px; z-index: 500; position: sticky; top: 0; }
-        .topbar-left { display: flex; align-items: center; flex: 1; gap: 15px; }
-        .menu-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-main); }
-        
-        .search-container { position: relative; width: 100%; max-width: 420px; display: flex; gap: 10px; align-items: center; }
-        .search-bar { background: #f1f5f9; padding: 10px 18px; border-radius: 50px; display: flex; align-items: center; flex: 1; border: 1px solid transparent; }
-        .search-bar input { border: none; background: transparent; outline: none; margin-left: 8px; width: 100%; font-size: 13px; color: var(--text-main); }
-        
-        .btn-scan-top { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
-
-        .search-result-box { position: absolute; top: 110%; left: 0; right: 50px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); display: none; z-index: 1000; max-height: 350px; overflow-y: auto; border: 1px solid #e2e8f0; padding: 5px; }
-        .search-item { padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; border-bottom: 1px solid #f1f5f9; }
-        .item-left { display: flex; align-items: center; gap: 12px; }
-        .item-img { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; background: #f1f5f9; border: 1px solid #e2e8f0; }
-
-        .user-profile { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 4px 8px; border-radius: 10px; }
-        .avatar { width: 38px; height: 38px; background: linear-gradient(135deg, #1e293b, #334155); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
-        .user-info h4 { font-size: 13.5px; margin: 0; font-weight: 600; }
-        .user-info p { font-size: 11px; color: var(--text-muted); margin: 0; }
-
-        .page-content { padding: 22px 24px; display: none; }
-        .page-content.active { display: block; animation: slideFadeUp 0.3s; }
-        @keyframes slideFadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .banner { 
-            width: 100%; height: 220px; min-height: 220px; background: url('robot.png') center right / cover no-repeat; 
-            background-color: #fff; border-radius: 14px; margin-bottom: 16px; box-shadow: 0 8px 22px -12px rgba(0,0,0,0.18); 
-            display: flex; align-items: center; padding: 24px 30px; position: relative; overflow: hidden;
-        }
-        .banner-text { max-width: 47%; z-index: 2; }
-        .banner-subtitle { color: #ef4444; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
-        .banner-text h2 { font-size: 29px; font-weight: 800; color: #0f172a; margin-bottom: 9px; line-height: 1.12; }
-        .banner-text h2 span { color: #ef4444; }
-        .banner-text p { font-size: 11px; color: #475569; line-height: 1.45; font-weight: 400; border-left: 3px solid #ef4444; padding-left: 11px; }
-
-        .stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
-        .stat-card { transition: transform .18s ease, box-shadow .18s ease; min-width: 0; background: var(--card-bg); padding: 15px 16px; border-radius: 13px; box-shadow: 0 3px 8px rgba(15,23,42,0.045); display: flex; flex-direction: column; cursor: pointer; border: 1px solid rgba(0,0,0,0.035); }
-        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15,23,42,.08); }
-        .stat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
-        .icon-box { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-        .icon-blue { background: #eff6ff; color: #3b82f6; }
-        .icon-purple { background: #faf5ff; color: #a855f7; }
-        .icon-orange { background: #fff7ed; color: #f97316; }
-        .icon-green { background: #f0fdf4; color: #22c55e; }
-        .icon-red { background: #fef2f2; color: #ef4444; } 
-        
-        .stat-title { font-size: 11px; color: var(--text-muted); line-height: 1.35; }
-        .stat-value { font-size: 22px; font-weight: 700; color: var(--text-main); line-height: 1.25; overflow-wrap: anywhere; }
-
-        .quick-actions { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; margin: 0 0 16px; }
-        .quick-action { min-width: 0; border: 1px solid #e8edf4; background: #fff; border-radius: 13px; padding: 13px 14px; display: flex; align-items: center; gap: 11px; text-align: left; cursor: pointer; color: var(--text-main); box-shadow: 0 3px 8px rgba(15,23,42,.035); transition: transform .15s ease, box-shadow .15s ease; font: inherit; }
-        .quick-action:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(15,23,42,.08); }
-        .quick-action .qa-icon { width: 38px; height: 38px; flex: 0 0 38px; display: grid; place-items: center; border-radius: 11px; color: #fff; background: linear-gradient(135deg,#ff4350,#d91f2b); font-size: 16px; }
-        .quick-action strong { display: block; font-size: 12px; font-weight: 700; line-height: 1.3; }
-        .quick-action small { display: block; color: var(--text-muted); font-size: 10px; line-height: 1.35; margin-top: 3px; }
-
-        .form-card { background: var(--card-bg); padding: 30px; border-radius: var(--radius-card); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05); max-width: 600px; margin: 0 auto; }
-        .form-group { margin-bottom: 18px; }
-        .form-group label { display: block; font-size: 13px; color: var(--text-main); margin-bottom: 6px; font-weight: 600; }
-        .form-control { width: 100%; padding: 12px 16px; background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--radius-btn); font-size: 14px; outline: none; }
-        .form-control:focus { background-color: #fff; border-color: var(--primary-color); }
-        
-        .btn { width: 100%; padding: 13px; border: none; border-radius: var(--radius-btn); font-size: 14.5px; font-weight: 600; cursor: pointer; color: white; display: flex; justify-content: center; align-items: center; gap: 8px; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)); }
-        .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
-        .btn-telegram { background: linear-gradient(135deg, #0088cc, #006699); margin-top: 15px; }
-
-        #reader { width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 12px; display: none; background: #f1f5f9; border: 2px dashed #cbd5e1; }
-        #previewFoto { width: 100%; max-height: 220px; object-fit: contain; margin-top: 12px; border-radius: 10px; display: none; background: #f1f5f9; padding: 8px; }
-
-        #page-kasir .form-card { max-width: 900px; padding: 24px; border: 1px solid #e8edf4; }
-        #formKaryawan { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; margin-top: 18px; }
-        #formKaryawan #divBarcodeScanner, #formKaryawan #divFoto, #formKaryawan #divTotalJual, #formKaryawan #btnSubmit { grid-column: 1 / -1; }
-
-        @media (max-width: 768px) {
-            .menu-toggle { display: block; }
-            .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); }
-            .sidebar.show { transform: translateX(0); }
-            .topbar { padding: 10px 13px; }
-            .user-info { display: none; }
-            .page-content { padding: 13px; }
-            .quick-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-            .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
-            #formKaryawan { grid-template-columns: minmax(0, 1fr); }
-        }
-
-        .mobile-sticky-actions { display: none; position: fixed; left: 10px; right: 10px; bottom: calc(7px + env(safe-area-inset-bottom, 0px)); z-index: 1500; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; padding: 5px 4px; border: 1px solid #e5e7eb; border-radius: 16px; background: rgba(255,255,255,.97); box-shadow: 0 4px 16px rgba(15,23,42,.12); backdrop-filter: blur(12px); }
-        .mobile-sticky-btn { min-width: 0; min-height: 47px; padding: 4px 2px; border: 0; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 8.5px; font-weight: 600; text-decoration: none; color: #64748b; background: transparent; cursor: pointer; }
-        .mobile-sticky-btn i { font-size: 16px; color: #ef3340; }
-        @media (max-width: 768px) { body { padding-bottom: 72px; } .mobile-sticky-actions { display: grid; } }
-    </style>
+    /* SIDEBAR TOGGLE: bisa dipakai di desktop maupun HP */
+    .sidebar, .main-content { transition: transform .25s ease, margin-left .25s ease, width .25s ease; }
+    body.sidebar-hidden .sidebar { transform: translateX(-105%); }
+    body.sidebar-hidden .main-content { margin-left: 0 !important; }
+    #btnMenuMobile { display: inline-flex; align-items:center; justify-content:center; width:42px; height:42px; flex:0 0 42px; border:0; border-radius:12px; background:#eef2ff; color:#253047; cursor:pointer; }
+    #btnMenuMobile:hover { background:#dfe7ff; }
+    @media (min-width:769px) {
+      .mobile-sidebar-overlay { display:none !important; }
+      body.sidebar-hidden .main-content { width:100%; }
+    }
+  </style>
 </head>
 <body>
 
-    <div id="loginModal">
-        <div class="login-card">
-            <h3>Infinity Gadget Access</h3>
-            <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Pilih peran Anda untuk masuk ke sistem</p>
-            <button class="btn btn-primary" onclick="loginSebagaiKaryawan()" style="margin-bottom: 10px;"><i class="fas fa-user"></i> Masuk Sebagai Karyawan</button>
-            <hr style="margin: 15px 0; border:0; border-top:1px solid rgba(0,0,0,0.05);">
-            <div class="form-group" style="text-align: left;"><label>PIN Owner:</label><input type="password" id="inputPin" class="form-control" placeholder="PIN 4 digit..."></div>
-            <button class="btn btn-warning" onclick="loginSebagaiOwner()"><i class="fas fa-lock"></i> Masuk Sebagai Owner</button>
-            <p id="loginError" style="color: #ef4444; font-size: 13px; margin-top: 10px;"></p>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <i class="fas fa-infinity mb-2"></i>
+      <h4 class="fw-bold m-0" style="letter-spacing: 1px;">INFINITY</h4>
+      <small style="color: #00a8ff; letter-spacing: 2px;">GADGET</small>
+    </div>
+    
+    <div class="sidebar-menu">
+      <div class="menu-label">MENU UTAMA</div>
+      <a class="sidebar-link active" id="menu-dashboard" onclick="gantiMenu('dashboard')"><i class="fas fa-home"></i> Dashboard</a>
+      <a class="sidebar-link" id="menu-stok" onclick="gantiMenu('stok')"><i class="fas fa-boxes"></i> Stok Barang</a>
+      <a class="sidebar-link" id="menu-penjualan" onclick="gantiMenu('penjualan')"><i class="fas fa-shopping-cart"></i> Kasir Penjualan</a>
+      
+      <div class="menu-label mt-4">LAPORAN & DATA</div>
+      <a class="sidebar-link" id="menu-riwayat" onclick="gantiMenu('riwayat')"><i class="fas fa-history"></i> Riwayat Transaksi</a>
+      <a class="sidebar-link" id="menu-bukukas" onclick="gantiMenu('bukukas')"><i class="fas fa-book"></i> Laporan Buku Kas</a>
+      
+      <div class="menu-label mt-4">SISTEM</div>
+      <a class="sidebar-link" onclick="alert('Fitur Pelanggan segera hadir')"><i class="fas fa-users"></i> Data Pelanggan</a>
+      <a class="sidebar-link" onclick="alert('Pengaturan Aplikasi')"><i class="fas fa-cog"></i> Pengaturan</a>
+    </div>
+
+    <div class="mt-auto m-3 p-3 text-center" style="background: linear-gradient(180deg, rgba(106, 17, 203, 0.1) 0%, rgba(0,0,0,0.2) 100%); border-radius: 15px; border: 1px solid rgba(106, 17, 203, 0.3);">
+      <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Mobile%20Phone%20with%20Arrow.png" alt="Gadget 3D" class="floating-img">
+      <h6 class="text-white fw-bold mt-2 mb-1" style="font-size: 13px;">Infinity App v2.0</h6>
+      <p class="text-white-50 mb-0" style="font-size: 10px;">Sistem Manajemen Stok & Kasir Terintegrasi Real-Time</p>
+    </div>
+  </div>
+
+  <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="tutupMenuMobile()"></div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    
+    <div class="top-header">
+      <div class="d-flex align-items-center">
+        <button type="button" id="btnMenuMobile" class="me-3" aria-label="Buka menu" onclick="toggleMenuMobile()"><i class="fas fa-bars fs-5"></i></button>
+        <div><h5 class="m-0 fw-bold">Infinity Gadget</h5><small class="text-muted">Solusi Gadget & Aksesoris Terlengkap</small></div>
+      </div>
+      <div class="search-box">
+        <i class="fas fa-search text-muted"></i>
+        <input type="text" id="inputPencarian" placeholder="Cari tipe, SKU, merek..." onkeyup="cariLive()">
+      </div>
+      <div class="d-flex align-items-center">
+        <img src="https://ui-avatars.com/api/?name=Admin&background=2c3e50&color=fff" class="rounded-circle me-2" width="40" height="40" alt="Admin">
+        <div style="line-height: 1.2;"><div class="fw-bold fs-6">Admin</div><small class="text-muted" style="font-size: 11px;">Infinity Gadget</small></div>
+      </div>
+    </div>
+
+    <!-- 1. HALAMAN DASHBOARD -->
+    <div id="halaman-dashboard">
+      <!-- KARTU RINGKASAN -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-3"><div class="custom-card d-flex align-items-center"><div class="stat-icon" style="background: #eef2ff; color: #4f46e5;"><i class="fas fa-shopping-bag"></i></div><div><small class="text-muted">Total Penjualan</small><h4 class="fw-bold m-0 mt-1" id="dash_penjualan"><i class="fas fa-spinner fa-spin fs-6"></i></h4><small class="text-success fw-medium" style="font-size: 11px;">Omzet Buku Kas</small></div></div></div>
+        <div class="col-md-3"><div class="custom-card d-flex align-items-center"><div class="stat-icon" style="background: #e0f2fe; color: #0284c7;"><i class="fas fa-box-open"></i></div><div><small class="text-muted">Total Produk</small><h4 class="fw-bold m-0 mt-1" id="dash_total_produk"><i class="fas fa-spinner fa-spin fs-6"></i></h4><small class="text-primary fw-medium" style="font-size: 11px;">SKU Terdaftar</small></div></div></div>
+        <div class="col-md-3"><div class="custom-card d-flex align-items-center"><div class="stat-icon" style="background: #ede9fe; color: #7c3aed;"><i class="fas fa-chart-pie"></i></div><div><small class="text-muted">Total Keuntungan</small><h4 class="fw-bold m-0 mt-1" id="dash_keuntungan"><i class="fas fa-spinner fa-spin fs-6"></i></h4><small class="text-success fw-medium" style="font-size: 11px;">Laba Bersih</small></div></div></div>
+        <div class="col-md-3"><div class="custom-card d-flex align-items-center"><div class="stat-icon" style="background: #dcfce7; color: #16a34a;"><i class="fas fa-wallet"></i></div><div><small class="text-muted">Total Nilai Aset</small><h4 class="fw-bold m-0 mt-1" id="dash_modal"><i class="fas fa-spinner fa-spin fs-6"></i></h4><small class="text-success fw-medium" style="font-size: 11px;">Estimasi Modal Stok</small></div></div></div>
+      </div>
+
+      <!-- PERINGATAN STOK MENIPIS -->
+      <div id="alert_stok_menipis" style="display: none;">
+        <div class="custom-card border-top border-danger border-4 mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+              <div class="stat-icon" style="background: #fee2e2; color: #ef4444; width: 45px; height: 45px;"><i class="fas fa-exclamation-triangle fs-5"></i></div>
+              <div class="ms-2">
+                <h6 class="fw-bold text-danger m-0">Peringatan Stok Menipis!</h6>
+                <small class="text-muted" style="font-size: 12px;">Terdapat <span id="count_stok_menipis" class="fw-bold text-dark">0</span> model LCD yang perlu di-restock (Sisa ≤ 3)</small>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="gantiMenu('stok')">Lihat Semua Stok</button>
+          </div>
+          <div id="isi_stok_menipis" style="max-height: 160px; overflow-y: auto; padding-right: 5px;"></div>
         </div>
-    </div>
+      </div>
 
-    <div id="scannerModal">
-        <div class="scanner-card">
-            <h4 style="margin-bottom: 15px;">Arahkan Kamera ke Barcode</h4>
-            <div id="readerTop"></div>
-            <button class="btn btn-warning" onclick="tutupScannerTop()">Tutup / Batal</button>
+      <div class="row g-4 mb-4">
+        <div class="col-lg-8">
+          <div class="custom-card">
+            <h5 class="fw-bold mb-4"><i class="fas fa-chart-bar text-primary me-2"></i> Grafik Penjualan 7 Hari Terakhir</h5>
+            <canvas id="salesChart" height="90"></canvas>
+          </div>
         </div>
+        <div class="col-lg-4">
+          <div class="custom-card">
+            <h5 class="fw-bold mb-4"><i class="fas fa-tags text-primary me-2"></i> Kategori Terdaftar</h5>
+            <div class="category-grid" id="kategori_grid">
+              <div class="text-center text-muted w-100 py-3"><i class="fas fa-spinner fa-spin"></i> Mendeteksi Kategori...</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
-    <div class="sidebar">
-        <div class="logo-area"><h2><span class="icon-infin">&infin;</span>INFINITY<span class="text-gadget">GADGET</span></h2></div>
-        <div class="menu-title">Menu Utama</div>
-        <div class="nav-item active" onclick="switchPage('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
-        <div class="nav-item" onclick="switchPage('kasir', this)"><i class="fas fa-shopping-cart"></i> Kasir & Input</div>
-        <div class="nav-item" onclick="switchPage('stok-lcd', this)"><i class="fas fa-mobile-alt"></i> Aplikasi Stok LCD</div>
-        <div class="nav-item" onclick="switchPage('service-hp', this)"><i class="fas fa-tools"></i> Aplikasi Service HP</div>
-        <div class="nav-item" onclick="switchPage('kredit-hp', this)"><i class="fas fa-file-invoice-dollar"></i> Kredit HP & Cicilan</div>
-        <div class="nav-item" onclick="switchPage('servis-gaji', this)"><i class="fas fa-screwdriver-wrench"></i> Servis & Komisi</div>
-        
-        <div class="menu-title" id="titleOwner" style="display:none;">Menu Owner</div>
-        <div class="nav-item" id="menuEditBarang" style="display:none;" onclick="switchPage('edit', this)"><i class="fas fa-edit"></i> Kelola & Edit Stok</div>
-        
-        <div class="menu-title">Publik</div>
-        <a href="katalog.html" target="_blank" class="nav-item"><i class="fas fa-store"></i> Buka Web Katalog</a>
+    <!-- 2. HALAMAN STOK BARANG -->
+    <div id="halaman-stok" style="display: none;">
+      <div class="custom-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div><h4 class="fw-bold m-0"><i class="fas fa-boxes text-primary me-2"></i> Data Stok Barang LCD</h4></div>
+          <button class="btn btn-primary rounded-pill px-4" onclick="bukaModalTambah()"><i class="fas fa-plus me-2"></i> Input Barang</button>
+        </div>
+        <div class="table-responsive mt-2">
+          <table class="table table-custom table-bordered table-hover" id="tabelStok">
+            <thead class="table-light"><tr><th>KODE SKU</th><th>TIPE / MODEL</th><th>PERSAMAAN</th><th class="text-center">SISA STOK</th><th class="text-end">HARGA MODAL</th><th class="text-center">AKSI</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
     </div>
 
-    <div class="main-content">
-        <div class="topbar">
-            <div class="topbar-left">
-                <i class="fas fa-bars menu-toggle" onclick="toggleSidebar()"></i>
-                <div class="search-container">
-                    <div class="search-bar">
-                        <i class="fas fa-search" style="color:#94a3b8;"></i>
-                        <input type="text" id="searchInput" placeholder="Cek Stok & Harga..." onkeyup="cariBarang(event)">
-                    </div>
-                    <button class="btn-scan-top" onclick="bukaScannerTop()" title="Scan Barcode"><i class="fas fa-camera"></i></button>
-                    <div class="search-result-box" id="searchResultBox"></div>
+    <!-- 3. HALAMAN KASIR PENJUALAN -->
+    <div id="halaman-penjualan" style="display: none;">
+      <div class="row justify-content-center">
+        <div class="col-md-7">
+          <div class="custom-card border-top border-primary border-4">
+            <h4 class="fw-bold text-center mb-4"><i class="fas fa-shopping-cart text-primary me-2"></i> Kasir Penjualan Baru</h4>
+            <div class="alert alert-info text-center" role="alert">
+              Catatan: Anda bisa mencari barang di tab <b>Stok Barang</b>, lalu klik tombol <b class="text-success"><i class="fas fa-shopping-cart"></i> Jual</b> agar form ini terisi otomatis.
+            </div>
+            <form id="formPenjualan">
+              <div class="mb-3">
+                <label class="form-label fw-bold">Kode SKU Barang</label>
+                <div class="input-group"><span class="input-group-text"><i class="fas fa-barcode"></i></span><input type="text" class="form-control form-control-lg" id="kasir_sku" placeholder="Ketik atau Scan SKU..." required></div>
+              </div>
+              <div class="mb-3"><label class="form-label fw-bold">Tipe / Model HP</label><input type="text" class="form-control bg-light" id="kasir_tipe" placeholder="Otomatis terisi jika klik dari menu stok..." readonly></div>
+              <div class="row">
+                <div class="col-md-4 mb-3"><label class="form-label fw-bold">Qty (Jumlah)</label><input type="number" class="form-control form-control-lg text-center" id="kasir_qty" value="1" min="1" required></div>
+                <div class="col-md-8 mb-3">
+                  <label class="form-label fw-bold">Harga Jual (Satuan)</label>
+                  <div class="input-group"><span class="input-group-text">Rp</span><input type="number" class="form-control form-control-lg" id="kasir_harga" placeholder="Contoh: 150000" required></div>
                 </div>
-            </div>
-            <div class="user-profile" onclick="bukaMenuLogin()">
-                <div class="avatar" id="userAvatar">AD</div>
-                <div class="user-info"><h4 id="userName">Admin / Kasir</h4><p id="userRole">Karyawan</p></div>
-            </div>
-        </div>
-
-        <!-- DASHBOARD -->
-        <div id="page-dashboard" class="page-content active">
-            <div class="banner">
-                <div class="banner-text">
-                    <div class="banner-subtitle">INFINITY GADGET</div>
-                    <h2>Melayani<br>Dengan <span>Sepenuh Hati</span></h2>
-                    <p>"Lebih dari sekadar kasir, kamu adalah ujung tombak pelayanan. Hitung dengan teliti, layani dengan senyuman, dan pastikan pelanggan pulang dengan puas!"</p>
-                </div>
-            </div>
-
-            <div class="quick-actions">
-                <button type="button" class="quick-action" onclick="switchPage('kasir', null)">
-                    <span class="qa-icon"><i class="fas fa-cash-register"></i></span>
-                    <span><strong>Kasir & Input</strong><small>Catat transaksi</small></span>
+              </div>
+              <div class="d-grid mt-4">
+                <button type="button" class="btn btn-primary btn-lg rounded-pill" id="btnProsesKasir" onclick="prosesJual()">
+                  <i class="fas fa-check-circle me-2"></i> Proses Transaksi
                 </button>
-                <button type="button" class="quick-action" onclick="switchPage('stok-lcd', null)">
-                    <span class="qa-icon" style="background:linear-gradient(135deg,#6366f1,#4338ca);"><i class="fas fa-mobile-alt"></i></span>
-                    <span><strong>Stok LCD</strong><small>Buka sistem LCD</small></span>
-                </button>
-                <button type="button" class="quick-action" onclick="switchPage('service-hp', null)">
-                    <span class="qa-icon" style="background:linear-gradient(135deg,#0d9488,#0f766e);"><i class="fas fa-tools"></i></span>
-                    <span><strong>Service HP</strong><small>Manajemen perbaikan</small></span>
-                </button>
-                <button type="button" class="quick-action" onclick="switchPage('kredit-hp', null)">
-                    <span class="qa-icon" style="background:linear-gradient(135deg,#ef3340,#b91427);"><i class="fas fa-file-invoice-dollar"></i></span>
-                    <span><strong>Kredit HP</strong><small>Data kredit & cicilan</small></span>
-                </button>
-                <button type="button" class="quick-action" onclick="switchPage('servis-gaji', null)">
-                    <span class="qa-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);"><i class="fas fa-screwdriver-wrench"></i></span>
-                    <span><strong>Servis & Gaji</strong><small>Bagi hasil teknisi</small></span>
-                </button>
-                <button type="button" class="quick-action" onclick="aksesMenuEdit()">
-                    <span class="qa-icon" style="background:linear-gradient(135deg,#3b82f6,#2563eb);"><i class="fas fa-boxes-stacked"></i></span>
-                    <span><strong>Kelola Stok</strong><small>Cek dan edit barang</small></span>
-                </button>
-                <button type="button" class="quick-action" onclick="bukaScannerTop()">
-                    <span class="qa-icon" style="background:linear-gradient(135deg,#16a34a,#15803d);"><i class="fas fa-barcode"></i></span>
-                    <span><strong>Scan Barcode</strong><small>Cari barang cepat</small></span>
-                </button>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card" onclick="switchPage('kasir', null)"><div class="stat-header"><div class="icon-box icon-blue"><i class="fas fa-shopping-bag"></i></div><div class="stat-title">Total Penjualan</div></div><div class="stat-value" id="angka-penjualan">Memuat...</div></div>
-                <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-purple"><i class="fas fa-box"></i></div><div class="stat-title">Total Produk</div></div><div class="stat-value" id="angka-produk">Memuat...</div></div>
-                <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-orange"><i class="fas fa-tags"></i></div><div class="stat-title">Kategori Barang</div></div><div class="stat-value" id="angka-kategori">Memuat...</div></div>
-                <div class="stat-card" onclick="aksesMenuEdit('menipis')"><div class="stat-header"><div class="icon-box icon-red"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-title">Stok Menipis (&le; 2)</div></div><div class="stat-value" id="angka-stok-menipis">Memuat...</div></div>
-                <div class="stat-card" id="cardAset" style="display:none;" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset</div></div><div class="stat-value" id="angka-aset">Memuat...</div></div>
-            </div>
-
-            <div style="margin-top: 15px;">
-                <button type="button" class="btn btn-telegram" onclick="kirimRekapTelegram()"><i class="fab fa-telegram-plane"></i> Kirim Laporan Tutup Toko ke Telegram</button>
-                <p id="statusTelegram" style="font-size: 13px; margin-top: 8px; font-weight: 600;"></p>
-            </div>
+              </div>
+            </form>
+          </div>
         </div>
-
-        <!-- HALAMAN APLIKASI STOK LCD -->
-        <div id="page-stok-lcd" class="page-content" style="padding: 0; height: calc(100vh - 65px);">
-            <div style="background: #fff; padding: 10px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 13px; font-weight: 600; color: #1e293b;"><i class="fas fa-mobile-alt" style="color:#ef3340; margin-right:6px;"></i> Sistem Manajemen Stok LCD & Kasir v2.0</span>
-                <a href="https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec" target="_blank" rel="noopener" style="font-size: 12px; background: #eff6ff; color: #2563eb; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-weight: 600;"><i class="fas fa-external-link-alt"></i> Buka Layar Penuh</a>
-            </div>
-            <iframe src="https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec" style="width: 100%; height: calc(100% - 45px); border: none;"></iframe>
-        </div>
-
-        <!-- HALAMAN APLIKASI SERVICE HP (DIDALAM IFRAME) -->
-        <div id="page-service-hp" class="page-content" style="padding: 0; height: calc(100vh - 65px);">
-            <div style="background: #fff; padding: 10px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span style="font-size: 13px; font-weight: 600; color: #1e293b;"><i class="fas fa-tools" style="color:#0d9488; margin-right:6px;"></i> Aplikasi Service HP — Manajemen Perbaikan</span>
-                <a href="https://script.google.com/macros/s/AKfycbx17vHnCpyT4KLEpqUeEkDQFmpLbHeAOUc1o6VPkhjDBNPG1SiT8-gAmqREKFy9md0K9g/exec" target="_blank" rel="noopener" style="font-size: 12px; background: #ecfdf5; color: #047857; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-weight: 600;"><i class="fas fa-external-link-alt"></i> Buka Layar Penuh</a>
-            </div>
-            <iframe title="Aplikasi Service HP Infinity Gadget" src="https://script.google.com/macros/s/AKfycbx17vHnCpyT4KLEpqUeEkDQFmpLbHeAOUc1o6VPkhjDBNPG1SiT8-gAmqREKFy9md0K9g/exec" allow="camera; microphone; clipboard-read; clipboard-write; fullscreen" style="width: 100%; height: calc(100% - 45px); border: none; background: #f8fafc;"></iframe>
-        </div>
-
-        <!-- HALAMAN APLIKASI KREDIT HP (FRONTEND HTML, API TERPISAH) -->
-        <div id="page-kredit-hp" class="page-content" style="padding: 0; height: calc(100vh - 65px);">
-            <div style="background: #fff; padding: 10px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
-                <span style="font-size: 13px; font-weight: 600; color: #1e293b;"><i class="fas fa-file-invoice-dollar" style="color:#ef3340; margin-right:6px;"></i> Kredit HP Infinity Gadget — Data Kredit & Cicilan</span>
-                <a href="app.html" target="_blank" rel="noopener" style="font-size: 12px; background: #fff0f1; color: #b91427; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-weight: 600;"><i class="fas fa-external-link-alt"></i> Buka Layar Penuh</a>
-            </div>
-            <iframe title="Kredit HP Infinity Gadget" src="app.html" allow="clipboard-read; clipboard-write; fullscreen" style="width: 100%; height: calc(100% - 45px); border: none; background: #f8fafc;"></iframe>
-        </div>
-
-        <!-- HALAMAN APLIKASI SERVIS & GAJI (DIDALAM IFRAME) -->
-        <div id="page-servis-gaji" class="page-content" style="padding: 0; height: calc(100vh - 65px);">
-            <div style="background: #fff; padding: 10px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 13px; font-weight: 600; color: #1e293b;"><i class="fas fa-screwdriver-wrench" style="color:#8b5cf6; margin-right:6px;"></i> Sistem Bagi Hasil & Komisi Teknisi</span>
-                <a href="https://script.google.com/macros/s/AKfycbzA31jVvw5GjV_01Q8kFdQKWFdy3nMleLiecsfSatiJS-1-GjuCRSXPfgT63CYfV8CkBQ/exec" target="_blank" rel="noopener" style="font-size: 12px; background: #f5f3ff; color: #8b5cf6; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-weight: 600;"><i class="fas fa-external-link-alt"></i> Buka Layar Penuh</a>
-            </div>
-            <iframe src="https://script.google.com/macros/s/AKfycbzA31jVvw5GjV_01Q8kFdQKWFdy3nMleLiecsfSatiJS-1-GjuCRSXPfgT63CYfV8CkBQ/exec" style="width: 100%; height: calc(100% - 45px); border: none;"></iframe>
-        </div>
-
-        <!-- KASIR & INPUT -->
-        <div id="page-kasir" class="page-content">
-            <div class="form-card">
-                <h3 style="margin-bottom: 20px; font-weight: 700;">Input Transaksi / Barang</h3>
-                <form id="formKaryawan" onsubmit="kirimData(event)">
-                    <div class="form-group">
-                        <label>Jenis Input</label>
-                        <select name="tipeForm" id="tipeForm" class="form-control" onchange="aturForm()">
-                            <option value="penjualan">Kasir - Penjualan Barang</option>
-                            <option value="pulsa_token">Kasir - Pulsa & Token PLN</option>
-                            <option value="barang_masuk">Gudang - Barang Masuk</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>Nama Karyawan</label><input type="text" id="kasir" name="kasir" class="form-control" placeholder="Nama Anda..." required></div>
-                    <div class="form-group" id="divNomorTujuan" style="display:none;"><label>Nomor HP / ID Meteran PLN</label><input type="text" id="nomorTujuan" name="nomorTujuan" class="form-control" placeholder="0812xxx"></div>
-                    <div class="form-group" id="divBarcodeScanner"><label>Barcode / IMEI Barang</label><div id="reader"></div><button type="button" class="btn btn-warning" id="btnScanForm" onclick="mulaiScanForm()"><i class="fas fa-camera"></i> Scan Kamera HP</button><input type="text" id="barcode" name="barcode" class="form-control" placeholder="Barcode..." style="margin-top: 8px;"></div>
-                    <div class="form-group"><label id="labelNamaBarang">Nama Barang / Tipe HP</label><div id="containerNamaBarang"><input type="text" id="barang" name="barang" class="form-control" placeholder="Contoh: LCD Oppo" required></div></div>
-                    <div class="form-group" id="divKategori" style="display:none;"><label>Kategori Barang</label><input type="text" id="kategori" name="kategori" class="form-control" list="pilihanKategori" placeholder="Pilih kategori..."><datalist id="pilihanKategori"><option value="TWS"><option value="Powerbank"><option value="LCD / Touchscreen"><option value="Casing / Softcase"><option value="Charger / Adaptor"><option value="Kabel Data"><option value="Handphone"><option value="Speaker"></datalist></div>
-                    <div class="form-group" id="divQty"><label>Jumlah (Qty)</label><input type="number" id="qty" name="qty" class="form-control" value="1" oninput="hitungTotalOtomatis()" required></div>
-                    <div class="form-group" id="divHargaModal" style="display:none;"><label id="labelHargaModal">Harga Modal (Rp)</label><input type="number" id="hargaModal" name="hargaModal" class="form-control" value="0"></div>
-                    <div class="form-group" id="divHargaJualInput" style="display:none;"><label id="labelHargaJual">Harga Jual (Rp)</label><input type="number" id="hargaJualInput" name="hargaJualInput" class="form-control" value="0" oninput="hitungTotalOtomatis()"></div>
-                    <div class="form-group" id="divTotalJual"><label>Total Harga Jual (Rp)</label><input type="number" id="totalJual" name="totalJual" class="form-control" value="0" readonly style="background:#e2e8f0; font-weight:700;"></div>
-                    <div class="form-group" id="divFoto" style="display:none;"><label>Ambil Foto Fisik Barang</label><input type="file" id="inputFoto" class="form-control" accept="image/*" style="background:#fff;"><img id="previewFoto" src="" alt="Preview"></div>
-                    <button type="submit" id="btnSubmit" class="btn btn-primary" style="margin-top: 10px;"><i class="fas fa-save"></i> Simpan Data</button>
-                </form>
-                <p id="status" style="text-align: center; margin-top: 15px; color: #10b981; font-weight: 600;"></p>
-            </div>
-        </div>
-
-        <!-- KELOLA STOK -->
-        <div id="page-edit" class="page-content">
-            <div class="form-card" style="max-width: 800px;">
-                <h3 style="margin-bottom: 15px; font-weight: 700;">Kelola & Edit Stok Barang</h3>
-                <div class="form-group"><input type="text" id="searchEditInput" class="form-control" placeholder="Cari barang..." onkeyup="filterTabelBarang()"></div>
-                <div id="editResultList" style="max-height: 450px; overflow-y: auto; margin-top: 15px;"></div>
-                
-                <form id="formEditBarang" onsubmit="simpanPerubahanBarang(event)" style="display:none; border-top: 2px dashed #e2e8f0; margin-top: 25px; padding-top: 25px;">
-                    <input type="hidden" id="editRow" name="rowEdit">
-                    <div class="form-group"><label>Nama Barang</label><input type="text" id="editNama" name="barang" class="form-control" required></div>
-                    <div class="form-group"><label>Kategori</label><input type="text" id="editKategori" name="kategori" class="form-control" required></div>
-                    <div class="form-group"><label>Sisa Stok (Qty)</label><input type="number" id="editStok" name="qty" class="form-control" required></div>
-                    <div class="form-group"><label>Harga Jual (Rp)</label><input type="number" id="editHargaJual" name="hargaJualInput" class="form-control" required></div>
-                    <div class="form-group"><label>Harga Modal (Rp)</label><input type="number" id="editHargaModal" name="hargaModal" class="form-control" required></div>
-                    <div class="form-group"><label>Barcode</label><input type="text" id="editBarcode" name="barcode" class="form-control"></div>
-                    <div style="display: flex; gap: 12px; margin-top: 10px;">
-                        <button type="submit" id="btnUpdate" class="btn btn-primary" style="flex:2;"><i class="fas fa-check"></i> Simpan Perubahan</button>
-                        <button type="button" class="btn" style="background:#e2e8f0; color:#000; flex:1;" onclick="batalEdit()">Batal</button>
-                    </div>
-                </form>
-                <p id="statusEdit" style="text-align: center; margin-top: 15px; color: #10b981; font-weight: 600;"></p>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwgp_pzUFcer6xnCOwUs9b0dzwWCkFc9fEc7ntB8C5sPiPL1Xz69xgRX2M_0Ull65Ls9w/exec';
-        const baseUrl = scriptURL.split('?')[0]; 
-        const PIN_RAHASIA = '1234';
-        let statusRole = 'owner'; 
-        let cacheDataEdit = [];
-        let dataMasterBarang = [];
-        let fileB64 = "", mimeType = "", namaFile = "";
-        let html5QrScannerTop = null, html5QrcodeScannerForm = null;
-        let currentEditFilter = 'semua'; 
+    <!-- 4. HALAMAN RIWAYAT TRANSAKSI -->
+    <div id="halaman-riwayat" style="display: none;">
+      <div class="custom-card">
+        <h4 class="fw-bold mb-4"><i class="fas fa-history text-primary me-2"></i> Riwayat Aktivitas Stok</h4>
+        <div class="table-responsive">
+          <table class="table table-custom table-bordered table-hover" id="tabelRiwayat">
+            <thead class="table-light">
+              <tr><th>WAKTU</th><th>AKSI</th><th>KODE SKU</th><th>TIPE / MODEL</th><th class="text-center">QTY</th><th class="text-center">SISA STOK</th><th>USER</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
-        function toggleSidebar() { document.querySelector('.sidebar').classList.toggle('show'); document.querySelector('.sidebar-overlay').classList.toggle('show'); }
+    <!-- 5. HALAMAN LAPORAN BUKU KAS -->
+    <div id="halaman-bukukas" style="display: none;">
+      <div class="custom-card">
+        <h4 class="fw-bold mb-4"><i class="fas fa-book text-primary me-2"></i> Laporan Keuangan (Buku Kas)</h4>
+        <div class="table-responsive">
+          <table class="table table-custom table-bordered table-hover" id="tabelBukuKas">
+            <thead class="table-light">
+              <tr><th>TANGGAL</th><th>KODE SKU</th><th>TIPE / MODEL</th><th class="text-center">QTY</th><th class="text-end">MODAL (PCS)</th><th class="text-end">JUAL (PCS)</th><th class="text-end">TOTAL OMZET</th><th class="text-end">UNTUNG</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MODAL INPUT BARANG BARU -->
+  <div class="modal fade" id="modalTambah" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title"><i class="fas fa-plus-circle me-2"></i> Input Barang Baru</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formTambah">
+            <div class="row">
+              <div class="col-6 mb-3"><label class="form-label text-muted small">Kategori <span class="text-danger">*</span></label><input type="text" class="form-control" id="t_merek" required placeholder="Cth: OPPO"></div>
+              <div class="col-6 mb-3"><label class="form-label text-muted small">Kode SKU <span class="text-danger">*</span></label><input type="text" class="form-control" id="t_sku" required placeholder="Cth: OP-A5S"></div>
+            </div>
+            <div class="mb-3"><label class="form-label text-muted small">Tipe / Model <span class="text-danger">*</span></label><input type="text" class="form-control" id="t_tipe" required placeholder="Cth: Oppo A5s"></div>
+            <div class="mb-3"><label class="form-label text-muted small">Persamaan</label><input type="text" class="form-control" id="t_persamaan" placeholder="Cth: Realme C1"></div>
+            <div class="row">
+              <div class="col-6 mb-3"><label class="form-label text-muted small">Kualitas</label><input type="text" class="form-control" id="t_kualitas" value="Ori"></div>
+              <div class="col-6 mb-3"><label class="form-label text-muted small">Warna</label><input type="text" class="form-control" id="t_warna" value="Hitam"></div>
+            </div>
+            <div class="row">
+              <div class="col-6 mb-3"><label class="form-label text-muted small">Stok Awal <span class="text-danger">*</span></label><input type="number" class="form-control" id="t_stok" required value="0"></div>
+              <div class="col-6 mb-3"><label class="form-label text-muted small">Harga Modal <span class="text-danger">*</span></label><input type="number" class="form-control" id="t_modal" required value="0"></div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button><button type="button" class="btn btn-primary rounded-pill px-4" id="btnSimpanBaru" onclick="prosesTambahBarang()">Simpan Data</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL EDIT -->
+  <div class="modal fade" id="modalEdit" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header text-white" style="background: #2b2b2b;">
+          <h5 class="modal-title"><i class="fas fa-edit me-2"></i> Edit Stok Barang</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formEdit">
+            <input type="hidden" id="e_merek"><input type="hidden" id="e_sku">
+            <div class="alert alert-info py-2" role="alert"><strong>SKU:</strong> <span id="e_tampil_sku"></span><br><strong>Tipe:</strong> <span id="e_tampil_tipe"></span></div>
+            <div class="mb-3"><label class="form-label text-muted small">Ubah Persamaan</label><input type="text" class="form-control" id="e_persamaan"></div>
+            <div class="row">
+              <div class="col-6 mb-3"><label class="form-label text-muted small">Update Total Stok</label><input type="number" class="form-control" id="e_stok"></div>
+              <div class="col-6 mb-3"><label class="form-label text-muted small">Ubah Harga Modal</label><input type="number" class="form-control" id="e_modal"></div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer"><button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Batal</button><button type="button" class="btn btn-dark rounded-pill px-4" id="btnSimpanEdit" onclick="prosesEditBarang()">Simpan Perubahan</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script>
+    let salesChartInstance = null;
+
+    function formatRupiahClient(angka) { 
+      let str = String(angka).replace(/[^0-9-]/g, '');
+      if (!str || isNaN(str)) return "0"; 
+      return parseInt(str).toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."); 
+    }
+    
+    document.addEventListener("DOMContentLoaded", function() { muatSemuaData(); });
+
+    function toggleMenuMobile() {
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.getElementById('mobileSidebarOverlay');
+      if (!sidebar) return;
+      const mobile = window.matchMedia('(max-width: 768px)').matches;
+      if (mobile) {
+        const akanBuka = !sidebar.classList.contains('mobile-open');
+        sidebar.classList.toggle('mobile-open', akanBuka);
+        document.body.classList.remove('sidebar-hidden');
+        if (overlay) overlay.classList.toggle('active', akanBuka);
+        document.body.style.overflow = akanBuka ? 'hidden' : '';
+      } else {
+        const tersembunyi = document.body.classList.toggle('sidebar-hidden');
+        const btn = document.getElementById('btnMenuMobile');
+        if (btn) {
+          btn.setAttribute('aria-label', tersembunyi ? 'Buka menu' : 'Sembunyikan menu');
+          btn.innerHTML = tersembunyi ? '<i class="fas fa-bars fs-5"></i>' : '<i class="fas fa-bars-staggered fs-5"></i>';
+        }
+      }
+    }
+
+    function tutupMenuMobile() {
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.getElementById('mobileSidebarOverlay');
+      if (sidebar) sidebar.classList.remove('mobile-open');
+      if (overlay) overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    window.addEventListener('resize', function () {
+      if (window.matchMedia('(min-width: 769px)').matches) {
+        const sidebar = document.querySelector('.sidebar');
+        const overlay = document.getElementById('mobileSidebarOverlay');
+        if (sidebar) sidebar.classList.remove('mobile-open');
+        if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      } else {
+        document.body.classList.remove('sidebar-hidden');
+      }
+    });
+
+    function gantiMenu(halaman) {
+      document.querySelectorAll('.sidebar-link').forEach(menu => menu.classList.remove('active'));
+      let halamans = ['halaman-dashboard', 'halaman-stok', 'halaman-penjualan', 'halaman-riwayat', 'halaman-bukukas'];
+      halamans.forEach(h => { if(document.getElementById(h)) document.getElementById(h).style.display = 'none'; });
+
+      document.getElementById('menu-' + halaman).classList.add('active');
+      document.getElementById('halaman-' + halaman).style.display = 'block';
+      tutupMenuMobile();
+
+      if(halaman === 'riwayat') muatDataRiwayat();
+      if(halaman === 'bukukas') muatDataBukuKas();
+    }
+
+    function filterKategori(merek) { gantiMenu('stok'); document.getElementById("inputPencarian").value = merek; cariLive(); }
+    function cariBarangSpesifik(sku) { gantiMenu('stok'); document.getElementById("inputPencarian").value = sku; cariLive(); }
+
+    function cariLive() {
+      let nilaiInput = document.getElementById("inputPencarian").value.toLowerCase().trim();
+      let kataKunci = (nilaiInput === "") ? [] : nilaiInput.split(/\s+/);
+      if(kataKunci.length > 0 && document.getElementById('halaman-stok').style.display === 'none') { gantiMenu('stok'); }
+
+      let tabel = document.getElementById("tabelStok"); 
+      let baris = tabel.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+      for (let i = 0; i < baris.length; i++) {
+        let sel = baris[i].getElementsByTagName("td");
+        if (sel.length > 1) {
+          if (kataKunci.length === 0) { baris[i].style.display = ""; } 
+          else { let teksBaris = (baris[i].textContent || baris[i].innerText).toLowerCase(); let cocokSemua = kataKunci.every(kata => teksBaris.includes(kata)); baris[i].style.display = cocokSemua ? "" : "none"; }
+        }
+      }
+    }
+
+    function muatSemuaData() {
+      const tbody = document.querySelector('#tabelStok tbody');
+      tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4"><i class="fas fa-spinner fa-spin me-2"></i> Mengambil data...</td></tr>`;
+
+      google.script.run.withSuccessHandler(function(dataKeuangan) {
+        document.getElementById('dash_penjualan').innerText = "Rp " + formatRupiahClient(dataKeuangan.totalJual);
+        document.getElementById('dash_keuntungan').innerText = "Rp " + formatRupiahClient(dataKeuangan.totalKeuntungan);
+      }).getKeuanganSummary();
+
+      google.script.run.withSuccessHandler(function(grafikData) {
+        renderGrafik(grafikData.labels, grafikData.data);
+      }).getGrafikPenjualan();
+
+      google.script.run.withSuccessHandler(function(response) {
+        let htmlData = ""; let totalNilaiAset = 0; let rekapMerek = {}; 
+        let htmlStokMenipis = ""; let countMenipis = 0;
         
-        function switchPage(id, el, filter = 'semua') { 
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active')); 
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); 
-            document.getElementById('page-' + id).classList.add('active'); 
-            if(el && el.classList) el.classList.add('active'); 
+        if (response && response.rows && response.rows.length > 0) {
+          document.getElementById('dash_total_produk').innerText = response.rows.length;
+          for (let i = 0; i < response.rows.length; i++) {
+            let row = response.rows[i]; 
+            let sku = row[0] || "-"; 
+            let tipe = row[1] || "-"; 
+            let persamaan = row[10] || "-"; 
+            let sisaStok = parseInt(row[7]) || 0; 
+            let hargaModal = parseFloat(row[8]) || 0; 
+            let merek = row[9] || "-"; 
+            let warnaStok = (sisaStok <= 3) ? 'text-danger fw-bold' : '';
             
-            if(id === 'edit') muatSemuaBarangUntukEdit(filter);
-            if(id === 'kasir') muatDataDropdownBarang();
-            
-            if(window.innerWidth <= 768) { document.querySelector('.sidebar').classList.remove('show'); document.querySelector('.sidebar-overlay').classList.remove('show'); }
-        }
-        
-        function bukaMenuLogin() { if(confirm("Ganti peran login?")) document.getElementById('loginModal').style.display = 'flex'; }
-        
-        function loginSebagaiKaryawan() { 
-            statusRole = 'karyawan'; 
-            document.getElementById('loginModal').style.display = 'none'; 
-            document.getElementById('userName').innerText = 'Admin / Kasir'; 
-            document.getElementById('userRole').innerText = 'Karyawan'; 
-            document.getElementById('userAvatar').innerText = 'AD'; 
-            document.getElementById('cardAset').style.display = 'none'; 
-            document.getElementById('titleOwner').style.display = 'none'; 
-            document.getElementById('menuEditBarang').style.display = 'none'; 
-            aturForm(); 
-        }
-        
-        function loginSebagaiOwner() { 
-            if(document.getElementById('inputPin').value === PIN_RAHASIA) { 
-                statusRole = 'owner'; 
-                document.getElementById('loginModal').style.display = 'none'; 
-                document.getElementById('userName').innerText = 'Infinity Owner'; 
-                document.getElementById('userRole').innerText = 'Owner / Admin'; 
-                document.getElementById('userAvatar').innerText = 'OW'; 
-                document.getElementById('cardAset').style.display = 'flex'; 
-                document.getElementById('titleOwner').style.display = 'block'; 
-                document.getElementById('menuEditBarang').style.display = 'flex'; 
-                aturForm(); 
-            } else { 
-                document.getElementById('loginError').innerText = 'PIN Salah!'; 
-            } 
-        }
-        
-        function aksesMenuEdit(filter = 'semua') { 
-            if(statusRole === 'owner') switchPage('edit', document.querySelector('#menuEditBarang'), filter); 
-            else alert("Khusus Owner."); 
-        }
+            if(sisaStok > 0) { totalNilaiAset += (sisaStok * hargaModal); }
+            if(merek !== "-") { if(!rekapMerek[merek]) rekapMerek[merek] = 0; rekapMerek[merek]++; }
 
-        const formatRp = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
-
-        function formatGambarDrive(url) {
-            const placeholder = "https://placehold.co/100x100/f1f5f9/64748b?text=No+Foto";
-            if (!url || url === "-" || !String(url).trim()) return placeholder;
-            url = String(url).trim();
-            const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-            if (match && match[1]) return "https://drive.google.com/thumbnail?id=" + match[1] + "&sz=w300";
-            if (/^https?:\/\//i.test(url)) return url;
-            return placeholder;
-        }
-
-        function muatDashboard() {
-            fetch(baseUrl + "?t=" + new Date().getTime()).then(r => r.json()).then(d => {
-                document.getElementById('angka-penjualan').innerText = formatRp(d.penjualan || 0);
-                document.getElementById('angka-produk').innerText = (d.produk || 0) + " Barang";
-                document.getElementById('angka-kategori').innerText = (d.kategoriCount || 0) + " Jenis";
-                document.getElementById('angka-aset').innerText = formatRp(d.aset || 0);
-                muatDataDropdownBarang();
-            }).catch(e => { console.log(e); muatDataDropdownBarang(); });
-        }
-        window.onload = muatDashboard;
-
-        function muatDataDropdownBarang() {
-            fetch(baseUrl + "?action=search&t=" + new Date().getTime()).then(r => r.json()).then(data => {
-                if(Array.isArray(data)) { dataMasterBarang = data; } else { dataMasterBarang = []; }
-                aturForm(); 
-                let jumlahMenipis = dataMasterBarang.filter(item => parseInt(item.stok) <= 2).length;
-                let elMenipis = document.getElementById("angka-stok-menipis");
-                if (elMenipis) {
-                    elMenipis.innerText = jumlahMenipis + " Barang";
-                    elMenipis.style.color = jumlahMenipis > 0 ? "#ef4444" : "var(--text-main)";
-                }
-            }).catch(e => { dataMasterBarang = []; aturForm(); });
-        }
-
-        function aturForm() {
-            let tipe = document.getElementById("tipeForm").value;
-            let container = document.getElementById("containerNamaBarang");
-            document.getElementById("divNomorTujuan").style.display = "none";
-            document.getElementById("divKategori").style.display = "none";
-            document.getElementById("divFoto").style.display = "none";
-            document.getElementById("divHargaModal").style.display = "none";
-            document.getElementById("divHargaJualInput").style.display = "none";
-            document.getElementById("divTotalJual").style.display = "none";
-            document.getElementById("divBarcodeScanner").style.display = "block";
-            document.getElementById("labelNamaBarang").innerText = "Nama Barang / Tipe HP";
-            document.getElementById("labelHargaModal").innerText = "Harga Modal (Rp)";
-            document.getElementById("qty").parentElement.style.display = "block";
-
-            if(tipe === "penjualan") {
-                document.getElementById("divTotalJual").style.display = "block";
-                let optHtml = `<select id="barang" name="barang" class="form-control" onchange="pilihBarangKasir(this)" required><option value="">-- Pilih Barang dari Gudang --</option>`;
-                if(dataMasterBarang.length > 0) {
-                    dataMasterBarang.forEach(item => {
-                        optHtml += `<option value="${item.nama}" data-harga="${item.hargaJual}" data-stok="${item.stok}">📦 ${item.nama} (Stok: ${item.stok} | Rp ${Number(item.hargaJual).toLocaleString('id-ID')})</option>`;
-                    });
-                } else { optHtml += `<option value="">(Menunggu Koneksi Data...)</option>`; }
-                optHtml += `</select>`;
-                container.innerHTML = optHtml;
-            } else if(tipe === "pulsa_token") {
-                document.getElementById("divNomorTujuan").style.display = "block";
-                document.getElementById("divHargaModal").style.display = "block"; 
-                document.getElementById("divHargaJualInput").style.display = "block";
-                document.getElementById("divBarcodeScanner").style.display = "none";
-                document.getElementById("qty").parentElement.style.display = "none";
-                document.getElementById("qty").value = 1;
-                document.getElementById("labelNamaBarang").innerText = "Provider & Nominal";
-                container.innerHTML = `<input type="text" id="barang" name="barang" class="form-control" placeholder="Contoh: Pulsa Telkomsel 20rb" required>`;
-            } else if(tipe === "barang_masuk") {
-                document.getElementById("divHargaJualInput").style.display = "block";
-                document.getElementById("divKategori").style.display = "block";
-                document.getElementById("divFoto").style.display = "block";
-                document.getElementById("divHargaModal").style.display = statusRole === 'owner' ? "block" : "none";
-                container.innerHTML = `<input type="text" id="barang" name="barang" class="form-control" placeholder="Contoh: LCD Oppo" required>`;
-            }
-        }
-
-        function pilihBarangKasir(sel) {
-            let opt = sel.options[sel.selectedIndex];
-            let harga = Number(opt.getAttribute("data-harga")) || 0;
-            let qty = Number(document.getElementById("qty").value) || 1;
-            document.getElementById("totalJual").value = harga * qty;
-            let selectedItem = dataMasterBarang.find(i => i.nama === sel.value);
-            if(selectedItem && selectedItem.barcode && selectedItem.barcode !== "-") {
-                document.getElementById("barcode").value = selectedItem.barcode;
-            }
-        }
-
-        function hitungTotalOtomatis() {
-            let tipe = document.getElementById("tipeForm").value;
-            let qty = Number(document.getElementById("qty").value) || 1;
-            if(tipe === "penjualan") {
-                let sel = document.getElementById("barang");
-                if(sel && sel.selectedIndex > 0) {
-                    let opt = sel.options[sel.selectedIndex];
-                    let harga = Number(opt.getAttribute("data-harga")) || 0;
-                    document.getElementById("totalJual").value = harga * qty;
-                }
-            }
-        }
-
-        function kirimRekapTelegram() {
-            let statusEl = document.getElementById("statusTelegram");
-            statusEl.style.color = "#3b82f6";
-            statusEl.innerText = "Mengirim laporan tutup toko ke Telegram...";
-            let payload = { tipeForm: "kirim_rekap_telegram" };
-            fetch(baseUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-            .then(res => res.text()).then(msg => { statusEl.style.color = "#10b981"; statusEl.innerText = msg; })
-            .catch(err => { statusEl.style.color = "#ef4444"; statusEl.innerText = "Gagal mengirim laporan."; });
-        }
-
-        function bukaScannerTop() {
-            document.getElementById('scannerModal').style.display = 'flex';
-            html5QrScannerTop = new Html5Qrcode("readerTop");
-            html5QrScannerTop.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 150 } }, (decodedText) => {
-                tutupScannerTop();
-                document.getElementById('searchInput').value = decodedText;
-                jalankanPencarian(decodedText);
-            }, (err) => {});
-        }
-        function tutupScannerTop() {
-            if(html5QrScannerTop) { html5QrScannerTop.stop().then(() => { document.getElementById('scannerModal').style.display = 'none'; }).catch(e => { document.getElementById('scannerModal').style.display = 'none'; }); } else { document.getElementById('scannerModal').style.display = 'none'; }
-        }
-
-        function mulaiScanForm() {
-            document.getElementById("reader").style.display = "block";
-            document.getElementById("btnScanForm").style.display = "none";
-            html5QrcodeScannerForm = new Html5QrcodeScanner("reader", { fps: 10, qrbox: { width: 250, height: 250 } });
-            html5QrcodeScannerForm.render((decodedText) => {
-                document.getElementById("barcode").value = decodedText;
-                html5QrcodeScannerForm.clear();
-                document.getElementById("reader").style.display = "none";
-                document.getElementById("btnScanForm").style.display = "block";
-            });
-        }
-
-        function cariBarang(e) { let kw = document.getElementById('searchInput').value; if(e && e.key === "Enter") jalankanPencarian(kw); }
-
-        function jalankanPencarian(kw) {
-            let box = document.getElementById('searchResultBox');
-            if(kw.length < 1) { box.style.display = 'none'; return; }
-            box.style.display = 'block'; box.innerHTML = "<div style='padding:15px; text-align:center;'>Mencari...</div>";
-            fetch(baseUrl + "?action=search&t=" + new Date().getTime() + "&keyword=" + encodeURIComponent(kw)).then(r => r.json()).then(data => {
-                if(data.length === 0) { box.innerHTML = "<div style='padding:15px; text-align:center; color:red;'>Tidak ditemukan</div>"; return; }
-                let html = "";
-                data.forEach(item => {
-                    html += `<div class="search-item"><div class="item-left"><img src="${formatGambarDrive(item.foto)}" class="item-img" onerror="this.onerror=null;this.src='https://placehold.co/100x100/f1f5f9/64748b?text=No+Foto';"><div><b>${item.nama}</b><br><small>Stok: ${item.stok} | Jual: ${formatRp(item.hargaJual)}</small></div></div></div>`;
-                });
-                box.innerHTML = html;
-            });
-        }
-
-        document.addEventListener('click', function(event) { if (!event.target.closest('.search-container')) { document.getElementById('searchResultBox').style.display = 'none'; } });
-
-        function muatSemuaBarangToTabel(data) {
-            let resultList = document.getElementById("editResultList");
-            if(data.length === 0) { resultList.innerHTML = "<p style='color:red; text-align:center; padding:20px;'>Belum ada barang.</p>"; return; }
-            cacheDataEdit = data; 
-            let html = "";
-            data.forEach((item, index) => {
-                html += `
-                <div class="search-item">
-                    <div class="item-left" onclick="pilihBarangEdit(${index})" style="cursor:pointer; flex:1;">
-                        <img src="${formatGambarDrive(item.foto)}" class="item-img" onerror="this.onerror=null;this.src='https://placehold.co/100x100/f1f5f9/64748b?text=No+Foto';">
-                        <div><b>${item.nama}</b> <span style="font-size:10px; background:#eff6ff; color:#3b82f6; padding:2px 6px; border-radius:4px;">${item.kategori}</span><br><small style="color:#64748b;">Stok: <b>${item.stok}</b> pcs | Jual: ${formatRp(item.hargaJual)}</small></div>
-                    </div>
-                    <div>
-                        <div onclick="pilihBarangEdit(${index})" style="cursor:pointer; font-size:12px; color:blue; background:#eff6ff; padding:5px 10px; border-radius:6px; margin-bottom:4px;"><i class="fas fa-edit"></i> Edit</div>
-                        <div onclick="hapusBarang(event, ${item.row})" style="cursor:pointer; font-size:12px; color:red; background:#fef2f2; padding:5px 10px; border-radius:6px;"><i class="fas fa-trash"></i> Hapus</div>
-                    </div>
-                </div>`;
-            });
-            resultList.innerHTML = html;
-        }
-
-        function muatSemuaBarangUntukEdit(filter = 'semua') {
-            currentEditFilter = filter; 
-            let resultList = document.getElementById("editResultList");
-            resultList.innerHTML = "<div style='text-align:center; padding:20px;'><i class='fas fa-spinner fa-spin'></i> Memuat Data...</div>";
-            fetch(baseUrl + "?action=search&t=" + new Date().getTime()).then(r => r.json()).then(data => {
-                if(!Array.isArray(data)) data = [];
-                if (filter === 'menipis') { data = data.filter(item => parseInt(item.stok) <= 2); }
-                muatSemuaBarangToTabel(data);
-            });
-        }
-
-        function filterTabelBarang() {
-            let kw = document.getElementById("searchEditInput").value.toLowerCase();
-            let filtered = cacheDataEdit.filter(item => item.nama.toLowerCase().includes(kw) || String(item.barcode).toLowerCase().includes(kw));
-            muatSemuaBarangToTabel(filtered);
-        }
-
-        function pilihBarangEdit(index) {
-            let item = cacheDataEdit[index];
-            document.getElementById("editRow").value = item.row; document.getElementById("editNama").value = item.nama; document.getElementById("editKategori").value = item.kategori; document.getElementById("editStok").value = item.stok; document.getElementById("editHargaJual").value = item.hargaJual; document.getElementById("editHargaModal").value = item.hargaModal; document.getElementById("editBarcode").value = item.barcode; document.getElementById("formEditBarang").style.display = "block"; window.scrollTo({ top: 400, behavior: 'smooth' });
-        }
-
-        function batalEdit() { document.getElementById("formEditBarang").style.display = "none"; }
-
-        function simpanPerubahanBarang(e) {
-            e.preventDefault();
-            let btn = document.getElementById("btnUpdate"); let statusEdit = document.getElementById("statusEdit");
-            btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
-            let payload = { tipeForm: "edit_barang", rowEdit: document.getElementById("editRow").value, barang: document.getElementById("editNama").value, kategori: document.getElementById("editKategori").value, qty: document.getElementById("editStok").value, hargaJualInput: document.getElementById("editHargaJual").value, hargaModal: document.getElementById("editHargaModal").value, barcode: document.getElementById("editBarcode").value };
-            fetch(baseUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-            .then(res => res.text()).then(msg => { statusEdit.style.color = "#10b981"; statusEdit.innerText = msg; document.getElementById("formEditBarang").style.display = "none"; btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> Simpan Perubahan'; muatSemuaBarangUntukEdit(currentEditFilter); muatDashboard(); })
-            .catch(err => { btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> Simpan Perubahan'; });
-        }
-
-        function hapusBarang(event, rowNum) {
-            if(event) event.stopPropagation();
-            if(confirm("Yakin ingin menghapus barang ini secara permanen?")) {
-                let payload = { tipeForm: "hapus_barang", rowHapus: rowNum };
-                fetch(baseUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-                .then(res => res.text()).then(msg => { alert(msg); muatSemuaBarangUntukEdit(currentEditFilter); muatDashboard(); }).catch(err => { alert("Gagal menghapus."); });
-            }
-        }
-
-        document.getElementById("inputFoto").addEventListener("change", function(e) {
-            let file = e.target.files[0]; let btn = document.getElementById("btnSubmit");
-            if(file) {
-                btn.disabled = true; btn.innerHTML = "Memproses Foto..."; namaFile = "compressed_" + file.name; mimeType = "image/jpeg";
-                let reader = new FileReader();
-                reader.onload = function(event) {
-                    let img = new Image();
-                    img.onload = function() {
-                        let canvas = document.createElement("canvas"); let ctx = canvas.getContext("2d"); canvas.width = 800; canvas.height = 800; ctx.drawImage(img, 0, 0, 800, 800);
-                        let dataUrl = canvas.toDataURL("image/jpeg", 0.6); fileB64 = dataUrl.split(',')[1];
-                        document.getElementById("previewFoto").src = dataUrl; document.getElementById("previewFoto").style.display = "block"; btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data';
-                    };
-                    img.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        function kirimData(e) {
-            e.preventDefault();
-            let btn = document.getElementById("btnSubmit"); btn.disabled = true; btn.innerHTML = "Menyimpan...";
-            let tipe = document.getElementById("tipeForm").value;
-            let qtyVal = document.getElementById("qty").value || 1;
-            let totalJualVal = 0; let hargaModalVal = 0;
-            
-            if (tipe === "penjualan") {
-                totalJualVal = document.getElementById("totalJual").value || 0;
-            } else if (tipe === "pulsa_token") {
-                totalJualVal = document.getElementById("hargaJualInput").value || 0;
-                hargaModalVal = document.getElementById("hargaModal").value || 0;
-            } else {
-                totalJualVal = (document.getElementById("hargaJualInput").value || 0) * qtyVal;
-                hargaModalVal = statusRole === 'karyawan' ? 0 : document.getElementById("hargaModal").value;
+            if(sisaStok <= 3 && sku !== "-") {
+              countMenipis++;
+              let badgeColor = sisaStok === 0 ? 'bg-dark' : 'bg-danger';
+              htmlStokMenipis += `<div class="d-flex justify-content-between align-items-center p-2 mb-2 border rounded" style="cursor:pointer; background-color: #fffafb; transition: 0.2s;" onclick="cariBarangSpesifik('${sku}')" onmouseover="this.style.backgroundColor='#ffebee'" onmouseout="this.style.backgroundColor='#fffafb'"><div><span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 me-2" style="font-size:10px;">${merek.toUpperCase()}</span><span class="fw-medium" style="font-size: 13px; color: #4b5563;">${tipe}</span></div><span class="badge ${badgeColor} rounded-pill">Sisa ${sisaStok}</span></div>`;
             }
 
-            let payload = {
-                tipeForm: tipe, kasir: document.getElementById("kasir").value,
-                barcode: document.getElementById("barcode").value || "-",
-                barang: document.getElementById("barang").value,
-                kategori: document.getElementById("kategori").value || "Lainnya",
-                qty: qtyVal, hargaModal: hargaModalVal,
-                hargaJualInput: document.getElementById("hargaJualInput").value || 0,
-                totalJual: totalJualVal, nomorTujuan: document.getElementById("nomorTujuan").value || "-",
-                fotoB64: fileB64, mimeType: mimeType, namaFile: namaFile
-            };
+            htmlData += `<tr><td class="fw-bold align-middle">${sku}</td><td class="align-middle"><span class="badge bg-light text-dark border mb-1" style="font-size:10px;">${merek}</span><br>${tipe}</td><td class="align-middle">${persamaan}</td><td class="text-center align-middle ${warnaStok}">${sisaStok}</td><td class="text-end align-middle">Rp ${formatRupiahClient(hargaModal)}</td><td class="text-center align-middle" style="white-space: nowrap;"><button class="btn btn-sm btn-success rounded-pill px-3 me-1" title="Jual Barang Ini" onclick="bukaKasir('${sku}', '${tipe}')"><i class="fas fa-shopping-cart"></i></button><button class="btn btn-sm btn-outline-dark rounded-pill px-3" title="Edit" onclick="bukaModalEdit('${merek}', '${sku}', '${tipe}', '${persamaan}', ${sisaStok}, ${hargaModal})"><i class="fas fa-edit"></i></button></td></tr>`;
+          }
+          
+          document.getElementById('dash_modal').innerText = "Rp " + formatRupiahClient(totalNilaiAset);
+          
+          if (countMenipis > 0) { document.getElementById('alert_stok_menipis').style.display = 'block'; document.getElementById('isi_stok_menipis').innerHTML = htmlStokMenipis; document.getElementById('count_stok_menipis').innerText = countMenipis; } else { document.getElementById('alert_stok_menipis').style.display = 'none'; }
 
-            fetch(baseUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-            .then(res => res.text()).then(msg => { 
-                document.getElementById("status").innerText = msg; 
-                document.getElementById("formKaryawan").reset(); 
-                fileB64 = ""; document.getElementById("previewFoto").style.display = "none"; 
-                btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data'; 
-                muatDashboard(); aturForm(); 
-            }).catch(err => { btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data'; });
+          let gridKategori = "";
+          let ikonMerek = { 'OPPO': { icon: 'fa-mobile-alt', color: '#10b981' }, 'VIVO': { icon: 'fa-mobile-screen', color: '#3b82f6' }, 'SAMSUNG': { icon: 'fa-android', color: '#0ea5e9' }, 'BATERAI': { icon: 'fa-battery-full', color: '#ef4444' }, 'REALME': { icon: 'fa-tablet-alt', color: '#eab308' }, 'INFINIX': { icon: 'fa-mobile-screen-button', color: '#14b8a6' }, 'XIAOMI': { icon: 'fa-mobile', color: '#f97316' }, 'IPHONE': { icon: 'fa-apple', color: '#4b5563' } };
+
+          for (let m in rekapMerek) {
+            let mk = m.toUpperCase(); let style = ikonMerek[mk] || { icon: 'fa-mobile-alt', color: '#6a11cb' }; 
+            gridKategori += `<div class="category-item" onclick="filterKategori('${m}')" title="Klik untuk lihat data ${m}"><i class="fas ${style.icon}" style="color: ${style.color}; font-size: 26px;"></i><br><small class="fw-bold d-block mt-2" style="font-size:11px;">${m}</small><span class="text-muted" style="font-size: 10px;">${rekapMerek[m]} Model</span></div>`;
+          }
+          document.getElementById('kategori_grid').innerHTML = gridKategori;
+        } else { 
+          htmlData = `<tr><td colspan="6" class="text-center py-4">Data stok kosong.</td></tr>`; 
+          document.getElementById('dash_total_produk').innerText = "0"; document.getElementById('dash_modal').innerText = "Rp 0"; document.getElementById('kategori_grid').innerHTML = `<div class="text-center text-muted w-100">Belum ada kategori terdaftar</div>`;
+          document.getElementById('alert_stok_menipis').style.display = 'none';
         }
-    </script>
+        tbody.innerHTML = htmlData; cariLive();
+      }).withFailureHandler(function(error) { tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">Gagal memuat: ${error.message}</td></tr>`; }).getStokData();
+    }
 
-    <nav class="mobile-sticky-actions" aria-label="Menu utama">
-        <button type="button" class="mobile-sticky-btn" onclick="switchPage('kasir', null)"><i class="fas fa-cash-register"></i><span>Kasir</span></button>
-        <button type="button" class="mobile-sticky-btn" onclick="switchPage('stok-lcd', null)"><i class="fas fa-mobile-alt"></i><span>Stok LCD</span></button>
-        <button type="button" class="mobile-sticky-btn" onclick="switchPage('service-hp', null)"><i class="fas fa-tools"></i><span>Service</span></button>
-        <button type="button" class="mobile-sticky-btn" onclick="switchPage('kredit-hp', null)"><i class="fas fa-file-invoice-dollar"></i><span>Kredit</span></button>
-        <button type="button" class="mobile-sticky-btn" onclick="switchPage('servis-gaji', null)"><i class="fas fa-screwdriver-wrench"></i><span>Komisi</span></button>
-        <button type="button" class="mobile-sticky-btn" onclick="aksesMenuEdit()"><i class="fas fa-box-open"></i><span>Stok Umum</span></button>
-        <button type="button" class="mobile-sticky-btn" onclick="bukaScannerTop()"><i class="fas fa-barcode"></i><span>Scan</span></button>
-    </nav>
+    function muatDataRiwayat() {
+      const tbody = document.querySelector('#tabelRiwayat tbody'); tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4"><i class="fas fa-spinner fa-spin me-2"></i> Mengambil riwayat...</td></tr>`;
+      google.script.run.withSuccessHandler(function(data) {
+        let htmlData = "";
+        if(data && data.length > 0) {
+          for(let i=0; i<data.length; i++) { let aksiBadge = data[i][2].toUpperCase().includes("PENJUALAN") ? `<span class="badge bg-success">JUAL</span>` : `<span class="badge bg-primary">${data[i][2]}</span>`; htmlData += `<tr><td>${data[i][0]}</td><td>${aksiBadge}</td><td class="fw-bold">${data[i][3]}</td><td>${data[i][4]}</td><td class="text-center fw-bold">${data[i][5]}</td><td class="text-center">${data[i][6]}</td><td><small class="text-muted">${data[i][1]}</small></td></tr>`; }
+        } else { htmlData = `<tr><td colspan="7" class="text-center py-4">Belum ada riwayat transaksi.</td></tr>`; }
+        tbody.innerHTML = htmlData;
+      }).getDataRiwayatWeb();
+    }
+
+    function muatDataBukuKas() {
+      const tbody = document.querySelector('#tabelBukuKas tbody'); tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4"><i class="fas fa-spinner fa-spin me-2"></i> Mengambil buku kas...</td></tr>`;
+      google.script.run.withSuccessHandler(function(data) {
+        let htmlData = "";
+        if(data && data.length > 0) {
+          for(let i=0; i<data.length; i++) { htmlData += `<tr><td>${data[i][0]}</td><td class="fw-bold">${data[i][2]}</td><td>${data[i][3]}</td><td class="text-center fw-bold">${data[i][4]}</td><td class="text-end text-muted">Rp ${formatRupiahClient(data[i][5])}</td><td class="text-end">Rp ${formatRupiahClient(data[i][6])}</td><td class="text-end fw-bold text-primary">Rp ${formatRupiahClient(data[i][8])}</td><td class="text-end fw-bold text-success">Rp ${formatRupiahClient(data[i][9])}</td></tr>`; }
+        } else { htmlData = `<tr><td colspan="8" class="text-center py-4">Belum ada data keuangan.</td></tr>`; }
+        tbody.innerHTML = htmlData;
+      }).getDataBukuKasWeb();
+    }
+
+    function renderGrafik(labels, dataGrafik) {
+      const ctx = document.getElementById('salesChart').getContext('2d');
+      if (salesChartInstance) { salesChartInstance.destroy(); }
+      salesChartInstance = new Chart(ctx, { type: 'line', data: { labels: labels, datasets: [{ label: 'Penjualan (Rp)', data: dataGrafik, borderColor: '#6a11cb', backgroundColor: 'rgba(106, 17, 203, 0.1)', borderWidth: 3, fill: true, tension: 0.4 }] }, options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: function(value) { return formatRupiahClient(value); } } } } } });
+    }
+
+    function bukaKasir(sku, tipe) { gantiMenu('penjualan'); document.getElementById('kasir_sku').value = sku; document.getElementById('kasir_tipe').value = tipe; document.getElementById('kasir_qty').value = 1; document.getElementById('kasir_harga').value = ''; document.getElementById('kasir_harga').focus(); }
+    function prosesJual() { let dataJual = { sku: document.getElementById('kasir_sku').value, qty: document.getElementById('kasir_qty').value, hargaJual: document.getElementById('kasir_harga').value }; if (!dataJual.sku || !dataJual.qty || !dataJual.hargaJual) { alert("Semua kolom (SKU, Qty, Harga) wajib diisi!"); return; } let btn = document.getElementById('btnProsesKasir'); btn.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i> Memproses...`; btn.disabled = true; google.script.run.withSuccessHandler(function(res) { btn.innerHTML = `<i class="fas fa-check-circle me-2"></i> Proses Transaksi`; btn.disabled = false; alert(res.message); if(res.success) { document.getElementById('formPenjualan').reset(); muatSemuaData(); } }).prosesPenjualanDariWeb(dataJual); }
+    function bukaModalTambah() { document.getElementById('formTambah').reset(); new bootstrap.Modal(document.getElementById('modalTambah')).show(); }
+    function prosesTambahBarang() { let dataBaru = { merek: document.getElementById('t_merek').value, sku: document.getElementById('t_sku').value, tipe: document.getElementById('t_tipe').value, persamaan: document.getElementById('t_persamaan').value, kualitas: document.getElementById('t_kualitas').value, warna: document.getElementById('t_warna').value, stokAwal: document.getElementById('t_stok').value, hargaModal: document.getElementById('t_modal').value }; if(!dataBaru.merek || !dataBaru.sku || !dataBaru.tipe) { alert("Wajib diisi!"); return; } let btn = document.getElementById('btnSimpanBaru'); btn.innerHTML = `Menyimpan...`; btn.disabled = true; google.script.run.withSuccessHandler(function(res) { btn.innerHTML = `Simpan Data`; btn.disabled = false; alert(res.message); if(res.success) { bootstrap.Modal.getInstance(document.getElementById('modalTambah')).hide(); muatSemuaData(); } }).tambahBarangDariWeb(dataBaru); }
+    function bukaModalEdit(merek, sku, tipe, persamaan, stok, modalVal) { document.getElementById('e_merek').value = merek; document.getElementById('e_sku').value = sku; document.getElementById('e_tampil_sku').innerText = sku; document.getElementById('e_tampil_tipe').innerText = tipe; document.getElementById('e_persamaan').value = (persamaan === "-") ? "" : persamaan; document.getElementById('e_stok').value = stok; document.getElementById('e_modal').value = modalVal; new bootstrap.Modal(document.getElementById('modalEdit')).show(); }
+    function prosesEditBarang() { let btn = document.getElementById('btnSimpanEdit'); btn.innerHTML = `Memproses...`; btn.disabled = true; google.script.run.withSuccessHandler(function(res) { btn.innerHTML = `Simpan Perubahan`; btn.disabled = false; alert(res.message); if(res.success) { bootstrap.Modal.getInstance(document.getElementById('modalEdit')).hide(); muatSemuaData(); } }).updateStokDariWeb(document.getElementById('e_merek').value, document.getElementById('e_sku').value, document.getElementById('e_stok').value, document.getElementById('e_modal').value, document.getElementById('e_persamaan').value); }
+  </script>
 </body>
 </html>
