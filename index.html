@@ -106,7 +106,7 @@
         .stat-title { font-size: 11px; color: var(--text-muted); line-height: 1.35; }
         .stat-value { font-size: 22px; font-weight: 700; color: var(--text-main); line-height: 1.25; overflow-wrap: anywhere; }
 
-        .quick-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0 0 16px; }
+        .quick-actions { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 0 0 16px; }
         .quick-action { min-width: 0; border: 1px solid #e8edf4; background: #fff; border-radius: 13px; padding: 13px 14px; display: flex; align-items: center; gap: 11px; text-align: left; cursor: pointer; color: var(--text-main); box-shadow: 0 3px 8px rgba(15,23,42,.035); transition: transform .15s ease, box-shadow .15s ease; font: inherit; }
         .quick-action:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(15,23,42,.08); }
         .quick-action .qa-icon { width: 38px; height: 38px; flex: 0 0 38px; display: grid; place-items: center; border-radius: 11px; color: #fff; background: linear-gradient(135deg,#ff4350,#d91f2b); font-size: 16px; }
@@ -143,7 +143,7 @@
             #formKaryawan { grid-template-columns: minmax(0, 1fr); }
         }
 
-        .mobile-sticky-actions { display: none; position: fixed; left: 14px; right: 14px; bottom: calc(7px + env(safe-area-inset-bottom, 0px)); z-index: 1500; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 5px 6px; border: 1px solid #e5e7eb; border-radius: 16px; background: rgba(255,255,255,.97); box-shadow: 0 4px 16px rgba(15,23,42,.12); backdrop-filter: blur(12px); }
+        .mobile-sticky-actions { display: none; position: fixed; left: 10px; right: 10px; bottom: calc(7px + env(safe-area-inset-bottom, 0px)); z-index: 1500; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 5px 4px; border: 1px solid #e5e7eb; border-radius: 16px; background: rgba(255,255,255,.97); box-shadow: 0 4px 16px rgba(15,23,42,.12); backdrop-filter: blur(12px); }
         .mobile-sticky-btn { min-width: 0; min-height: 47px; padding: 4px 2px; border: 0; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; font-size: 8.5px; font-weight: 600; text-decoration: none; color: #64748b; background: transparent; cursor: pointer; }
         .mobile-sticky-btn i { font-size: 16px; color: #ef3340; }
         @media (max-width: 768px) { body { padding-bottom: 72px; } .mobile-sticky-actions { display: grid; } }
@@ -178,6 +178,7 @@
         <div class="nav-item active" onclick="switchPage('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
         <div class="nav-item" onclick="switchPage('kasir', this)"><i class="fas fa-shopping-cart"></i> Kasir & Input</div>
         <div class="nav-item" onclick="switchPage('stok-lcd', this)"><i class="fas fa-mobile-alt"></i> Aplikasi Stok LCD</div>
+        <div class="nav-item" onclick="switchPage('servis-gaji', this)"><i class="fas fa-screwdriver-wrench"></i> Servis & Komisi</div>
         
         <div class="menu-title" id="titleOwner" style="display:none;">Menu Owner</div>
         <div class="nav-item" id="menuEditBarang" style="display:none;" onclick="switchPage('edit', this)"><i class="fas fa-edit"></i> Kelola & Edit Stok</div>
@@ -224,6 +225,10 @@
                     <span class="qa-icon" style="background:linear-gradient(135deg,#6366f1,#4338ca);"><i class="fas fa-mobile-alt"></i></span>
                     <span><strong>Stok LCD</strong><small>Buka sistem LCD</small></span>
                 </button>
+                <button type="button" class="quick-action" onclick="switchPage('servis-gaji', null)">
+                    <span class="qa-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);"><i class="fas fa-screwdriver-wrench"></i></span>
+                    <span><strong>Servis & Gaji</strong><small>Bagi hasil teknisi</small></span>
+                </button>
                 <button type="button" class="quick-action" onclick="aksesMenuEdit()">
                     <span class="qa-icon" style="background:linear-gradient(135deg,#3b82f6,#2563eb);"><i class="fas fa-boxes-stacked"></i></span>
                     <span><strong>Kelola Stok</strong><small>Cek dan edit barang</small></span>
@@ -248,13 +253,22 @@
             </div>
         </div>
 
-        <!-- HALAMAN APLIKASI STOK LCD (TERINTEGRASI PENUH) -->
+        <!-- HALAMAN APLIKASI STOK LCD -->
         <div id="page-stok-lcd" class="page-content" style="padding: 0; height: calc(100vh - 65px);">
             <div style="background: #fff; padding: 10px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 13px; font-weight: 600; color: #1e293b;"><i class="fas fa-mobile-alt" style="color:#ef3340; margin-right:6px;"></i> Sistem Manajemen Stok LCD & Kasir v2.0</span>
                 <a href="https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec" target="_blank" style="font-size: 12px; background: #eff6ff; color: #2563eb; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-weight: 600;"><i class="fas fa-external-link-alt"></i> Buka Layar Penuh</a>
             </div>
             <iframe src="https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec" style="width: 100%; height: calc(100% - 45px); border: none;"></iframe>
+        </div>
+
+        <!-- HALAMAN APLIKASI SERVIS & BAGI HASIL TEKNISI (BARU) -->
+        <div id="page-servis-gaji" class="page-content" style="padding: 0; height: calc(100vh - 65px);">
+            <div style="background: #fff; padding: 10px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; font-weight: 600; color: #1e293b;"><i class="fas fa-screwdriver-wrench" style="color:#4f46e5; margin-right:6px;"></i> Sistem Bagi Hasil & Komisi Teknisi</span>
+                <a href="https://script.google.com/macros/s/AKfycbzA31jVvw5GjV_01Q8kFdQKWfdy3nMleLiecsfSatiJS-1-GjuCRSXPfgT63CYfV8CkBQ/exec" target="_blank" style="font-size: 12px; background: #eef2ff; color: #4f46e5; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-weight: 600;"><i class="fas fa-external-link-alt"></i> Buka Layar Penuh</a>
+            </div>
+            <iframe src="https://script.google.com/macros/s/AKfycbzA31jVvw5GjV_01Q8kFdQKWfdy3nMleLiecsfSatiJS-1-GjuCRSXPfgT63CYfV8CkBQ/exec" style="width: 100%; height: calc(100% - 45px); border: none;"></iframe>
         </div>
 
         <!-- KASIR & INPUT -->
@@ -312,7 +326,6 @@
     </div>
 
     <script>
-        // Menggunakan URL Kasir Asli Anda agar Dashboard & Dropdown Barang langsung muncul normal!
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwgp_pzUFcer6xnCOwUs9b0dzwWCkFc9fEc7ntB8C5sPiPL1Xz69xgRX2M_0Ull65Ls9w/exec';
         const baseUrl = scriptURL.split('?')[0]; 
         const PIN_RAHASIA = '1234';
@@ -651,9 +664,9 @@
     <nav class="mobile-sticky-actions" aria-label="Menu utama">
         <button type="button" class="mobile-sticky-btn" onclick="switchPage('kasir', null)"><i class="fas fa-cash-register"></i><span>Kasir</span></button>
         <button type="button" class="mobile-sticky-btn" onclick="switchPage('stok-lcd', null)"><i class="fas fa-mobile-alt"></i><span>Stok LCD</span></button>
+        <button type="button" class="mobile-sticky-btn" onclick="switchPage('servis-gaji', null)"><i class="fas fa-screwdriver-wrench"></i><span>Servis</span></button>
         <button type="button" class="mobile-sticky-btn" onclick="aksesMenuEdit()"><i class="fas fa-box-open"></i><span>Stok Umum</span></button>
         <button type="button" class="mobile-sticky-btn" onclick="bukaScannerTop()"><i class="fas fa-barcode"></i><span>Scan</span></button>
-        <a class="mobile-sticky-btn" href="katalog.html" target="_blank" rel="noopener"><i class="fas fa-store"></i><span>Katalog</span></a>
     </nav>
 </body>
 </html>
