@@ -178,10 +178,7 @@
         <div class="nav-item active" onclick="switchPage('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
         <div class="nav-item" onclick="switchPage('kasir', this)"><i class="fas fa-shopping-cart"></i> Kasir & Input</div>
         <div class="nav-item" onclick="switchPage('stok-lcd', this)"><i class="fas fa-mobile-alt"></i> Aplikasi Stok LCD</div>
-        
-        <a href="https://script.google.com/macros/s/AKfycbzA31jVvw5GjV_01Q8kFdQKWfdy3nMleLiecsfSatiJS-1-GjuCRSXPfgT63CYfV8CkBQ/exec" target="_blank" rel="noopener" class="nav-item">
-            <i class="fas fa-screwdriver-wrench"></i> Servis & Komisi
-        </a>
+        <div class="nav-item" onclick="switchPage('servis-gaji', this)"><i class="fas fa-screwdriver-wrench"></i> Servis & Komisi</div>
         
         <div class="menu-title" id="titleOwner" style="display:none;">Menu Owner</div>
         <div class="nav-item" id="menuEditBarang" style="display:none;" onclick="switchPage('edit', this)"><i class="fas fa-edit"></i> Kelola & Edit Stok</div>
@@ -228,10 +225,10 @@
                     <span class="qa-icon" style="background:linear-gradient(135deg,#6366f1,#4338ca);"><i class="fas fa-mobile-alt"></i></span>
                     <span><strong>Stok LCD</strong><small>Buka sistem LCD</small></span>
                 </button>
-                <a class="quick-action" href="https://script.google.com/macros/s/AKfycbzA31jVvw5GjV_01Q8kFdQKWfdy3nMleLiecsfSatiJS-1-GjuCRSXPfgT63CYfV8CkBQ/exec" target="_blank" rel="noopener">
+                <button type="button" class="quick-action" onclick="switchPage('servis-gaji', null)">
                     <span class="qa-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);"><i class="fas fa-screwdriver-wrench"></i></span>
                     <span><strong>Servis & Gaji</strong><small>Bagi hasil teknisi</small></span>
-                </a>
+                </button>
                 <button type="button" class="quick-action" onclick="aksesMenuEdit()">
                     <span class="qa-icon" style="background:linear-gradient(135deg,#3b82f6,#2563eb);"><i class="fas fa-boxes-stacked"></i></span>
                     <span><strong>Kelola Stok</strong><small>Cek dan edit barang</small></span>
@@ -256,13 +253,22 @@
             </div>
         </div>
 
-        <!-- HALAMAN APLIKASI STOK LCD (DENGAN SKrip PEMBERSIH SIDEBAR) -->
+        <!-- HALAMAN APLIKASI STOK LCD -->
         <div id="page-stok-lcd" class="page-content" style="padding: 0; height: calc(100vh - 65px);">
             <div style="background: #fff; padding: 10px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 13px; font-weight: 600; color: #1e293b;"><i class="fas fa-mobile-alt" style="color:#ef3340; margin-right:6px;"></i> Sistem Manajemen Stok LCD & Kasir v2.0</span>
                 <a href="https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec" target="_blank" rel="noopener" style="font-size: 12px; background: #eff6ff; color: #2563eb; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-weight: 600;"><i class="fas fa-external-link-alt"></i> Buka Layar Penuh</a>
             </div>
-            <iframe id="iframeStok" src="https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec" style="width: 100%; height: calc(100% - 45px); border: none;" onload="hilangkanSidebarIframe()"></iframe>
+            <iframe src="https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec" style="width: 100%; height: calc(100% - 45px); border: none;"></iframe>
+        </div>
+
+        <!-- HALAMAN APLIKASI SERVIS & GAJI (DIDALAM IFRAME) -->
+        <div id="page-servis-gaji" class="page-content" style="padding: 0; height: calc(100vh - 65px);">
+            <div style="background: #fff; padding: 10px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; font-weight: 600; color: #1e293b;"><i class="fas fa-screwdriver-wrench" style="color:#8b5cf6; margin-right:6px;"></i> Sistem Bagi Hasil & Komisi Teknisi</span>
+                <a href="https://script.google.com/macros/s/AKfycbzA31jVvw5GjV_01Q8kFdQKWFdy3nMleLiecsfSatiJS-1-GjuCRSXPfgT63CYfV8CkBQ/exec" target="_blank" rel="noopener" style="font-size: 12px; background: #f5f3ff; color: #8b5cf6; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-weight: 600;"><i class="fas fa-external-link-alt"></i> Buka Layar Penuh</a>
+            </div>
+            <iframe src="https://script.google.com/macros/s/AKfycbzA31jVvw5GjV_01Q8kFdQKWFdy3nMleLiecsfSatiJS-1-GjuCRSXPfgT63CYfV8CkBQ/exec" style="width: 100%; height: calc(100% - 45px); border: none;"></iframe>
         </div>
 
         <!-- KASIR & INPUT -->
@@ -342,26 +348,6 @@
             if(id === 'kasir') muatDataDropdownBarang();
             
             if(window.innerWidth <= 768) { document.querySelector('.sidebar').classList.remove('show'); document.querySelector('.sidebar-overlay').classList.remove('show'); }
-        }
-        
-        // Fungsi otomatis menyembunyikan sidebar bawaan aplikasi Google Apps Script di dalam iframe
-        function hilangkanSidebarIframe() {
-            try {
-                let iframe = document.getElementById('iframeStok');
-                let innerDoc = iframe.contentDocument || iframe.contentWindow.document;
-                let sidebarBawaan = innerDoc.querySelector('.sidebar');
-                if (sidebarBawaan) {
-                    sidebarBawaan.style.display = 'none';
-                }
-                let mainContentBawaan = innerDoc.querySelector('.main-content');
-                if (mainContentBawaan) {
-                    mainContentBawaan.style.marginLeft = '0px';
-                    mainContentBawaan.style.width = '100%';
-                }
-            } catch(e) {
-                // Keamanan browser lintas domain (CORS) mencegah akses langsung ke DOM iframe eksternal,
-                // sehingga kita gunakan fallback CSS injeksi atau abaikan jika dibatasi Google.
-            }
         }
         
         function bukaMenuLogin() { if(confirm("Ganti peran login?")) document.getElementById('loginModal').style.display = 'flex'; }
@@ -674,5 +660,13 @@
             }).catch(err => { btn.disabled = false; btn.innerHTML = '<i class="fas fa-save"></i> Simpan Data'; });
         }
     </script>
+
+    <nav class="mobile-sticky-actions" aria-label="Menu utama">
+        <button type="button" class="mobile-sticky-btn" onclick="switchPage('kasir', null)"><i class="fas fa-cash-register"></i><span>Kasir</span></button>
+        <button type="button" class="mobile-sticky-btn" onclick="switchPage('stok-lcd', null)"><i class="fas fa-mobile-alt"></i><span>Stok LCD</span></button>
+        <button type="button" class="mobile-sticky-btn" onclick="switchPage('servis-gaji', null)"><i class="fas fa-screwdriver-wrench"></i><span>Servis</span></button>
+        <button type="button" class="mobile-sticky-btn" onclick="aksesMenuEdit()"><i class="fas fa-box-open"></i><span>Stok Umum</span></button>
+        <button type="button" class="mobile-sticky-btn" onclick="bukaScannerTop()"><i class="fas fa-barcode"></i><span>Scan</span></button>
+    </nav>
 </body>
 </html>
