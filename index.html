@@ -184,7 +184,33 @@
             .main-content { min-height: 100dvh; }
             #page-dashboard { padding-bottom: 20px; }
         }
-    </style>
+    
+
+        /* FIX: ruang aman agar tombol laporan Telegram tidak tertutup navigasi bawah */
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: calc(118px + env(safe-area-inset-bottom, 0px)) !important;
+            }
+            .main-content, .content, .page-content, #page-dashboard {
+                padding-bottom: calc(118px + env(safe-area-inset-bottom, 0px)) !important;
+                scroll-padding-bottom: calc(118px + env(safe-area-inset-bottom, 0px));
+            }
+            .btn-telegram {
+                position: relative;
+                z-index: 2;
+                margin-bottom: 16px;
+                width: 100%;
+                white-space: normal;
+            }
+            #statusTelegram {
+                padding-bottom: 12px;
+            }
+            .mobile-sticky-actions, .mobile-sticky-nav, .bottom-nav {
+                z-index: 1000;
+            }
+        }
+
+</style>
 </head>
 <body>
 
