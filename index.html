@@ -124,9 +124,12 @@
         .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .btn-telegram { background: linear-gradient(135deg, #0088cc, #006699); margin-top: 15px; }
 
-        .table-custom { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
-        .table-custom th, .table-custom td { padding: 12px 15px; border-bottom: 1px solid #eee; text-align: left; }
-        .table-custom th { background: #f8fafc; color: #64748b; font-weight: 600; }
+        #reader { width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 12px; display: none; background: #f1f5f9; border: 2px dashed #cbd5e1; }
+        #previewFoto { width: 100%; max-height: 220px; object-fit: contain; margin-top: 12px; border-radius: 10px; display: none; background: #f1f5f9; padding: 8px; }
+
+        #page-kasir .form-card { max-width: 900px; padding: 24px; border: 1px solid #e8edf4; }
+        #formKaryawan { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; margin-top: 18px; }
+        #formKaryawan #divBarcodeScanner, #formKaryawan #divFoto, #formKaryawan #divTotalJual, #formKaryawan #btnSubmit { grid-column: 1 / -1; }
 
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
@@ -137,6 +140,7 @@
             .page-content { padding: 13px; }
             .quick-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
             .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+            #formKaryawan { grid-template-columns: minmax(0, 1fr); }
         }
 
         .mobile-sticky-actions { display: none; position: fixed; left: 14px; right: 14px; bottom: calc(7px + env(safe-area-inset-bottom, 0px)); z-index: 1500; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px; padding: 5px 6px; border: 1px solid #e5e7eb; border-radius: 16px; background: rgba(255,255,255,.97); box-shadow: 0 4px 16px rgba(15,23,42,.12); backdrop-filter: blur(12px); }
@@ -173,7 +177,7 @@
         <div class="menu-title">Menu Utama</div>
         <div class="nav-item active" onclick="switchPage('dashboard', this)"><i class="fas fa-home"></i> Dashboard</div>
         <div class="nav-item" onclick="switchPage('kasir', this)"><i class="fas fa-shopping-cart"></i> Kasir & Input</div>
-        <div class="nav-item" onclick="switchPage('stok-lcd', this)"><i class="fas fa-mobile-alt"></i> Stok LCD</div>
+        <div class="nav-item" onclick="switchPage('stok-lcd', this)"><i class="fas fa-mobile-alt"></i> Aplikasi Stok LCD</div>
         
         <div class="menu-title" id="titleOwner" style="display:none;">Menu Owner</div>
         <div class="nav-item" id="menuEditBarang" style="display:none;" onclick="switchPage('edit', this)"><i class="fas fa-edit"></i> Kelola & Edit Stok</div>
@@ -217,25 +221,25 @@
                     <span><strong>Kasir & Input</strong><small>Catat transaksi</small></span>
                 </button>
                 <button type="button" class="quick-action" onclick="switchPage('stok-lcd', null)">
-                    <span class="qa-icon" style="background:linear-gradient(135deg,#0ea5e9,#0369a1);"><i class="fas fa-mobile-alt"></i></span>
-                    <span><strong>Stok LCD</strong><small>Monitor layar HP</small></span>
+                    <span class="qa-icon" style="background:linear-gradient(135deg,#6366f1,#4338ca);"><i class="fas fa-mobile-alt"></i></span>
+                    <span><strong>Stok LCD</strong><small>Buka sistem LCD</small></span>
                 </button>
                 <button type="button" class="quick-action" onclick="aksesMenuEdit()">
-                    <span class="qa-icon"><i class="fas fa-boxes-stacked"></i></span>
+                    <span class="qa-icon" style="background:linear-gradient(135deg,#3b82f6,#2563eb);"><i class="fas fa-boxes-stacked"></i></span>
                     <span><strong>Kelola Stok</strong><small>Cek dan edit barang</small></span>
                 </button>
                 <button type="button" class="quick-action" onclick="bukaScannerTop()">
-                    <span class="qa-icon"><i class="fas fa-barcode"></i></span>
+                    <span class="qa-icon" style="background:linear-gradient(135deg,#16a34a,#15803d);"><i class="fas fa-barcode"></i></span>
                     <span><strong>Scan Barcode</strong><small>Cari barang cepat</small></span>
                 </button>
             </div>
 
             <div class="stats-grid">
-                <div class="stat-card" onclick="switchPage('kasir', null)"><div class="stat-header"><div class="icon-box icon-blue"><i class="fas fa-shopping-bag"></i></div><div class="stat-title">Total Penjualan</div></div><div class="stat-value" id="angka-penjualan">Rp 0</div></div>
-                <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-purple"><i class="fas fa-box"></i></div><div class="stat-title">Total Produk</div></div><div class="stat-value" id="angka-produk">0 Barang</div></div>
-                <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-orange"><i class="fas fa-tags"></i></div><div class="stat-title">Kategori Barang</div></div><div class="stat-value" id="angka-kategori">0 Jenis</div></div>
-                <div class="stat-card" onclick="aksesMenuEdit('menipis')"><div class="stat-header"><div class="icon-box icon-red"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-title">Stok Menipis (&le; 2)</div></div><div class="stat-value" id="angka-stok-menipis">0 Barang</div></div>
-                <div class="stat-card" id="cardAset" style="display:none;" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset</div></div><div class="stat-value" id="angka-aset">Rp 0</div></div>
+                <div class="stat-card" onclick="switchPage('kasir', null)"><div class="stat-header"><div class="icon-box icon-blue"><i class="fas fa-shopping-bag"></i></div><div class="stat-title">Total Penjualan</div></div><div class="stat-value" id="angka-penjualan">Memuat...</div></div>
+                <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-purple"><i class="fas fa-box"></i></div><div class="stat-title">Total Produk</div></div><div class="stat-value" id="angka-produk">Memuat...</div></div>
+                <div class="stat-card" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-orange"><i class="fas fa-tags"></i></div><div class="stat-title">Kategori Barang</div></div><div class="stat-value" id="angka-kategori">Memuat...</div></div>
+                <div class="stat-card" onclick="aksesMenuEdit('menipis')"><div class="stat-header"><div class="icon-box icon-red"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-title">Stok Menipis (&le; 2)</div></div><div class="stat-value" id="angka-stok-menipis">Memuat...</div></div>
+                <div class="stat-card" id="cardAset" style="display:none;" onclick="aksesMenuEdit()"><div class="stat-header"><div class="icon-box icon-green"><i class="fas fa-wallet"></i></div><div class="stat-title">Total Nilai Aset</div></div><div class="stat-value" id="angka-aset">Memuat...</div></div>
             </div>
 
             <div style="margin-top: 15px;">
@@ -244,48 +248,13 @@
             </div>
         </div>
 
-        <!-- STOK LCD -->
-        <div id="page-stok-lcd" class="page-content">
-            <div class="form-card" style="max-width: 900px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-                    <div>
-                        <h3 style="font-weight: 700;">Manajemen Stok LCD</h3>
-                        <p style="color:var(--text-muted); font-size:12px;">Daftar ketersediaan layar HP berdasarkan merek.</p>
-                    </div>
-                    <div>
-                        <select id="filterMerkLcd" class="form-control" style="padding: 8px 15px;" onchange="filterDataLcd()">
-                            <option value="semua">Semua Merek</option>
-                            <option value="oppo">Oppo</option>
-                            <option value="samsung">Samsung</option>
-                            <option value="vivo">Vivo</option>
-                            <option value="xiaomi">Xiaomi</option>
-                            <option value="realme">Realme</option>
-                        </select>
-                    </div>
-                </div>
-                <div style="overflow-x: auto;">
-                    <table class="table-custom">
-                        <thead>
-                            <tr>
-                                <th>Merek & Tipe LCD</th>
-                                <th>Warna (SKU)</th>
-                                <th>Stok</th>
-                                <th>Harga Jual</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabelLcdBody">
-                            <tr>
-                                <td>Oppo A53</td>
-                                <td><span style="background: #fee2e2; color: #991b1b; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600;">Merah (M)</span></td>
-                                <td><b>3 Pcs</b></td>
-                                <td>Rp 150.000</td>
-                                <td><button class="btn btn-primary" style="padding: 5px 10px; font-size: 11px; width:auto;" onclick="switchPage('edit', null)">Edit</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- HALAMAN APLIKASI STOK LCD (TERINTEGRASI PENUH) -->
+        <div id="page-stok-lcd" class="page-content" style="padding: 0; height: calc(100vh - 65px);">
+            <div style="background: #fff; padding: 10px 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 13px; font-weight: 600; color: #1e293b;"><i class="fas fa-mobile-alt" style="color:#ef3340; margin-right:6px;"></i> Sistem Manajemen Stok LCD & Kasir v2.0</span>
+                <a href="https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec" target="_blank" style="font-size: 12px; background: #eff6ff; color: #2563eb; padding: 5px 12px; border-radius: 6px; text-decoration: none; font-weight: 600;"><i class="fas fa-external-link-alt"></i> Buka Layar Penuh</a>
             </div>
+            <iframe src="https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec" style="width: 100%; height: calc(100% - 45px); border: none;"></iframe>
         </div>
 
         <!-- KASIR & INPUT -->
@@ -343,7 +312,8 @@
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbw6AlUa52ijjom_Pl_a6zgN52h-NzYSMplqhbVifiH89404UNE6Zn9lRZZl_sxSfqsvlQ/exec';
+        // Menggunakan URL Kasir Asli Anda agar Dashboard & Dropdown Barang langsung muncul normal!
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwgp_pzUFcer6xnCOwUs9b0dzwWCkFc9fEc7ntB8C5sPiPL1Xz69xgRX2M_0Ull65Ls9w/exec';
         const baseUrl = scriptURL.split('?')[0]; 
         const PIN_RAHASIA = '1234';
         let statusRole = 'owner'; 
@@ -415,24 +385,13 @@
         }
 
         function muatDashboard() {
-            fetch(baseUrl + "?t=" + new Date().getTime())
-            .then(r => r.json())
-            .then(d => {
-                document.getElementById('angka-penjualan').innerText = formatRp(d.penjualan || d.omzet || 0);
-                document.getElementById('angka-produk').innerText = (d.produk || d.totalProduk || 0) + " Barang";
-                document.getElementById('angka-kategori').innerText = (d.kategoriCount || d.jumlahKategori || 0) + " Jenis";
-                document.getElementById('angka-aset').innerText = formatRp(d.aset || d.totalAset || 0);
+            fetch(baseUrl + "?t=" + new Date().getTime()).then(r => r.json()).then(d => {
+                document.getElementById('angka-penjualan').innerText = formatRp(d.penjualan || 0);
+                document.getElementById('angka-produk').innerText = (d.produk || 0) + " Barang";
+                document.getElementById('angka-kategori').innerText = (d.kategoriCount || 0) + " Jenis";
+                document.getElementById('angka-aset').innerText = formatRp(d.aset || 0);
                 muatDataDropdownBarang();
-            })
-            .catch(e => { 
-                console.log("Dashboard fallback:", e);
-                // Jika fetch dashboard gagal, isi angka default agar tidak "Memuat..." terus
-                document.getElementById('angka-penjualan').innerText = "Rp 0";
-                document.getElementById('angka-produk').innerText = "0 Barang";
-                document.getElementById('angka-kategori').innerText = "0 Jenis";
-                document.getElementById('angka-aset').innerText = "Rp 0";
-                muatDataDropdownBarang(); 
-            });
+            }).catch(e => { console.log(e); muatDataDropdownBarang(); });
         }
         window.onload = muatDashboard;
 
@@ -630,11 +589,6 @@
                 fetch(baseUrl, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
                 .then(res => res.text()).then(msg => { alert(msg); muatSemuaBarangUntukEdit(currentEditFilter); muatDashboard(); }).catch(err => { alert("Gagal menghapus."); });
             }
-        }
-
-        function filterDataLcd() {
-            let merk = document.getElementById('filterMerkLcd').value;
-            console.log("Filter LCD:", merk);
         }
 
         document.getElementById("inputFoto").addEventListener("change", function(e) {
