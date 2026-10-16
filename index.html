@@ -35,12 +35,19 @@
         #readerTop { width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 20px; background: #f8fafc; }
 
         .sidebar { 
-            width: 260px; 
+            width: 260px;
+            flex: 0 0 260px;
+            margin-left: 0;
             background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.95)), url('robot.png');
             background-size: cover; background-position: left center;
-            color: #fff; display: flex; flex-direction: column; padding: 25px 0; z-index: 1500; 
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 4px 0 20px rgba(0,0,0,0.05); 
+            color: #fff; display: flex; flex-direction: column; padding: 25px 0; z-index: 1500;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.05);
         }
+        /* Desktop: sidebar dapat disembunyikan tanpa menyisakan ruang kosong */
+        .sidebar.desktop-collapsed { margin-left: -260px; }
+        .menu-toggle { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; flex: 0 0 42px; border-radius: 12px; padding: 10px; cursor: pointer; color: var(--text-main); background: #eef2ff; }
+        .menu-toggle:hover { background: #e0e7ff; }
         
         .logo-area { text-align: center; margin-bottom: 35px; padding-top: 15px; }
         .logo-area h2 { color: #fff; font-weight: 800; letter-spacing: 2px; font-size: 26px; line-height: 1.1; }
@@ -132,8 +139,8 @@
         #formKaryawan #divBarcodeScanner, #formKaryawan #divFoto, #formKaryawan #divTotalJual, #formKaryawan #btnSubmit { grid-column: 1 / -1; }
 
         @media (max-width: 768px) {
-            .menu-toggle { display: block; }
-            .sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); }
+            .sidebar { position: fixed; left: 0; top: 0; bottom: 0; height: 100dvh; overflow-y: auto; margin-left: 0; transform: translateX(-105%); }
+            .sidebar.desktop-collapsed { margin-left: 0; }
             .sidebar.show { transform: translateX(0); }
             .topbar { padding: 10px 13px; }
             .user-info { display: none; }
@@ -192,7 +199,7 @@
     <div class="main-content">
         <div class="topbar">
             <div class="topbar-left">
-                <i class="fas fa-bars menu-toggle" onclick="toggleSidebar()"></i>
+                <button type="button" class="fas fa-bars menu-toggle" onclick="toggleSidebar()" aria-label="Buka atau tutup sidebar" title="Buka/tutup menu"></button>
                 <div class="search-container">
                     <div class="search-bar">
                         <i class="fas fa-search" style="color:#94a3b8;"></i>
@@ -364,7 +371,42 @@
         let html5QrScannerTop = null, html5QrcodeScannerForm = null;
         let currentEditFilter = 'semua'; 
 
-        function toggleSidebar() { document.querySelector('.sidebar').classList.toggle('show'); document.querySelector('.sidebar-overlay').classList.toggle('show'); }
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            if (!sidebar || !overlay) return;
+
+            if (window.innerWidth <= 768) {
+                const opening = !sidebar.classList.contains('show');
+                sidebar.classList.toggle('show', opening);
+                overlay.classList.toggle('show', opening);
+                document.body.style.overflow = opening ? 'hidden' : '';
+            } else {
+                sidebar.classList.toggle('desktop-collapsed');
+                overlay.classList.remove('show');
+            }
+        }
+
+        function closeSidebarMobile() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            if (sidebar) sidebar.classList.remove('show');
+            if (overlay) overlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        window.addEventListener('resize', function () {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            if (!sidebar || !overlay) return;
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('show');
+                overlay.classList.remove('show');
+                document.body.style.overflow = '';
+            } else {
+                sidebar.classList.remove('desktop-collapsed');
+            }
+        });
         
         function switchPage(id, el, filter = 'semua') { 
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active')); 
@@ -375,7 +417,7 @@
             if(id === 'edit') muatSemuaBarangUntukEdit(filter);
             if(id === 'kasir') muatDataDropdownBarang();
             
-            if(window.innerWidth <= 768) { document.querySelector('.sidebar').classList.remove('show'); document.querySelector('.sidebar-overlay').classList.remove('show'); }
+            if (window.innerWidth <= 768) closeSidebarMobile();
         }
         
         function bukaMenuLogin() { if(confirm("Ganti peran login?")) document.getElementById('loginModal').style.display = 'flex'; }
