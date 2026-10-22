@@ -17,7 +17,6 @@
     .dashboard-shortcut { transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
     .dashboard-shortcut:hover { transform: translateY(-2px); border-color: #67e8f9; box-shadow: 0 10px 20px -16px rgba(8, 145, 178, .55); }
     @media (max-width: 640px) { #tab-dashboard .dashboard-welcome { padding: 1rem; } #tab-dashboard .dashboard-card { padding: .85rem; } }
-
     @media (min-width: 768px) {
       #tab-dashboard { gap: .65rem !important; }
       main { padding-top: .7rem !important; padding-bottom: .7rem !important; }
@@ -28,19 +27,7 @@
       #tab-dashboard .dashboard-card { padding: .7rem .85rem !important; }
       #tab-dashboard .dashboard-card h3 { margin-top: .35rem !important; font-size: 1.2rem !important; line-height: 1.5rem !important; }
       #tab-dashboard .dashboard-card p.mt-1 { margin-top: .15rem !important; }
-      #tab-dashboard .dashboard-card span.flex { width: 1.8rem !important; height: 1.8rem !important; }
-      #tab-dashboard .rounded-2xl.border.border-slate-200.bg-white.p-4,
-      #tab-dashboard .rounded-2xl.border.border-slate-200.bg-white.p-5 { padding: .75rem !important; }
-      #tab-dashboard .dashboard-shortcut { padding: .55rem .65rem !important; gap: .55rem !important; }
-      #tab-dashboard .dashboard-shortcut > span:first-child { width: 2rem !important; height: 2rem !important; }
-      #tab-dashboard #dashboardAktivitas { margin-top: .5rem !important; }
-      #tab-dashboard #dashboardAktivitas > div { padding: .45rem .55rem !important; gap: .5rem !important; }
-      #tab-dashboard #dashboardAktivitas > div > span:first-child { width: 1.8rem !important; height: 1.8rem !important; }
-      #tab-dashboard .mt-4 { margin-top: .55rem !important; }
-      #tab-dashboard .mt-3 { margin-top: .45rem !important; }
-      #tab-dashboard .mt-6 { margin-top: .65rem !important; }
-      #tab-dashboard .grid.grid-cols-1.lg\:grid-cols-2 { gap: .65rem !important; }
-      #tab-dashboard .grid.grid-cols-1.lg\:grid-cols-2 > div { min-height: 0 !important; }
+      #tab-dashboard .rounded-2xl.border.border-slate-200.bg-white.p-4 { padding: .75rem !important; }
     }
   </style>
 </head>
@@ -55,43 +42,46 @@
     <p style="color: #cbd5e1; font-size: 0.75rem; margin-top: 0.5rem;">Mohon tunggu sebentar.</p>
   </div>
 
-  <header class="bg-slate-900 text-white shadow-md sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap sm:flex-nowrap justify-between items-center gap-3 relative">
-      <div class="flex items-center space-x-3 w-auto">
-        <i class="fa-solid fa-mobile-screen-button text-2xl text-cyan-400"></i>
-        <div class="hidden sm:block">
-          <h1 class="font-bold text-lg tracking-wide leading-tight">INFINITY GADGET</h1>
-          <p class="text-[10px] text-slate-400">POS, Sparepart, Servis & Gaji</p>
+  <!-- WRAPPER STICKY BARU AGAR TIDAK KEPOTONG -->
+  <div class="sticky top-0 z-50 w-full flex flex-col shadow-md">
+    <header class="bg-slate-900 text-white relative">
+      <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap sm:flex-nowrap justify-between items-center gap-3">
+        <div class="flex items-center space-x-3 w-auto">
+          <i class="fa-solid fa-mobile-screen-button text-2xl text-cyan-400"></i>
+          <div class="hidden sm:block">
+            <h1 class="font-bold text-lg tracking-wide leading-tight">INFINITY GADGET</h1>
+            <p class="text-[10px] text-slate-400">POS, Sparepart, Servis & Gaji</p>
+          </div>
+        </div>
+
+        <div class="w-full sm:flex-1 order-3 sm:order-2 relative sm:px-8">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
+            <input type="text" id="quickSearchInput" oninput="prosesQuickSearch()" placeholder="Cari cepat harga & stok barang..." autocomplete="off" class="w-full bg-slate-800 text-white border border-slate-700 rounded-full py-2 pl-9 pr-10 text-xs sm:text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition placeholder-gray-400 shadow-inner">
+            <button onclick="bukaScanner('quick')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-cyan-400 hover:text-cyan-300 transition" title="Scan Barcode"><i class="fa-solid fa-camera text-lg"></i></button>
+          </div>
+          <div id="quickSearchResults" class="absolute top-full left-0 sm:left-8 right-0 sm:right-8 mt-2 bg-white rounded-xl shadow-2xl overflow-hidden z-50 hidden border border-gray-200 max-h-80 overflow-y-auto text-gray-800"></div>
+        </div>
+
+        <div class="flex items-center justify-end w-auto order-2 sm:order-3">
+          <button id="btnAdminMode" onclick="toggleAdminMode()" class="bg-amber-600 hover:bg-amber-700 text-[10px] sm:text-xs px-2 py-1.5 sm:px-3 rounded font-medium transition text-white flex items-center">
+            <i class="fa-solid fa-lock"></i> <span class="hidden sm:inline ml-1">Mode Karyawan</span>
+          </button>
         </div>
       </div>
+    </header>
 
-      <div class="w-full sm:flex-1 order-3 sm:order-2 relative sm:px-8">
-        <div class="relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
-          <input type="text" id="quickSearchInput" oninput="prosesQuickSearch()" placeholder="Cari cepat harga & stok barang..." autocomplete="off" class="w-full bg-slate-800 text-white border border-slate-700 rounded-full py-2 pl-9 pr-10 text-xs sm:text-sm focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition placeholder-gray-400 shadow-inner">
-          <button onclick="bukaScanner('quick')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-cyan-400 hover:text-cyan-300 transition" title="Scan Barcode"><i class="fa-solid fa-camera text-lg"></i></button>
-        </div>
-        <div id="quickSearchResults" class="absolute top-full left-0 sm:left-8 right-0 sm:right-8 mt-2 bg-white rounded-xl shadow-2xl overflow-hidden z-50 hidden border border-gray-200 max-h-80 overflow-y-auto text-gray-800"></div>
+    <nav class="hidden md:block bg-white border-b border-gray-200 overflow-x-auto relative">
+      <div class="max-w-7xl mx-auto flex space-x-1 px-4 py-2">
+        <button onclick="switchTab('dashboard')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-cyan-700 bg-cyan-50 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-chart-pie"></i><span>Dashboard</span></button>
+        <button onclick="switchTab('kasir')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-cash-register"></i><span>Kasir / POS</span></button>
+        <button onclick="switchTab('stok')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-boxes-stacked"></i><span>Stok & Barang</span></button>
+        <button onclick="switchTab('servis')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-screwdriver-wrench"></i><span>Servis & Foto</span></button>
+        <button onclick="switchTab('gaji')" class="admin-only tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap hidden"><i class="fa-solid fa-money-bill-wave"></i><span>Gaji & Kasbon</span></button>
+        <button onclick="switchTab('keuangan')" class="admin-only tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap hidden"><i class="fa-solid fa-wallet"></i><span>Keuangan</span></button>
       </div>
-
-      <div class="flex items-center justify-end w-auto order-2 sm:order-3">
-        <button id="btnAdminMode" onclick="toggleAdminMode()" class="bg-amber-600 hover:bg-amber-700 text-[10px] sm:text-xs px-2 py-1.5 sm:px-3 rounded font-medium transition text-white flex items-center">
-          <i class="fa-solid fa-lock"></i> <span class="hidden sm:inline ml-1">Mode Karyawan</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <nav class="hidden md:block bg-white border-b border-gray-200 shadow-xs overflow-x-auto">
-    <div class="max-w-7xl mx-auto flex space-x-1 px-4 py-2">
-      <button onclick="switchTab('dashboard')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-cyan-700 bg-cyan-50 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-chart-pie"></i><span>Dashboard</span></button>
-      <button onclick="switchTab('kasir')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-cash-register"></i><span>Kasir / POS</span></button>
-      <button onclick="switchTab('stok')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-boxes-stacked"></i><span>Stok & Barang</span></button>
-      <button onclick="switchTab('servis')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-screwdriver-wrench"></i><span>Servis & Foto</span></button>
-      <button onclick="switchTab('gaji')" class="admin-only tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap hidden"><i class="fa-solid fa-money-bill-wave"></i><span>Gaji & Kasbon</span></button>
-      <button onclick="switchTab('keuangan')" class="admin-only tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap hidden"><i class="fa-solid fa-wallet"></i><span>Keuangan</span></button>
-    </div>
-  </nav>
+    </nav>
+  </div>
 
   <nav class="md:hidden fixed bottom-0 left-0 right-0 h-[64px] bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-40 flex overflow-x-auto no-scrollbar items-center pb-safe">
     <button onclick="switchTab('dashboard')" class="tab-btn-mobile flex flex-col items-center justify-center flex-1 min-w-[65px] h-full text-cyan-600 transition"><i class="fa-solid fa-chart-pie text-xl mb-1"></i><span class="text-[10px] font-semibold">Home</span></button>
@@ -265,14 +255,12 @@
     <section id="tab-gaji" class="tab-content hidden space-y-4 sm:mt-0 mt-3">
       <div class="bg-white p-4 sm:p-6 sm:rounded-xl shadow-sm border-y sm:border border-gray-200">
         <h2 class="font-bold text-lg mb-4 text-slate-800"><i class="fa-solid fa-money-bill-wave mr-2 text-cyan-600"></i>Rekap Gaji & Kasbon</h2>
-        
         <div class="mb-6">
           <h3 class="font-semibold text-sm mb-3 text-gray-700 border-b pb-2">Rekap Gaji Bersih (Total Komisi - Kasbon)</h3>
           <div id="rekapGajiBody" class="grid grid-cols-1 md:grid-cols-3 gap-4">
              <p class="text-xs text-gray-400 italic">Memuat data gaji...</p>
           </div>
         </div>
-
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-gray-100">
           <div>
             <h3 class="font-semibold text-sm mb-2 text-gray-700">Input Kasbon Teknisi</h3>
@@ -369,26 +357,17 @@
   </div>
 
   <script>
-    // URL PENGHUBUNG GOOGLE APPS SCRIPT API BARU
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyb5ZqWdbPlITix35NFKPiUoE2qFbknFSeAU8B8ECqucwD3BNl_hTvCvBk3YBS7SguA/exec";
+    // MASUKKAN URL API BARU DARI LANGKAH 1 KE DALAM TANDA KUTIP DI BAWAH INI:
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjAyMq9dKRzgOVQCGJs-aRFaP8uJdfVJ6G4h_X0UxSWyYbq3eIAdXziBVLkBqFxN9u/exec";
     
     let isAdmin = false; let globalData = {}; let keranjang = [];
     let scanTarget = '';
 
-    function bukaScanner(target) {
-        scanTarget = target;
-        let fileInput = document.getElementById('fileScannerHidden');
-        fileInput.value = '';
-        fileInput.click();
-    }
+    function bukaScanner(target) { scanTarget = target; let fileInput = document.getElementById('fileScannerHidden'); fileInput.value = ''; fileInput.click(); }
 
     function prosesFileScanner(event) {
-        let file = event.target.files[0];
-        if (!file) return;
-        
-        document.getElementById("teksLoading").innerText = "MEMINDAI BARCODE...";
-        showLoading();
-        
+        let file = event.target.files[0]; if (!file) return;
+        document.getElementById("teksLoading").innerText = "MEMINDAI BARCODE..."; showLoading();
         const html5QrCode = new Html5Qrcode("reader");
         html5QrCode.scanFile(file, true)
         .then(decodedText => {
@@ -399,10 +378,7 @@
             else if (scanTarget === 'tambah') { document.getElementById("formId").value = decodedText; }
             try { let beep = new Audio('https://www.soundjay.com/buttons/sounds/beep-07a.mp3'); beep.play(); } catch (e) {}
         })
-        .catch(err => {
-            hideLoading(); document.getElementById("teksLoading").innerText = "MEMPROSES DATA...";
-            alert("Barcode gagal terbaca! Pastikan difoto dari dekat, fokus tidak blur, dan tidak silau.");
-        });
+        .catch(err => { hideLoading(); document.getElementById("teksLoading").innerText = "MEMPROSES DATA..."; alert("Barcode gagal terbaca! Pastikan difoto dari dekat, fokus tidak blur, dan tidak silau."); });
     }
 
     function showLoading() { document.getElementById("loadingOverlay").style.display = "flex"; }
@@ -410,27 +386,36 @@
 
     async function fetchAPI(payload) {
       try {
-        const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
-        });
+        const response = await fetch(SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
         return await response.json();
       } catch (e) { console.error(e); return { status: "error", message: e.message }; }
     }
 
     function loadAppData() {
+      if (SCRIPT_URL === "URL_API_BARU_BOS_DISINI") {
+        alert("PENTING: Tautan URL_API_BARU_BOS_DISINI belum diganti di dalam kode HTML. Silakan ganti dulu agar bisa mengambil data.");
+        return;
+      }
+      
       showLoading();
       fetch(SCRIPT_URL + "?action=getDataAll")
-        .then(res => res.json())
-        .then(data => {
-            globalData = data;
-            renderDashboard(); renderStok(); renderServis(); renderGajiKasbon(); renderKeuangan(); renderPosList();
-            hideLoading();
+        .then(res => {
+          if(!res.ok) throw new Error("Terjadi masalah jaringan atau API diblokir oleh Google.");
+          return res.text();
         })
-        .catch(err => {
-            console.error(err); alert("Gagal memuat data dari server Google! Pastikan link Web App sudah benar."); hideLoading();
-        });
+        .then(text => {
+            try {
+              let data = JSON.parse(text);
+              if (data.error) throw new Error(data.error);
+              globalData = data;
+              renderDashboard(); renderStok(); renderServis(); renderGajiKasbon(); renderKeuangan(); renderPosList();
+              hideLoading();
+            } catch(e) {
+              alert("Gagal membaca database! Pastikan Bos sudah menekan tombol 'Deployment Baru' (Siapa Saja) di Google Script.\n\nPesan sistem: " + e.message);
+              hideLoading();
+            }
+        })
+        .catch(err => { console.error(err); alert("Koneksi gagal terhubung ke Google Script: " + err.message); hideLoading(); });
     }
 
     function getDriveImageUrl(url) {
@@ -513,6 +498,7 @@
       document.querySelectorAll('.tab-btn').forEach(el => { el.classList.remove('text-cyan-700', 'bg-cyan-50'); el.classList.add('text-gray-600', 'hover:bg-gray-100'); });
       document.querySelectorAll('.tab-btn-mobile').forEach(el => { el.classList.remove('text-cyan-600'); el.classList.add('text-gray-400'); });
       document.getElementById('tab-' + tabId).classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       let activeDesktop = document.querySelector(`.tab-btn[onclick="switchTab('${tabId}')"]`); if(activeDesktop) { activeDesktop.classList.remove('text-gray-600', 'hover:bg-gray-100'); activeDesktop.classList.add('text-cyan-700', 'bg-cyan-50'); }
       let activeMobile = document.querySelector(`.tab-btn-mobile[onclick="switchTab('${tabId}')"]`); if(activeMobile) { activeMobile.classList.remove('text-gray-400'); activeMobile.classList.add('text-cyan-600'); }
     }
@@ -741,8 +727,7 @@
     }
     
     function renderGajiKasbon() {
-      let srvTeknisi = document.getElementById("srvTeknisi");
-      let kasbonTeknisi = document.getElementById("kasbonTeknisi");
+      let srvTeknisi = document.getElementById("srvTeknisi"); let kasbonTeknisi = document.getElementById("kasbonTeknisi");
       srvTeknisi.innerHTML = ""; kasbonTeknisi.innerHTML = "";
       (globalData.teknisi || []).forEach(t => {
          srvTeknisi.innerHTML += `<option value="${t.NamaTeknisi}">${t.NamaTeknisi}</option>`;
@@ -754,8 +739,7 @@
 
       (globalData.keuangan || []).forEach(k => {
          if (k.Jenis === 'Komisi Teknisi') {
-            let parts = (k.Keterangan || "").split(" - ");
-            let nama = parts[parts.length - 1];
+            let parts = (k.Keterangan || "").split(" - "); let nama = parts[parts.length - 1];
             if(rekapGaji[nama]) rekapGaji[nama].komisi += Number(k.Keluar || 0);
          }
       });
@@ -765,9 +749,7 @@
          if(rekapGaji[nama]) rekapGaji[nama].kasbon += Number(k.JumlahKasbon || 0);
       });
 
-      let boxGaji = document.getElementById("rekapGajiBody");
-      boxGaji.innerHTML = "";
-      
+      let boxGaji = document.getElementById("rekapGajiBody"); boxGaji.innerHTML = "";
       let teknisiAda = false;
       for (let nama in rekapGaji) {
          teknisiAda = true;
