@@ -261,16 +261,14 @@
       </div>
     </section>
 
-    <!-- TAB 5: GAJI & KASBON (DIPERBARUI) -->
+    <!-- TAB 5: GAJI & KASBON -->
     <section id="tab-gaji" class="tab-content hidden space-y-4 sm:mt-0 mt-3">
       <div class="bg-white p-4 sm:p-6 sm:rounded-xl shadow-sm border-y sm:border border-gray-200">
         <h2 class="font-bold text-lg mb-4 text-slate-800"><i class="fa-solid fa-money-bill-wave mr-2 text-cyan-600"></i>Rekap Gaji & Kasbon</h2>
         
-        <!-- Papan Rekap Gaji Bersih (Ditambahkan) -->
         <div class="mb-6">
           <h3 class="font-semibold text-sm mb-3 text-gray-700 border-b pb-2">Rekap Gaji Bersih (Total Komisi - Kasbon)</h3>
           <div id="rekapGajiBody" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-             <!-- Data Gaji akan masuk ke sini otomatis -->
              <p class="text-xs text-gray-400 italic">Memuat data gaji...</p>
           </div>
         </div>
@@ -371,7 +369,8 @@
   </div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyTvCTxBCv2V4vkJ8xSdVaME-L3Jqpa9BdCjPO-MctcJ08EGfVuLI6fi33hSiV5t6c6/exec";
+    // URL PENGHUBUNG GOOGLE APPS SCRIPT API BARU
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyb5ZqWdbPlITix35NFKPiUoE2qFbknFSeAU8B8ECqucwD3BNl_hTvCvBk3YBS7SguA/exec";
     
     let isAdmin = false; let globalData = {}; let keranjang = [];
     let scanTarget = '';
@@ -386,6 +385,7 @@
     function prosesFileScanner(event) {
         let file = event.target.files[0];
         if (!file) return;
+        
         document.getElementById("teksLoading").innerText = "MEMINDAI BARCODE...";
         showLoading();
         
@@ -410,7 +410,11 @@
 
     async function fetchAPI(payload) {
       try {
-        const response = await fetch(SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
         return await response.json();
       } catch (e) { console.error(e); return { status: "error", message: e.message }; }
     }
@@ -424,7 +428,9 @@
             renderDashboard(); renderStok(); renderServis(); renderGajiKasbon(); renderKeuangan(); renderPosList();
             hideLoading();
         })
-        .catch(err => { console.error(err); alert("Gagal memuat data dari server Google! Pastikan link Web App sudah benar."); hideLoading(); });
+        .catch(err => {
+            console.error(err); alert("Gagal memuat data dari server Google! Pastikan link Web App sudah benar."); hideLoading();
+        });
     }
 
     function getDriveImageUrl(url) {
@@ -466,7 +472,11 @@
             <div class="w-10 h-10 flex-shrink-0 rounded-md bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
               ${item.FotoUrl ? `<img src="${getDriveImageUrl(item.FotoUrl)}" class="w-full h-full object-cover" onerror="this.style.display='none'">` : `<i class="fa-solid fa-box text-gray-400"></i>`}
             </div>
-            <div class="truncate"><p class="font-bold text-sm text-slate-700 leading-tight mb-0.5 truncate">${nama}</p><p class="text-[10px] text-gray-500 font-medium truncate">Stok: ${stok} <span class="mx-1">|</span> ${item.Kategori || item.Brand || '-'}</p>${persamaanHtml}</div>
+            <div class="truncate">
+              <p class="font-bold text-sm text-slate-700 leading-tight mb-0.5 truncate">${nama}</p>
+              <p class="text-[10px] text-gray-500 font-medium truncate">Stok: ${stok} <span class="mx-1">|</span> ${item.Kategori || item.Brand || '-'}</p>
+              ${persamaanHtml}
+            </div>
           </div>
           <div class="text-right pl-2 flex-shrink-0"><p class="font-bold text-cyan-600 text-sm">Rp ${harga.toLocaleString()}</p></div>
         `;
@@ -730,9 +740,7 @@
       }
     }
     
-    // --- FITUR KALKULASI GAJI BERSIH & UPDATE DROPDOWN TEKNISI ---
     function renderGajiKasbon() {
-      // 1. Update Dropdown Nama Teknisi
       let srvTeknisi = document.getElementById("srvTeknisi");
       let kasbonTeknisi = document.getElementById("kasbonTeknisi");
       srvTeknisi.innerHTML = ""; kasbonTeknisi.innerHTML = "";
@@ -741,15 +749,11 @@
          kasbonTeknisi.innerHTML += `<option value="${t.NamaTeknisi}">${t.NamaTeknisi}</option>`;
       });
 
-      // 2. Hitung Komisi dan Kasbon
       let rekapGaji = {};
-      (globalData.teknisi || []).forEach(t => {
-         rekapGaji[t.NamaTeknisi] = { komisi: 0, kasbon: 0 };
-      });
+      (globalData.teknisi || []).forEach(t => { rekapGaji[t.NamaTeknisi] = { komisi: 0, kasbon: 0 }; });
 
       (globalData.keuangan || []).forEach(k => {
          if (k.Jenis === 'Komisi Teknisi') {
-            // Membaca nama teknisi dari ujung keterangan: "Bagi hasil 40% Nota SRV-001 - Andi"
             let parts = (k.Keterangan || "").split(" - ");
             let nama = parts[parts.length - 1];
             if(rekapGaji[nama]) rekapGaji[nama].komisi += Number(k.Keluar || 0);
@@ -757,21 +761,17 @@
       });
 
       (globalData.kasbon || []).forEach(k => {
-         let nama = k.IDTeknisi; // IDTeknisi menyimpan teks nama dari dropdown
+         let nama = k.IDTeknisi; 
          if(rekapGaji[nama]) rekapGaji[nama].kasbon += Number(k.JumlahKasbon || 0);
       });
 
-      // 3. Tampilkan Papan Rekap Gaji
       let boxGaji = document.getElementById("rekapGajiBody");
       boxGaji.innerHTML = "";
       
       let teknisiAda = false;
       for (let nama in rekapGaji) {
          teknisiAda = true;
-         let komisi = rekapGaji[nama].komisi;
-         let kasbon = rekapGaji[nama].kasbon;
-         let bersih = komisi - kasbon;
-         
+         let komisi = rekapGaji[nama].komisi; let kasbon = rekapGaji[nama].kasbon; let bersih = komisi - kasbon;
          let warnaSisa = bersih >= 0 ? "text-emerald-600" : "text-rose-600";
          
          boxGaji.innerHTML += `
@@ -790,14 +790,9 @@
            </div>
          `;
       }
-      
-      if (!teknisiAda) {
-         boxGaji.innerHTML = `<p class="text-xs text-gray-400 italic">Data teknisi belum tersedia di database.</p>`;
-      }
+      if (!teknisiAda) { boxGaji.innerHTML = `<p class="text-xs text-gray-400 italic">Data teknisi belum tersedia di database.</p>`; }
 
-      // 4. Render Daftar Kasbon di bawahnya
-      let listKasbon = document.getElementById("listKasbonBody"); 
-      listKasbon.innerHTML = ""; 
+      let listKasbon = document.getElementById("listKasbonBody"); listKasbon.innerHTML = ""; 
       (globalData.kasbon || []).forEach(k => { 
         listKasbon.innerHTML += `<div class="bg-white p-3 rounded border text-sm flex justify-between items-center"><div><b class="text-slate-700">${k.IDTeknisi}</b><br><span class="text-xs text-gray-500">${k.Keterangan} (${k.Tanggal})</span></div><b class="text-rose-600">Rp ${Number(k.JumlahKasbon).toLocaleString()}</b></div>`; 
       });
