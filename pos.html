@@ -190,7 +190,18 @@
       <div class="bg-white p-4 sm:p-6 sm:rounded-xl shadow-sm border-y sm:border border-gray-200 border-l-4 border-l-amber-500 w-full overflow-hidden">
         <h2 class="font-bold text-lg mb-4 text-slate-800"><i class="fa-solid fa-bolt mr-2 text-amber-500"></i>Kasir PPOB (Pulsa/Token)</h2>
         <form onsubmit="prosesPPOB(event)" class="grid grid-cols-1 md:grid-cols-6 gap-4 items-end bg-amber-50 p-4 rounded-xl border border-amber-100">
-          <div class="md:col-span-1"><label class="block text-xs font-medium text-amber-900 mb-1">Jenis</label><select id="ppobJenis" class="w-full border rounded-lg p-2.5 text-sm bg-white"><option value="Pulsa">Pulsa</option><option value="Token PLN">Token PLN</option><option value="E-Wallet">E-Wallet</option><option value="Voucher Data">Voucher Data</option></select></div>
+          <div class="md:col-span-1">
+            <label class="block text-xs font-medium text-amber-900 mb-1">Jenis</label>
+            <!-- PERBAIKAN: Penambahan Opsi Tarik Tunai dan Transfer -->
+            <select id="ppobJenis" class="w-full border rounded-lg p-2.5 text-sm bg-white">
+              <option value="Pulsa">Pulsa</option>
+              <option value="Token PLN">Token PLN</option>
+              <option value="E-Wallet">E-Wallet</option>
+              <option value="Voucher Data">Voucher Data</option>
+              <option value="Tarik Tunai">Tarik Tunai</option>
+              <option value="Transfer">Transfer</option>
+            </select>
+          </div>
           <div class="md:col-span-2"><label class="block text-xs font-medium text-amber-900 mb-1">Keterangan / Nominal</label><input type="text" id="ppobKet" required class="w-full border rounded-lg p-2.5 text-sm bg-white" placeholder="Contoh: Telkomsel 50k"></div>
           <div class="md:col-span-1"><label class="block text-xs font-medium text-amber-900 mb-1">Nomor Tujuan</label><input type="text" id="ppobNomor" class="w-full border rounded-lg p-2.5 text-sm bg-white" placeholder="Opsional (Bisa kosong)"></div>
           <div class="md:col-span-1"><label class="block text-xs font-medium text-amber-900 mb-1">Harga Modal</label><input type="number" id="ppobModal" required class="w-full border rounded-lg p-2.5 text-sm bg-white" placeholder="50500"></div>
@@ -254,7 +265,6 @@
     <section id="tab-gaji" class="tab-content hidden space-y-4 sm:mt-0 mt-3">
       <div class="bg-white p-4 sm:p-6 sm:rounded-xl shadow-sm border-y sm:border border-gray-200">
         
-        <!-- HEADER TAB GAJI DITAMBAH TOMBOL TAMBAH TEKNISI -->
         <div class="flex justify-between items-center mb-4 border-b pb-3">
           <h2 class="font-bold text-lg text-slate-800"><i class="fa-solid fa-money-bill-wave mr-2 text-cyan-600"></i>Rekap Gaji & Kasbon</h2>
           <button onclick="bukaModalTambahTeknisi()" class="bg-cyan-50 text-cyan-700 border border-cyan-200 hover:bg-cyan-100 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center shadow-sm">
@@ -364,7 +374,7 @@
     </div>
   </div>
 
-  <!-- MODAL BARU: TAMBAH TEKNISI -->
+  <!-- MODAL TAMBAH TEKNISI -->
   <div id="modalTambahTeknisi" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl max-w-sm w-full p-6 shadow-xl space-y-4">
       <div class="flex justify-between items-center border-b pb-3">
@@ -548,7 +558,7 @@
       let labaOps = 0; let labaToko = 0;
       (globalData.keuangan || []).forEach(k => {
         let profit = (Number(k.Masuk) || 0) - (Number(k.Keluar) || 0); let j = k.Jenis || "";
-        if (j.includes("Aksesoris") || j.includes("Pulsa") || j.includes("Token") || j.includes("E-Wallet") || j.includes("Voucher")) { labaOps += profit; } 
+        if (j.includes("Aksesoris") || j.includes("Pulsa") || j.includes("Token") || j.includes("E-Wallet") || j.includes("Voucher") || j.includes("Tarik Tunai") || j.includes("Transfer")) { labaOps += profit; } 
         else if (j.includes("Servis") || j.includes("Sparepart") || j.includes("Komisi")) { labaToko += profit; }
       });
       document.getElementById("statLabaOperasional").innerText = "Rp " + labaOps.toLocaleString('id-ID');
@@ -754,7 +764,6 @@
       }
     }
 
-    // --- FUNGSI TAMBAH TEKNISI BARU ---
     function bukaModalTambahTeknisi() { document.getElementById("modalTambahTeknisi").classList.remove("hidden"); }
     function tutupModalTambahTeknisi() { document.getElementById("modalTambahTeknisi").classList.add("hidden"); }
 
@@ -778,7 +787,6 @@
         alert("Gagal menyimpan Teknisi: " + res.message);
       }
     }
-    // ------------------------------------
     
     function renderGajiKasbon() {
       let srvTeknisi = document.getElementById("srvTeknisi"); let kasbonTeknisi = document.getElementById("kasbonTeknisi");
@@ -798,7 +806,9 @@
             let parts = (k.Keterangan || "").split(" - "); let nama = parts[parts.length - 1];
             if(rekapGaji[nama]) {
                rekapGaji[nama].komisi += Number(k.Keluar || 0);
-               if(k.Tanggal === tglHariIni) { rekapGaji[nama].komisiHariIni += Number(k.Keluar || 0); }
+               if(k.Tanggal === tglHariIni) {
+                   rekapGaji[nama].komisiHariIni += Number(k.Keluar || 0);
+               }
             }
          }
       });
