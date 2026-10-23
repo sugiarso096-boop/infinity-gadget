@@ -78,7 +78,7 @@
         <button onclick="switchTab('servis')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-screwdriver-wrench"></i><span>Servis & Foto</span></button>
         <button onclick="switchTab('gaji')" class="admin-only tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap hidden"><i class="fa-solid fa-money-bill-wave"></i><span>Gaji & Kasbon</span></button>
         <button onclick="switchTab('keuangan')" class="admin-only tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap hidden"><i class="fa-solid fa-wallet"></i><span>Keuangan</span></button>
-        <button onclick="switchTab('cek-kas')" class="admin-only tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap hidden"><i class="fa-solid fa-money-bill-transfer"></i><span>Cek Kas</span></button>
+        <button onclick="switchTab('cek-kas')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-money-bill-transfer"></i><span>Cek Kas</span></button>
       </div>
     </nav>
   </div>
@@ -90,7 +90,7 @@
     <button onclick="switchTab('servis')" class="tab-btn-mobile flex flex-col items-center justify-center flex-1 min-w-[65px] h-full text-gray-400 transition"><i class="fa-solid fa-screwdriver-wrench text-xl mb-1"></i><span class="text-[10px] font-semibold">Servis</span></button>
     <button onclick="switchTab('gaji')" class="tab-btn-mobile admin-only hidden flex flex-col items-center justify-center flex-1 min-w-[65px] h-full text-gray-400 transition"><i class="fa-solid fa-money-bill-wave text-xl mb-1"></i><span class="text-[10px] font-semibold">Gaji</span></button>
     <button onclick="switchTab('keuangan')" class="tab-btn-mobile admin-only hidden flex flex-col items-center justify-center flex-1 min-w-[65px] h-full text-gray-400 transition"><i class="fa-solid fa-wallet text-xl mb-1"></i><span class="text-[10px] font-semibold">Kas</span></button>
-    <button onclick="switchTab('cek-kas')" class="tab-btn-mobile admin-only hidden flex flex-col items-center justify-center flex-1 min-w-[65px] h-full text-gray-400 transition"><i class="fa-solid fa-money-bill-transfer text-xl mb-1"></i><span class="text-[10px] font-semibold">Cek Kas</span></button>
+    <button onclick="switchTab('cek-kas')" class="tab-btn-mobile flex flex-col items-center justify-center flex-1 min-w-[65px] h-full text-gray-400 transition"><i class="fa-solid fa-money-bill-transfer text-xl mb-1"></i><span class="text-[10px] font-semibold">Cek Kas</span></button>
   </nav>
 
   <main class="max-w-7xl mx-auto w-full pb-20 md:pb-10 sm:p-4 md:p-6 box-border">
@@ -1078,7 +1078,6 @@
       diffEl.className = 'text-xl font-bold mt-1 ' + (diff < 0 ? 'text-rose-700' : diff > 0 ? 'text-emerald-700' : 'text-cyan-800');
     }
     async function simpanCekKas() {
-      if (!isAdmin) { alert('Aktifkan Mode Admin dulu untuk menyimpan Cek Kas.'); return; }
       const dateInput = document.getElementById('cekKasTanggal').value;
       if (!dateInput) { alert('Tanggal wajib diisi.'); return; }
       hitungCekKas();
