@@ -605,11 +605,11 @@
       const text = String(value).trim();
 
       // Format HTML date: YYYY-MM-DD
-      let match = text.match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})$/);
+      let match = text.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
       if (match) return { tahun: Number(match[1]), bulan: Number(match[2]), hari: Number(match[3]) };
 
       // Format yang digunakan aplikasi/Spreadsheet: DD/MM/YYYY atau DD-MM-YYYY
-      match = text.match(/^(\\d{1,2})[\\/-](\\d{1,2})[\\/-](\\d{4})$/);
+      match = text.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
       if (match) return { hari: Number(match[1]), bulan: Number(match[2]), tahun: Number(match[3]) };
 
       // Fallback untuk nilai tanggal yang bisa dipahami browser.
