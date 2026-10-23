@@ -78,6 +78,7 @@
         <button onclick="switchTab('servis')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-screwdriver-wrench"></i><span>Servis & Foto</span></button>
         <button onclick="switchTab('gaji')" class="admin-only tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap hidden"><i class="fa-solid fa-money-bill-wave"></i><span>Gaji & Kasbon</span></button>
         <button onclick="switchTab('keuangan')" class="admin-only tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap hidden"><i class="fa-solid fa-wallet"></i><span>Keuangan</span></button>
+        <button onclick="switchTab('cek-kas')" class="admin-only tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap hidden"><i class="fa-solid fa-money-bill-transfer"></i><span>Cek Kas</span></button>
       </div>
     </nav>
   </div>
@@ -89,6 +90,7 @@
     <button onclick="switchTab('servis')" class="tab-btn-mobile flex flex-col items-center justify-center flex-1 min-w-[65px] h-full text-gray-400 transition"><i class="fa-solid fa-screwdriver-wrench text-xl mb-1"></i><span class="text-[10px] font-semibold">Servis</span></button>
     <button onclick="switchTab('gaji')" class="tab-btn-mobile admin-only hidden flex flex-col items-center justify-center flex-1 min-w-[65px] h-full text-gray-400 transition"><i class="fa-solid fa-money-bill-wave text-xl mb-1"></i><span class="text-[10px] font-semibold">Gaji</span></button>
     <button onclick="switchTab('keuangan')" class="tab-btn-mobile admin-only hidden flex flex-col items-center justify-center flex-1 min-w-[65px] h-full text-gray-400 transition"><i class="fa-solid fa-wallet text-xl mb-1"></i><span class="text-[10px] font-semibold">Kas</span></button>
+    <button onclick="switchTab('cek-kas')" class="tab-btn-mobile admin-only hidden flex flex-col items-center justify-center flex-1 min-w-[65px] h-full text-gray-400 transition"><i class="fa-solid fa-money-bill-transfer text-xl mb-1"></i><span class="text-[10px] font-semibold">Cek Kas</span></button>
   </nav>
 
   <main class="max-w-7xl mx-auto w-full pb-20 md:pb-10 sm:p-4 md:p-6 box-border">
@@ -342,6 +344,31 @@
         </div>
       </div>
     </section>
+
+    <!-- TAB 7: CEK KAS HARIAN -->
+    <section id="tab-cek-kas" class="tab-content hidden space-y-4 sm:mt-0 mt-3 px-3 pt-4 sm:px-0 sm:pt-0">
+      <div class="bg-white p-4 sm:p-6 sm:rounded-xl shadow-sm border border-slate-200 rounded-xl">
+        <div class="mb-5">
+          <h2 class="font-bold text-lg text-slate-800"><i class="fa-solid fa-money-bill-transfer mr-2 text-cyan-600"></i>Cek Kas Harian</h2>
+          <p class="text-xs text-slate-500 mt-1">Penjualan tunai dihitung dari transaksi POS baru yang mencantumkan metode Tunai. Transfer dan QRIS tidak masuk hitungan uang fisik.</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div><label class="block text-xs font-semibold mb-1">Tanggal</label><input id="cekKasTanggal" type="date" class="w-full border rounded-lg p-2.5 text-sm" onchange="hitungCekKas()"></div>
+          <div><label class="block text-xs font-semibold mb-1">Saldo Awal (Rp)</label><input id="cekKasSaldoAwal" type="number" min="0" value="0" class="w-full border rounded-lg p-2.5 text-sm" oninput="hitungCekKas()"></div>
+          <div><label class="block text-xs font-semibold mb-1">Penjualan Tunai (otomatis)</label><input id="cekKasPenjualanTunai" type="number" readonly value="0" class="w-full border rounded-lg p-2.5 text-sm bg-slate-50"></div>
+          <div><label class="block text-xs font-semibold mb-1">Uang Masuk Lain (Rp)</label><input id="cekKasMasukLain" type="number" min="0" value="0" class="w-full border rounded-lg p-2.5 text-sm" oninput="hitungCekKas()"></div>
+          <div><label class="block text-xs font-semibold mb-1">Uang Keluar Tunai (Rp)</label><input id="cekKasKeluarTunai" type="number" min="0" value="0" class="w-full border rounded-lg p-2.5 text-sm" oninput="hitungCekKas()"></div>
+          <div><label class="block text-xs font-semibold mb-1">Uang Fisik di Laci (Rp)</label><input id="cekKasUangFisik" type="number" min="0" value="0" class="w-full border rounded-lg p-2.5 text-sm" oninput="hitungCekKas()"></div>
+          <div class="sm:col-span-2"><label class="block text-xs font-semibold mb-1">Catatan</label><textarea id="cekKasCatatan" rows="2" class="w-full border rounded-lg p-2.5 text-sm" placeholder="Contoh: uang dipakai beli kebutuhan toko"></textarea></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+          <div class="rounded-xl bg-slate-50 border p-4"><p class="text-xs text-slate-500">Kas Seharusnya</p><p id="cekKasSeharusnya" class="text-xl font-bold text-slate-800 mt-1">Rp 0</p></div>
+          <div class="rounded-xl bg-cyan-50 border border-cyan-100 p-4"><p class="text-xs text-slate-500">Selisih (fisik − seharusnya)</p><p id="cekKasSelisih" class="text-xl font-bold text-cyan-800 mt-1">Rp 0</p></div>
+        </div>
+        <button onclick="simpanCekKas()" class="mt-4 w-full sm:w-auto bg-cyan-600 hover:bg-cyan-700 text-white font-semibold text-sm rounded-lg px-5 py-3"><i class="fa-solid fa-floppy-disk mr-2"></i>Simpan Cek Kas</button>
+        <p class="text-[11px] text-slate-500 mt-2">Pastikan sheet Google Spreadsheet bernama <b>CekKas</b> memiliki 9 kolom sesuai urutan: Tanggal, SaldoAwal, PenjualanTunai, MasukLain, KeluarTunai, KasSeharusnya, UangFisik, Selisih, Catatan.</p>
+      </div>
+    </section>
   </main>
 
   <!-- MODAL TAMBAH BARANG -->
@@ -482,7 +509,7 @@
               let data = JSON.parse(text);
               if (data.error) throw new Error(data.error);
               globalData = data;
-              renderDashboard(); renderStok(); renderServis(); renderGajiKasbon(); renderKeuangan(); renderPosList();
+              renderDashboard(); renderStok(); renderServis(); renderGajiKasbon(); renderKeuangan(); renderPosList(); hitungCekKas();
               hideLoading();
             } catch(e) {
               alert("Gagal membaca database! Pastikan Bos sudah menekan tombol 'Deployment Baru' (Siapa Saja) di Google Script.\n\nPesan sistem: " + e.message);
@@ -945,7 +972,8 @@
         alert("Teknisi berhasil ditambahkan!");
         document.getElementById("formNamaTeknisi").value = "";
         tutupModalTambahTeknisi();
-        loadAppData(); 
+        document.getElementById("cekKasTanggal").value = tanggalHariIniInput();
+    loadAppData(); 
       } else {
         alert("Gagal menyimpan Teknisi: " + res.message);
       }
@@ -1019,6 +1047,55 @@
         let obj = { ID: "KAS-" + Date.now(), Tanggal: new Date().toLocaleDateString('id-ID'), IDTeknisi: document.getElementById("kasbonTeknisi").value, JumlahKasbon: Number(document.getElementById("kasbonJumlah").value), Keterangan: document.getElementById("kasbonKet").value }; 
         let res = await fetchAPI({ action: "saveData", sheetName: "Kasbon", data: obj });
         hideLoading(); if(res.status === "success") { alert("Kasbon Dicatat!"); loadAppData(); } else { alert("Gagal: " + res.message); } 
+    }
+
+    function tanggalHariIniInput() {
+      const d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+    function formatTanggalID(d) { return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear(); }
+    function hitungCekKas() {
+      const dateInput = document.getElementById('cekKasTanggal').value;
+      let tanggalID = '';
+      if (dateInput) { const parts = dateInput.split('-'); tanggalID = parts[2] + '/' + parts[1] + '/' + parts[0]; }
+      const penjualan = (globalData.keuangan || []).reduce((sum, row) => {
+        const ket = String(row.Keterangan || '');
+        const tgl = String(row.Tanggal || '');
+        const metodeTunai = /(?:\|\s)Bayar:\s*Tunai\s*$/i.test(ket);
+        const jenisPOS = /^Penjualan (Aksesoris|Sparepart)$/i.test(String(row.Jenis || ''));
+        return sum + (tgl === tanggalID && metodeTunai && jenisPOS ? Number(row.Masuk || 0) : 0);
+      }, 0);
+      document.getElementById('cekKasPenjualanTunai').value = penjualan;
+      const awal = Number(document.getElementById('cekKasSaldoAwal').value || 0);
+      const masuk = Number(document.getElementById('cekKasMasukLain').value || 0);
+      const keluar = Number(document.getElementById('cekKasKeluarTunai').value || 0);
+      const fisik = Number(document.getElementById('cekKasUangFisik').value || 0);
+      const expected = awal + penjualan + masuk - keluar;
+      const diff = fisik - expected;
+      document.getElementById('cekKasSeharusnya').textContent = 'Rp ' + expected.toLocaleString('id-ID');
+      const diffEl = document.getElementById('cekKasSelisih');
+      diffEl.textContent = (diff > 0 ? '+' : '') + 'Rp ' + diff.toLocaleString('id-ID');
+      diffEl.className = 'text-xl font-bold mt-1 ' + (diff < 0 ? 'text-rose-700' : diff > 0 ? 'text-emerald-700' : 'text-cyan-800');
+    }
+    async function simpanCekKas() {
+      if (!isAdmin) { alert('Aktifkan Mode Admin dulu untuk menyimpan Cek Kas.'); return; }
+      const dateInput = document.getElementById('cekKasTanggal').value;
+      if (!dateInput) { alert('Tanggal wajib diisi.'); return; }
+      hitungCekKas();
+      const parts = dateInput.split('-'); const tanggal = parts[2] + '/' + parts[1] + '/' + parts[0];
+      const saldo = Number(document.getElementById('cekKasSaldoAwal').value || 0);
+      const penjualan = Number(document.getElementById('cekKasPenjualanTunai').value || 0);
+      const masuk = Number(document.getElementById('cekKasMasukLain').value || 0);
+      const keluar = Number(document.getElementById('cekKasKeluarTunai').value || 0);
+      const fisik = Number(document.getElementById('cekKasUangFisik').value || 0);
+      const seharusnya = saldo + penjualan + masuk - keluar;
+      const selisih = fisik - seharusnya;
+      if ([saldo,penjualan,masuk,keluar,fisik].some(n => !Number.isFinite(n) || n < 0)) { alert('Nominal harus angka 0 atau lebih.'); return; }
+      showLoading();
+      const res = await fetchAPI({ action: 'saveCekKas', data: { Tanggal: tanggal, SaldoAwal: saldo, PenjualanTunai: penjualan, MasukLain: masuk, KeluarTunai: keluar, KasSeharusnya: seharusnya, UangFisik: fisik, Selisih: selisih, Catatan: document.getElementById('cekKasCatatan').value.trim() } });
+      hideLoading();
+      if (res.status === 'success') { alert('Cek kas berhasil disimpan ke Google Spreadsheet.'); }
+      else { alert('Gagal menyimpan cek kas: ' + (res.message || 'Periksa Code.gs dan sheet CekKas.')); }
     }
 
     function renderKeuangan() { let tbody = document.getElementById("tabelKeuanganBody"); tbody.innerHTML = ""; (globalData.keuangan || []).forEach(k => { tbody.innerHTML += `<tr class="border-b"><td class="p-3 text-xs">${k.Tanggal}</td><td class="p-3">${k.Jenis}</td><td class="p-3">${k.Keterangan}</td><td class="p-3 text-emerald-600">Rp ${Number(k.Masuk||0).toLocaleString()}</td><td class="p-3 text-rose-600">Rp ${Number(k.Keluar||0).toLocaleString()}</td></tr>`; }); }
