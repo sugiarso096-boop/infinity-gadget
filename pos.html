@@ -149,6 +149,58 @@
       #tab-dashboard .dashboard-card { min-height:98px; }
     }
 
+
+    /* DASHBOARD COMPACT: kurangi scroll tanpa mengubah ID/fungsi aplikasi */
+    @media (min-width: 641px) {
+      #tab-dashboard { gap: .65rem !important; }
+      #tab-dashboard .dashboard-welcome { min-height: 0 !important; padding: .85rem 1.15rem !important; }
+      #tab-dashboard .dashboard-welcome .relative.grid { gap: .7rem !important; }
+      #tab-dashboard .dashboard-welcome .mt-4.grid { margin-top: .65rem !important; }
+      #tab-dashboard .dashboard-welcome .rounded-xl.border { padding: .45rem .65rem !important; }
+      #tab-dashboard .dashboard-stats { gap: .55rem !important; }
+      #tab-dashboard .dashboard-card { padding: .6rem .75rem !important; border-radius: 12px !important; }
+      #tab-dashboard .dashboard-card > div:first-child span { width: 1.8rem !important; height: 1.8rem !important; }
+      #tab-dashboard .dashboard-card h3 { margin-top: .25rem !important; font-size: 1.05rem !important; line-height: 1.25rem !important; }
+      #tab-dashboard .dashboard-card p.mt-1 { margin-top: .1rem !important; }
+      #tab-dashboard .rounded-2xl.border.border-slate-200.bg-white.p-4,
+      #tab-dashboard .rounded-2xl.border.border-slate-200.bg-white.p-4.sm\:p-5 { padding: .7rem !important; border-radius: 14px !important; }
+      #tab-dashboard .dashboard-shortcut { min-height: 54px !important; padding: .55rem !important; }
+      #tab-dashboard .dashboard-shortcut > span:first-child { width: 2rem !important; height: 2rem !important; }
+      #tab-dashboard .grid.grid-cols-1.lg\:grid-cols-3,
+      #tab-dashboard .grid.grid-cols-1.lg\:grid-cols-2 { gap: .65rem !important; }
+      #tab-dashboard #dashboardGrafikPenjualan { margin-top: .5rem !important; min-height: 110px !important; }
+      #tab-dashboard #dashboardDonutStok { height: 6rem !important; width: 6rem !important; }
+      #tab-dashboard #dashboardDonutStok > div { height: 4rem !important; width: 4rem !important; }
+      #tab-dashboard .grid.grid-cols-1.lg\:grid-cols-3 .mt-4 { margin-top: .55rem !important; }
+      #tab-dashboard .grid.grid-cols-1.lg\:grid-cols-2 .mt-4 { margin-top: .5rem !important; }
+      #tab-dashboard #dashboardAktivitas { margin-top: .5rem !important; }
+      #tab-dashboard #dashboardAktivitas > div { padding: .5rem !important; }
+    }
+    @media (max-width: 640px) {
+      #tab-dashboard { gap: .55rem !important; padding: .5rem .55rem 1rem !important; }
+      #tab-dashboard .dashboard-welcome { padding: .8rem !important; }
+      #tab-dashboard .dashboard-welcome .mt-4.grid { margin-top: .55rem !important; }
+      #tab-dashboard .dashboard-welcome .rounded-xl.border { padding: .45rem !important; }
+      #tab-dashboard .dashboard-welcome .rounded-xl.border p:last-child { font-size: .72rem !important; }
+      #tab-dashboard .dashboard-stats { gap: .45rem !important; }
+      #tab-dashboard .dashboard-card { padding: .55rem .5rem !important; }
+      #tab-dashboard .dashboard-card h3 { font-size: .98rem !important; line-height: 1.15rem !important; margin-top: .3rem !important; }
+      #tab-dashboard .dashboard-card > div:first-child span { width: 1.55rem !important; height: 1.55rem !important; }
+      #tab-dashboard .rounded-2xl.border.border-slate-200.bg-white.p-4,
+      #tab-dashboard .rounded-2xl.border.border-slate-200.bg-white.p-4.sm\:p-5 { padding: .65rem !important; border-radius: 13px !important; }
+      #tab-dashboard .dashboard-shortcut { min-height: 48px !important; padding: .45rem !important; gap: .4rem !important; }
+      #tab-dashboard .dashboard-shortcut > span:first-child { width: 1.8rem !important; height: 1.8rem !important; }
+      #tab-dashboard .dashboard-shortcut > span:last-child span:first-child { font-size: .68rem !important; }
+      #tab-dashboard .grid.grid-cols-1.lg\:grid-cols-3,
+      #tab-dashboard .grid.grid-cols-1.lg\:grid-cols-2 { gap: .55rem !important; }
+      #tab-dashboard #dashboardGrafikPenjualan { margin-top: .45rem !important; min-height: 95px !important; }
+      #tab-dashboard #dashboardDonutStok { height: 5.2rem !important; width: 5.2rem !important; }
+      #tab-dashboard #dashboardDonutStok > div { height: 3.5rem !important; width: 3.5rem !important; }
+      #tab-dashboard #dashboardAktivitas > div { padding: .45rem !important; }
+      #tab-dashboard h3.font-bold { font-size: .88rem !important; }
+      #tab-dashboard p.mt-1.text-xs { font-size: .65rem !important; line-height: .9rem !important; }
+    }
+
   </style>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 overflow-x-hidden">
