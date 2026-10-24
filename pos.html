@@ -29,6 +29,64 @@
       #tab-dashboard .dashboard-card p.mt-1 { margin-top: .15rem !important; }
       #tab-dashboard .rounded-2xl.border.border-slate-200.bg-white.p-4 { padding: .75rem !important; }
     }
+  
+    /* Dashboard refresh: compact, polished, responsive on desktop and mobile */
+    #tab-dashboard { gap: 1rem !important; }
+    #tab-dashboard .dashboard-welcome {
+      border: 1px solid rgba(34,211,238,.18);
+      box-shadow: 0 14px 32px -24px rgba(8,145,178,.65);
+      min-height: 142px;
+    }
+    #tab-dashboard .dashboard-card {
+      position: relative; overflow: hidden;
+      border-radius: 16px; box-shadow: 0 3px 10px rgba(15,23,42,.045);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    #tab-dashboard .dashboard-card:after {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: linear-gradient(180deg,#22d3ee,#0891b2); opacity: .85;
+    }
+    #tab-dashboard .dashboard-card h3 { letter-spacing: -.025em; overflow-wrap: anywhere; }
+    #tab-dashboard .dashboard-shortcut { min-height: 72px; border-radius: 14px; }
+    #tab-dashboard .dashboard-shortcut:active { transform: scale(.985); }
+    #tab-dashboard .rounded-2xl.border.border-slate-200.bg-white.p-4,
+    #tab-dashboard .rounded-2xl.border.border-slate-200.bg-white.p-4.sm\:p-5 {
+      border-radius: 18px; box-shadow: 0 3px 12px rgba(15,23,42,.035);
+    }
+    #tab-dashboard #dashboardAktivitas > div { border-radius: 12px; }
+    @media (max-width: 767px) {
+      main { padding-top: .25rem !important; }
+      #tab-dashboard { padding-top: .7rem !important; gap: .8rem !important; }
+      #tab-dashboard .dashboard-welcome { min-height: 0; padding: 1.1rem !important; border-radius: 17px; }
+      #tab-dashboard .dashboard-welcome h2 { font-size: 1.08rem !important; line-height: 1.4rem !important; margin-top: .45rem !important; }
+      #tab-dashboard .dashboard-welcome p:last-child { font-size: .72rem !important; line-height: 1.1rem; }
+      #tab-dashboard .grid.grid-cols-2.md\:grid-cols-4 { gap: .55rem !important; }
+      #tab-dashboard .dashboard-card { padding: .8rem .7rem !important; border-radius: 14px; min-width: 0; }
+      #tab-dashboard .dashboard-card > div:first-child { align-items: center; }
+      #tab-dashboard .dashboard-card > div:first-child p { line-height: 1rem; }
+      #tab-dashboard .dashboard-card > div:first-child span { width: 1.8rem; height: 1.8rem; flex-shrink: 0; }
+      #tab-dashboard .dashboard-card h3 { font-size: 1.12rem !important; line-height: 1.35rem !important; margin-top: .55rem !important; }
+      #tab-dashboard .dashboard-card p.mt-1 { font-size: 9px !important; line-height: .9rem; }
+      #tab-dashboard .rounded-2xl.border.border-slate-200.bg-white.p-4,
+      #tab-dashboard .rounded-2xl.border.border-slate-200.bg-white.p-4.sm\:p-5 { padding: .9rem !important; }
+      #tab-dashboard .grid.grid-cols-2.sm\:grid-cols-4 { gap: .55rem !important; }
+      #tab-dashboard .dashboard-shortcut { padding: .65rem !important; gap: .55rem !important; min-height: 66px; }
+      #tab-dashboard .dashboard-shortcut > span:first-child { width: 2.2rem; height: 2.2rem; border-radius: .7rem; }
+      #tab-dashboard .dashboard-shortcut > span:last-child { min-width: 0; }
+      #tab-dashboard .dashboard-shortcut > span:last-child span:first-child { font-size: .72rem; line-height: .95rem; }
+      #tab-dashboard .dashboard-shortcut > span:last-child span:last-child { font-size: 9px; }
+      #tab-dashboard .grid.grid-cols-1.lg\:grid-cols-2 { gap: .7rem !important; }
+      #tab-dashboard .text-3xl { font-size: 1.65rem !important; }
+      #tab-dashboard #dashboardAktivitas { min-width: 0; }
+      #tab-dashboard #dashboardAktivitas > div { padding: .65rem !important; }
+    }
+    @media (max-width: 380px) {
+      #tab-dashboard .dashboard-card { padding: .65rem .55rem !important; }
+      #tab-dashboard .dashboard-card h3 { font-size: 1rem !important; }
+      #tab-dashboard .dashboard-shortcut { gap: .4rem !important; padding: .55rem !important; }
+      #tab-dashboard .dashboard-shortcut > span:first-child { width: 1.9rem; height: 1.9rem; }
+    }
+
   </style>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 overflow-x-hidden">
