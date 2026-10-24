@@ -230,7 +230,6 @@
         <form onsubmit="prosesPPOB(event)" class="grid grid-cols-1 md:grid-cols-6 gap-4 items-end bg-amber-50 p-4 rounded-xl border border-amber-100">
           <div class="md:col-span-1">
             <label class="block text-xs font-medium text-amber-900 mb-1">Jenis</label>
-            <!-- PERBAIKAN: Penambahan Opsi Tarik Tunai dan Transfer -->
             <select id="ppobJenis" class="w-full border rounded-lg p-2.5 text-sm bg-white">
               <option value="Pulsa">Pulsa</option>
               <option value="Token PLN">Token PLN</option>
@@ -279,7 +278,10 @@
       <div class="bg-white p-4 sm:p-6 sm:rounded-xl shadow-sm border-y sm:border border-gray-200">
         <h2 class="font-bold text-lg mb-4 text-slate-800"><i class="fa-solid fa-screwdriver-wrench mr-2 text-cyan-600"></i>Pencatatan Servis HP & Foto Masuk</h2>
         <form id="formServis" onsubmit="simpanServis(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 bg-gray-50 p-4 rounded-xl border">
-          <div><label class="block text-xs font-medium mb-1">Nomor Nota</label><input type="text" id="srvNota" required class="w-full border rounded-lg p-2 text-sm bg-white" placeholder="SRV-001"></div>
+          <div>
+            <label class="block text-xs font-medium mb-1">Nomor Nota</label>
+            <input type="text" id="srvNota" required readonly class="w-full border rounded-lg p-2 text-sm bg-gray-100 font-bold text-cyan-700 cursor-not-allowed outline-none" placeholder="Otomatis">
+          </div>
           <div><label class="block text-xs font-medium mb-1">Nama Pelanggan</label><input type="text" id="srvPelanggan" required class="w-full border rounded-lg p-2 text-sm bg-white" placeholder="Budi"></div>
           <div><label class="block text-xs font-medium mb-1">Tipe HP</label><input type="text" id="srvTipe" required class="w-full border rounded-lg p-2 text-sm bg-white" placeholder="Oppo A53"></div>
           <div><label class="block text-xs font-medium mb-1">Kerusakan</label><input type="text" id="srvKerusakan" required class="w-full border rounded-lg p-2 text-sm bg-white" placeholder="Ganti LCD"></div>
@@ -907,6 +909,23 @@
         hideLoading(); if(res.status === "success") { alert("Barang Ditambahkan!"); tutupModalTambahStok(); loadAppData(); } else { alert("Gagal: " + res.message); }
     }
 
+    function setNotaOtomatis() {
+      let maxNomor = 0;
+      if (globalData && globalData.servis && globalData.servis.length > 0) {
+        globalData.servis.forEach(s => {
+          let strNota = String(s.Nota || "");
+          let angka = parseInt(strNota.replace(/[^0-9]/g, ""));
+          if (!isNaN(angka) && angka > maxNomor) {
+            maxNomor = angka;
+          }
+        });
+      }
+      let nomorBaru = maxNomor + 1;
+      let formatNota = "SRV-" + ("000" + nomorBaru).slice(-3);
+      let inputNota = document.getElementById("srvNota");
+      if(inputNota) inputNota.value = formatNota;
+    }
+
     function renderServis() {
       let tbody = document.getElementById("tabelServisBody"); tbody.innerHTML = "";
       (globalData.servis || []).forEach(s => {
@@ -916,6 +935,7 @@
         tr.innerHTML = `<td class="p-3 font-bold text-slate-700">${s.Nota}</td><td class="p-3">${s.Pelanggan}<br><span class="text-xs text-gray-400">${s.TipeHP}</span></td><td class="p-3">${s.Kerusakan}</td><td class="p-3 font-semibold">Rp ${(s.BiayaServis || 0).toLocaleString()}</td><td class="p-3">${s.Teknisi}</td><td class="p-3"><span class="px-2 py-1 text-xs rounded font-medium ${badgeClass}">${s.Status || 'Pending'}</span></td><td class="p-3">${fotoHtml}</td><td class="p-3"><button onclick="bukaModalEditStatus('${s.Nota}', '${s.Status || 'Pending'}')" class="bg-cyan-100 text-cyan-700 hover:bg-cyan-200 px-2 py-1 rounded text-xs font-bold">Ubah</button></td>`;
         tbody.appendChild(tr);
       });
+      setNotaOtomatis();
     }
 
     function bukaModalEditStatus(nota, statusLama) {
