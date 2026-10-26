@@ -320,7 +320,7 @@
         <div class="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
           <div class="flex items-start justify-between gap-3"><div><h3 class="font-bold text-slate-800"><i class="fa-solid fa-triangle-exclamation mr-2 text-amber-500"></i>Pantauan Stok</h3><p class="mt-1 text-xs text-slate-500">Barang dengan stok 3 atau kurang.</p></div><span class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600"><i class="fa-solid fa-box-open"></i></span></div>
           <div class="mt-4 flex items-end gap-2"><span id="statStokMenipis" class="text-3xl font-bold text-slate-800">0</span><span class="pb-1 text-sm text-slate-500">jenis barang perlu dicek</span></div>
-          <button onclick="switchTab('stok')" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-700 hover:text-cyan-800">Periksa stok <i class="fa-solid fa-arrow-right text-xs"></i></button>
+          <button onclick="bukaStokMenipis()" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-cyan-700 hover:text-cyan-800">Periksa stok <i class="fa-solid fa-arrow-right text-xs"></i></button>
         </div>
         <div class="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm">
           <div class="flex items-start justify-between gap-3"><div><h3 class="font-bold text-slate-800"><i class="fa-solid fa-clock-rotate-left mr-2 text-cyan-600"></i>Aktivitas Terbaru</h3><p class="mt-1 text-xs text-slate-500">Transaksi dan servis terakhir yang tercatat.</p></div><span class="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-50 text-cyan-700"><i class="fa-solid fa-list-check"></i></span></div>
@@ -424,6 +424,10 @@
 
     <!-- TAB 3: STOK BARANG -->
     <section id="tab-stok" class="tab-content hidden space-y-4 sm:mt-0 mt-3">
+      <div id="stokFilterBanner" class="hidden mx-3 sm:mx-0 rounded-xl border border-amber-200 bg-amber-50 p-3 sm:p-4 flex items-center justify-between gap-3">
+        <div class="min-w-0"><p class="font-bold text-amber-900"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Filter stok menipis aktif</p><p class="text-xs text-amber-800 mt-1">Menampilkan barang dengan stok 3 unit atau kurang.</p></div>
+        <button type="button" onclick="tampilkanSemuaStok()" class="shrink-0 rounded-lg border border-amber-300 bg-white px-3 py-2 text-xs font-bold text-amber-800 hover:bg-amber-100">Tampilkan Semua</button>
+      </div>
       <div class="bg-white p-4 sm:p-6 sm:rounded-xl shadow-sm border-y sm:border border-gray-200">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
           <h2 class="font-bold text-lg text-slate-800"><i class="fa-solid fa-boxes-stacked mr-2 text-cyan-600"></i>Stok & Sparepart</h2>
@@ -986,12 +990,30 @@
       });
     }
 
+    let hanyaStokMenipis = false;
+
+    function bukaStokMenipis() {
+      hanyaStokMenipis = true;
+      const cari = document.getElementById("stokCari"); if (cari) cari.value = "";
+      switchTab("stok");
+      renderStok();
+    }
+
+    function tampilkanSemuaStok() {
+      hanyaStokMenipis = false;
+      const cari = document.getElementById("stokCari"); if (cari) cari.value = "";
+      renderStok();
+    }
+
     function renderStok() {
+      const banner = document.getElementById("stokFilterBanner");
+      if (banner) banner.classList.toggle("hidden", !hanyaStokMenipis);
       let keywordEl = document.getElementById("stokCari"); let keyword = keywordEl ? keywordEl.value.toLowerCase().trim() : "";
       let tbody = document.getElementById("tabelStokBody"); tbody.innerHTML = "";
       let terms = keyword.split(/\s+/).filter(t => t.trim() !== "");
 
       let processItem = (item, isAksesoris) => {
+        if (hanyaStokMenipis && Number(item.Stok || 0) > 3) return;
         let textInfo = [ item.ID || item.IDPart || "", item.NamaBarang || item.NamaPart || "", item.Kategori || item.Brand || "", item.Persamaan || "" ].join(" ").toLowerCase();
         if (keyword !== "" && !terms.every(t => textInfo.includes(t))) return;
 
@@ -1006,6 +1028,11 @@
         tbody.appendChild(tr);
       };
       (globalData.aksesoris || []).forEach(item => processItem(item, true)); (globalData.sparepart || []).forEach(item => processItem(item, false));
+      if (!tbody.children.length) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td colspan="9" class="p-6 text-center text-sm text-slate-500">${hanyaStokMenipis ? "Tidak ada barang dengan stok 3 unit atau kurang." : "Barang tidak ditemukan."}</td>`;
+        tbody.appendChild(tr);
+      }
     }
 
     function bukaModalEdit(id, jenis, modalLama, jualLama) { document.getElementById("editId").value = id; document.getElementById("editJenis").value = jenis; document.getElementById("editModal").value = modalLama; document.getElementById("editJual").value = jualLama; document.getElementById("modalEditHarga").classList.remove("hidden"); }
