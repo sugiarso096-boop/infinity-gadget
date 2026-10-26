@@ -1057,18 +1057,50 @@
     
     function updateKeranjang(index, field, value) { if(field === 'qty') { keranjang[index].qty = Number(value); } else if (field === 'harga') { keranjang[index].harga = Number(value); } renderKeranjang(); }
     
-    async function prosesCheckout() { 
-      if (keranjang.length === 0) { alert("Keranjang kosong!"); return; } 
+    async function prosesCheckout() {
+      if (keranjang.length === 0) { alert("Keranjang kosong!"); return; }
+      if (keranjang.some(k => !Number.isInteger(Number(k.qty)) || Number(k.qty) <= 0)) {
+        alert("Jumlah barang harus bilangan bulat lebih dari 0."); return;
+      }
       const metodeEl = document.getElementById("posMetodeBayar");
       const metodeBayar = metodeEl ? metodeEl.value : "Tunai";
-      showLoading(); let tgl = new Date().toLocaleDateString('id-ID'); let transaksiArray = [];
-      let listAksesoris = keranjang.filter(k => k.jenis === 'Aksesoris');
-      if(listAksesoris.length > 0) { let masuk = listAksesoris.reduce((a, c) => a + (c.harga * c.qty), 0); let keluar = listAksesoris.reduce((a, c) => a + (c.modal * c.qty), 0); let rincian = listAksesoris.map(k => `${k.nama} (${k.qty}x)`).join(", "); transaksiArray.push({ Tanggal: tgl, Jenis: "Penjualan Aksesoris", Keterangan: "POS: " + rincian + " | Bayar: " + metodeBayar, Masuk: masuk, Keluar: keluar }); }
-      let listSparepart = keranjang.filter(k => k.jenis === 'Sparepart');
-      if(listSparepart.length > 0) { let masuk = listSparepart.reduce((a, c) => a + (c.harga * c.qty), 0); let keluar = listSparepart.reduce((a, c) => a + (c.modal * c.qty), 0); let rincian = listSparepart.map(k => `${k.nama} (${k.qty}x)`).join(", "); transaksiArray.push({ Tanggal: tgl, Jenis: "Penjualan Sparepart", Keterangan: "POS: " + rincian + " | Bayar: " + metodeBayar, Masuk: masuk, Keluar: keluar }); }
-
-      let res = await fetchAPI({ action: "saveData", sheetName: "Keuangan", data: transaksiArray });
-      hideLoading(); if(res.status === "success") { alert("Transaksi Berhasil Disimpan!"); keranjang = []; renderKeranjang(); loadAppData(); } else { alert("Gagal: " + res.message); }
+      const tombolCheckout = document.querySelector('button[onclick="prosesCheckout()"]');
+      if (tombolCheckout && tombolCheckout.disabled) return;
+      if (tombolCheckout) { tombolCheckout.disabled = true; tombolCheckout.dataset.labelAsli = tombolCheckout.innerText; tombolCheckout.innerText = "Menyimpan..."; }
+      showLoading();
+      try {
+        const tgl = new Date().toLocaleDateString('id-ID');
+        const transaksiArray = [];
+        const listAksesoris = keranjang.filter(k => k.jenis === 'Aksesoris');
+        if (listAksesoris.length > 0) {
+          const masuk = listAksesoris.reduce((a, c) => a + (Number(c.harga) * Number(c.qty)), 0);
+          const keluar = listAksesoris.reduce((a, c) => a + (Number(c.modal) * Number(c.qty)), 0);
+          const rincian = listAksesoris.map(k => `${k.nama} (${k.qty}x)`).join(", ");
+          transaksiArray.push({ Tanggal: tgl, Jenis: "Penjualan Aksesoris", Keterangan: "POS: " + rincian + " | Bayar: " + metodeBayar, Masuk: masuk, Keluar: keluar });
+        }
+        const listSparepart = keranjang.filter(k => k.jenis === 'Sparepart');
+        if (listSparepart.length > 0) {
+          const masuk = listSparepart.reduce((a, c) => a + (Number(c.harga) * Number(c.qty)), 0);
+          const keluar = listSparepart.reduce((a, c) => a + (Number(c.modal) * Number(c.qty)), 0);
+          const rincian = listSparepart.map(k => `${k.nama} (${k.qty}x)`).join(", ");
+          transaksiArray.push({ Tanggal: tgl, Jenis: "Penjualan Sparepart", Keterangan: "POS: " + rincian + " | Bayar: " + metodeBayar, Masuk: masuk, Keluar: keluar });
+        }
+        const checkoutId = 'POS-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+        const res = await fetchAPI({ action: "prosesCheckoutPOS", cart: keranjang.map(k => ({id:String(k.id), nama:k.nama, jenis:k.jenis, qty:Number(k.qty)})), keuangan: transaksiArray, checkoutId: checkoutId });
+        if (res.status === "success") {
+          alert(res.result || "Transaksi berhasil disimpan dan stok diperbarui!");
+          keranjang = [];
+          renderKeranjang();
+          loadAppData();
+        } else {
+          alert("Transaksi gagal: " + (res.message || "Tidak diketahui") + "\n\nStok tidak dipotong jika validasi gagal.");
+        }
+      } catch (err) {
+        alert("Transaksi gagal: " + err.message);
+      } finally {
+        hideLoading();
+        if (tombolCheckout) { tombolCheckout.disabled = false; tombolCheckout.innerText = tombolCheckout.dataset.labelAsli || "Proses Transaksi"; }
+      }
     }
 
     async function prosesPPOB(e) {
