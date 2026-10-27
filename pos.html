@@ -681,6 +681,20 @@
     </div>
   </div>
 
+  <!-- MODAL EDIT PERSAMAAN LCD -->
+  <div id="modalEditPersamaan" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full p-5 shadow-xl space-y-4">
+      <div class="flex justify-between items-center border-b pb-3"><div><h3 class="font-bold text-lg text-slate-800">Edit Persamaan LCD</h3><p id="editPersamaanNama" class="text-xs text-slate-500 mt-1"></p></div><button type="button" onclick="tutupModalPersamaan()" class="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button></div>
+      <form onsubmit="simpanPersamaan(event)" class="space-y-3">
+        <input type="hidden" id="persamaanEditId">
+        <label class="block text-sm font-medium text-gray-700">Persamaan tipe HP</label>
+        <textarea id="persamaanEditIsi" rows="4" maxlength="1000" class="w-full border border-slate-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-cyan-500 outline-none" placeholder="Contoh: Y20 / Y22 / Y12 / 21S" required></textarea>
+        <p class="text-xs text-slate-500">Pisahkan tipe dengan tanda garis miring (/). Kamu bisa mengubah atau menambahkan persamaan baru kapan saja.</p>
+        <div class="flex justify-end gap-2 pt-2"><button type="button" onclick="tutupModalPersamaan()" class="px-4 py-2 border rounded-lg text-sm">Batal</button><button type="submit" class="px-4 py-2 bg-cyan-600 text-white rounded-lg text-sm font-semibold hover:bg-cyan-700"><i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Persamaan</button></div>
+      </form>
+    </div>
+  </div>
+
   <!-- MODAL UBAH STATUS SERVIS -->
   <div id="modalEditStatus" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl max-w-sm w-full p-6 shadow-xl space-y-4">
@@ -1120,10 +1134,40 @@
         let persamaan = isAksesoris ? `<span class="text-xs text-gray-400">-</span>` : `<span class="text-xs text-cyan-700 font-medium">Persamaan: ${item.Persamaan || '-'}</span>`;
         let idItem = item.ID || item.IDPart || '-'; let fotoHtml = buatFotoHtml(item.FotoUrl, nama);
 
-        tr.innerHTML = `<td class="p-3 font-medium">${idItem}</td><td class="p-3 font-semibold text-slate-800">${nama} ${badge}</td><td class="p-3">${kategori}</td><td class="p-3">${persamaan}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'} font-semibold text-rose-600">Rp ${(item.HargaModal || 0).toLocaleString()}</td><td class="p-3 font-semibold text-emerald-600">Rp ${(item.HargaJual || 0).toLocaleString()}</td><td class="p-3">${item.Stok || 0}</td><td class="p-3">${fotoHtml}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'}"><button onclick="bukaModalEdit('${idItem}', '${isAksesoris ? 'Aksesoris' : 'Sparepart'}', ${item.HargaModal || 0}, ${item.HargaJual || 0})" class="bg-amber-100 text-amber-700 hover:bg-amber-200 px-2 py-1 rounded text-xs font-bold"><i class="fa-solid fa-pen"></i> Edit</button></td>`;
+        const aksiHarga = `<button onclick="bukaModalEdit('${idItem}', '${isAksesoris ? 'Aksesoris' : 'Sparepart'}', ${item.HargaModal || 0}, ${item.HargaJual || 0})" class="bg-amber-100 text-amber-700 hover:bg-amber-200 px-2 py-1 rounded text-xs font-bold"><i class="fa-solid fa-pen"></i> Harga</button>`;
+        const aksiPersamaan = !isAksesoris ? `<button onclick="bukaModalPersamaan('${encodeURIComponent(String(idItem))}')" class="bg-cyan-100 text-cyan-700 hover:bg-cyan-200 px-2 py-1 rounded text-xs font-bold mt-1"><i class="fa-solid fa-link"></i> Persamaan</button>` : '';
+        tr.innerHTML = `<td class="p-3 font-medium">${idItem}</td><td class="p-3 font-semibold text-slate-800">${nama} ${badge}</td><td class="p-3">${kategori}</td><td class="p-3">${persamaan}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'} font-semibold text-rose-600">Rp ${(item.HargaModal || 0).toLocaleString()}</td><td class="p-3 font-semibold text-emerald-600">Rp ${(item.HargaJual || 0).toLocaleString()}</td><td class="p-3">${item.Stok || 0}</td><td class="p-3">${fotoHtml}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'}"><div class="flex flex-col items-start gap-1">${aksiHarga}${aksiPersamaan}</div></td>`;
         tbody.appendChild(tr);
       };
       (globalData.aksesoris || []).forEach(item => processItem(item, true)); (globalData.sparepart || []).forEach(item => processItem(item, false));
+    }
+
+    function bukaModalPersamaan(encodedId) {
+      const id = decodeURIComponent(encodedId);
+      const item = (globalData.sparepart || []).find(x => String(x.ID || x.IDPart || '') === String(id));
+      if (!item) { alert('Barang LCD tidak ditemukan. Muat ulang data lalu coba lagi.'); return; }
+      document.getElementById('persamaanEditId').value = id;
+      document.getElementById('editPersamaanNama').textContent = (item.NamaBarang || item.NamaPart || id) + ' • ' + id;
+      document.getElementById('persamaanEditIsi').value = item.Persamaan || '';
+      document.getElementById('modalEditPersamaan').classList.remove('hidden');
+    }
+    function tutupModalPersamaan() { document.getElementById('modalEditPersamaan').classList.add('hidden'); }
+    async function simpanPersamaan(e) {
+      e.preventDefault();
+      const id = document.getElementById('persamaanEditId').value;
+      const persamaan = document.getElementById('persamaanEditIsi').value.trim();
+      if (!id || !persamaan) { alert('Kode barang dan persamaan wajib diisi.'); return; }
+      showLoading();
+      const res = await fetchAPI({ action: 'updatePersamaanBarang', data: { id: id, jenis: 'Sparepart', persamaan: persamaan } });
+      hideLoading();
+      if (res && res.status === 'success' && res.result === 'Sukses') {
+        const item = (globalData.sparepart || []).find(x => String(x.ID || x.IDPart || '') === String(id));
+        if (item) item.Persamaan = persamaan;
+        tutupModalPersamaan(); renderStok(); renderPosList();
+        alert('Persamaan LCD berhasil disimpan.');
+      } else {
+        alert((res && (res.message || res.result)) || 'Persamaan gagal disimpan. Periksa koneksi dan deployment Apps Script.');
+      }
     }
 
     function bukaModalEdit(id, jenis, modalLama, jualLama) { document.getElementById("editId").value = id; document.getElementById("editJenis").value = jenis; document.getElementById("editModal").value = modalLama; document.getElementById("editJual").value = jualLama; document.getElementById("modalEditHarga").classList.remove("hidden"); }
