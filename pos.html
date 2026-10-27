@@ -252,6 +252,7 @@
         <button onclick="switchTab('gaji')" class="admin-only tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap hidden"><i class="fa-solid fa-money-bill-wave"></i><span>Gaji & Kasbon</span></button>
         <button onclick="switchTab('keuangan')" class="admin-only tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap hidden"><i class="fa-solid fa-wallet"></i><span>Keuangan</span></button>
         <button onclick="switchTab('cek-kas')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-money-bill-transfer"></i><span>Cek Kas</span></button>
+        <button onclick="switchTab('hutang')" class="tab-btn px-4 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap"><i class="fa-solid fa-hand-holding-dollar"></i><span>Hutang</span></button>
       </div>
     </nav>
   </div>
@@ -270,6 +271,10 @@
   <main class="max-w-7xl mx-auto w-full pb-20 md:pb-10 sm:p-4 md:p-6 box-border">
     <!-- TAB 1: DASHBOARD -->
     <section id="tab-dashboard" class="tab-content space-y-4 sm:space-y-6 px-3 pt-4 sm:px-0 sm:pt-0">
+      <button onclick="switchTab('hutang')" class="w-full text-left rounded-xl border border-amber-200 bg-amber-50 p-4 hover:bg-amber-100 transition">
+        <div class="flex items-center justify-between gap-3"><div><p class="text-xs font-semibold text-amber-800"><i class="fa-solid fa-hand-holding-dollar mr-1"></i> Hutang Pelanggan</p><p id="dashboardTotalHutang" class="mt-1 text-xl font-extrabold text-amber-900">Rp 0</p><p id="dashboardHutangCount" class="mt-1 text-xs text-amber-700">0 hutang belum lunas</p></div><span class="rounded-lg bg-white p-3 text-amber-700"><i class="fa-solid fa-arrow-right"></i></span></div>
+      </button>
+
       <div class="dashboard-welcome relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#071b3b] via-[#075985] to-[#312e81] p-5 sm:p-6 text-white shadow-lg">
         <div class="absolute -right-8 -top-12 h-44 w-44 rounded-full border-[22px] border-cyan-300/10"></div><div class="absolute right-24 -bottom-16 h-36 w-36 rounded-full bg-fuchsia-400/20 blur-3xl"></div>
         <div class="relative grid grid-cols-1 md:grid-cols-[1.15fr_.85fr] items-center gap-5">
@@ -508,6 +513,43 @@
       </div>
     </section>
 
+    <!-- TAB HUTANG PELANGGAN -->
+    <section id="tab-hutang" class="tab-content hidden space-y-4 px-3 pt-4 sm:px-0 sm:pt-0">
+      <div class="rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3"><div><h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-hand-holding-dollar mr-2 text-amber-600"></i>Hutang Pelanggan</h2><p class="mt-1 text-xs text-slate-500">Catat hutang, pembayaran, dan sisa tagihan.</p></div><button onclick="loadAppData()" class="rounded-lg bg-cyan-50 px-3 py-2 text-xs font-bold text-cyan-700"><i class="fa-solid fa-rotate mr-1"></i>Muat ulang</button></div>
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="rounded-xl bg-amber-50 border border-amber-100 p-3"><p class="text-xs text-amber-700">Total sisa hutang</p><strong id="hutangTotalSisa" class="block mt-1 text-xl text-amber-900">Rp 0</strong></div>
+          <div class="rounded-xl bg-cyan-50 border border-cyan-100 p-3"><p class="text-xs text-cyan-700">Belum lunas</p><strong id="hutangBelumLunas" class="block mt-1 text-xl text-cyan-900">0 pelanggan</strong></div>
+          <div class="rounded-xl bg-rose-50 border border-rose-100 p-3"><p class="text-xs text-rose-700">Jatuh tempo lewat</p><strong id="hutangTerlambat" class="block mt-1 text-xl text-rose-900">0 hutang</strong></div>
+        </div>
+        <form onsubmit="simpanHutang(event)" class="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-3 sm:p-4">
+          <h3 class="font-bold text-sm text-slate-800 mb-3">Tambah Hutang Baru</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div><label class="block text-xs font-semibold mb-1">Nama pelanggan *</label><input id="hutangNama" required maxlength="120" class="w-full rounded-lg border p-2.5 text-sm" placeholder="Nama pelanggan"></div>
+            <div><label class="block text-xs font-semibold mb-1">Nomor HP</label><input id="hutangHP" inputmode="tel" class="w-full rounded-lg border p-2.5 text-sm" placeholder="08xxxxxxxxxx"></div>
+            <div><label class="block text-xs font-semibold mb-1">Tanggal hutang *</label><input id="hutangTanggal" type="date" required class="w-full rounded-lg border p-2.5 text-sm"></div>
+            <div><label class="block text-xs font-semibold mb-1">Jatuh tempo</label><input id="hutangTempo" type="date" class="w-full rounded-lg border p-2.5 text-sm"></div>
+            <div><label class="block text-xs font-semibold mb-1">Jumlah hutang (Rp) *</label><input id="hutangJumlah" type="number" min="1" step="1" required class="w-full rounded-lg border p-2.5 text-sm" placeholder="Contoh: 250000"></div>
+            <div><label class="block text-xs font-semibold mb-1">Keterangan</label><input id="hutangKet" maxlength="250" class="w-full rounded-lg border p-2.5 text-sm" placeholder="Barang / transaksi"></div>
+          </div>
+          <button type="submit" class="mt-3 w-full sm:w-auto rounded-lg bg-cyan-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-cyan-700"><i class="fa-solid fa-plus mr-1"></i>Simpan Hutang</button>
+        </form>
+        <form onsubmit="simpanPembayaranHutang(event)" class="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-3 sm:p-4">
+          <h3 class="font-bold text-sm text-emerald-900 mb-3">Catat Pembayaran</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div><label class="block text-xs font-semibold mb-1">Pilih hutang *</label><select id="bayarHutangID" required class="w-full rounded-lg border p-2.5 text-sm bg-white"><option value="">Pilih pelanggan</option></select></div>
+            <div><label class="block text-xs font-semibold mb-1">Tanggal bayar *</label><input id="bayarHutangTanggal" type="date" required class="w-full rounded-lg border p-2.5 text-sm"></div>
+            <div><label class="block text-xs font-semibold mb-1">Jumlah dibayar (Rp) *</label><input id="bayarHutangJumlah" type="number" min="1" step="1" required class="w-full rounded-lg border p-2.5 text-sm" placeholder="Jumlah pembayaran"></div>
+            <div><label class="block text-xs font-semibold mb-1">Catatan</label><input id="bayarHutangKet" maxlength="250" class="w-full rounded-lg border p-2.5 text-sm" placeholder="Tunai / transfer / catatan"></div>
+          </div>
+          <button type="submit" class="mt-3 w-full sm:w-auto rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-700"><i class="fa-solid fa-check mr-1"></i>Simpan Pembayaran</button>
+        </form>
+        <div class="mt-5 flex flex-col sm:flex-row gap-3"><input id="hutangCari" oninput="renderHutang()" class="w-full rounded-lg border p-2.5 text-sm" placeholder="Cari nama, HP, atau keterangan..."><select id="hutangFilter" onchange="renderHutang()" class="rounded-lg border p-2.5 text-sm bg-white"><option value="semua">Semua status</option><option value="belum">Belum lunas</option><option value="lunas">Lunas</option><option value="terlambat">Jatuh tempo lewat</option></select></div>
+        <div class="mt-3 overflow-x-auto"><table class="w-full min-w-[800px] text-left text-sm text-slate-600"><thead class="bg-slate-100 text-xs uppercase text-slate-700"><tr><th class="p-3">Pelanggan</th><th class="p-3">Tanggal</th><th class="p-3">Total</th><th class="p-3">Dibayar</th><th class="p-3">Sisa</th><th class="p-3">Jatuh Tempo</th><th class="p-3">Status</th></tr></thead><tbody id="tabelHutangBody"><tr><td colspan="7" class="p-4 text-center text-slate-400">Belum ada data hutang.</td></tr></tbody></table></div>
+        <div class="mt-4 rounded-xl border border-slate-200 p-3"><h3 class="font-bold text-sm mb-2">Riwayat Pembayaran</h3><div class="overflow-x-auto"><table class="w-full min-w-[600px] text-left text-sm"><thead class="bg-slate-100 text-xs uppercase"><tr><th class="p-2">Tanggal</th><th class="p-2">Pelanggan</th><th class="p-2">Jumlah</th><th class="p-2">Catatan</th></tr></thead><tbody id="riwayatHutangBody"><tr><td colspan="4" class="p-3 text-center text-slate-400">Belum ada pembayaran.</td></tr></tbody></table></div></div>
+      </div>
+    </section>
+
     <!-- TAB 5: GAJI & KASBON -->
     <section id="tab-gaji" class="tab-content hidden space-y-4 sm:mt-0 mt-3">
       <div class="bg-white p-4 sm:p-6 sm:rounded-xl shadow-sm border-y sm:border border-gray-200">
@@ -734,7 +776,7 @@
               let data = JSON.parse(text);
               if (data.error) throw new Error(data.error);
               globalData = data;
-              renderDashboard(); renderStok(); renderServis(); renderGaransi(); renderGajiKasbon(); renderKeuangan(); renderPosList(); hitungCekKas();
+              renderDashboard(); renderStok(); renderServis(); renderGaransi(); renderGajiKasbon(); renderKeuangan(); renderPosList(); hitungCekKas(); renderHutang();
               hideLoading();
             } catch(e) {
               alert("Gagal membaca database! Pastikan Bos sudah menekan tombol 'Deployment Baru' (Siapa Saja) di Google Script.\n\nPesan sistem: " + e.message);
@@ -844,6 +886,11 @@
       let activeDesktop = document.querySelector(`.tab-btn[onclick="switchTab('${tabId}')"]`); if(activeDesktop) { activeDesktop.classList.remove('text-gray-600', 'hover:bg-gray-100'); activeDesktop.classList.add('text-cyan-700', 'bg-cyan-50'); }
       let activeMobile = document.querySelector(`.tab-btn-mobile[onclick="switchTab('${tabId}')"]`); if(activeMobile) { activeMobile.classList.remove('text-gray-400'); activeMobile.classList.add('text-cyan-600'); }
       if (tabId === "garansi") renderGaransi();
+      if (tabId === "hutang") {
+        renderHutang();
+        if (!document.getElementById("hutangTanggal").value) document.getElementById("hutangTanggal").value=tanggalInputHariIni();
+        if (!document.getElementById("bayarHutangTanggal").value) document.getElementById("bayarHutangTanggal").value=tanggalInputHariIni();
+      }
       if (tabId === "stok") {
         renderStok();
         const label = document.getElementById('labelStokMinim');
@@ -1425,6 +1472,109 @@
         tr.innerHTML = `<td class="p-3 font-bold">${s.Nota || "-"}</td><td class="p-3">${s.Pelanggan || "-"}<br><span class="text-xs text-slate-400">${s.TipeHP || "-"}</span></td><td class="p-3">${s._jenis}</td><td class="p-3">${s._mulai || "-"}</td><td class="p-3">${s.TanggalAkhirGaransi || "-"}</td><td class="p-3"><span class="rounded-full px-2 py-1 text-xs font-semibold ${cls}">${statusLabel}</span></td>`;
         tbody.appendChild(tr);
       });
+    }
+
+    function rupiahHutang(value) { return "Rp " + Number(value || 0).toLocaleString("id-ID"); }
+    function tanggalInputHariIni() { const d = new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+    function tanggalHutangTampil(value) {
+      if (!value) return "-";
+      const s = String(value);
+      let m=s.match(/^(\\d{4})-(\\d{2})-(\\d{2})$/);
+      if(m) return m[3]+"/"+m[2]+"/"+m[1];
+      return s;
+    }
+    function parseTanggalHutang(value) {
+      if(!value) return null;
+      let s=String(value), m=s.match(/^(\\d{4})-(\\d{2})-(\\d{2})$/);
+      if(m) return new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));
+      m=s.match(/^(\\d{1,2})[\\/-](\\d{1,2})[\\/-](\\d{4})$/);
+      if(m) return new Date(Number(m[3]),Number(m[2])-1,Number(m[1]));
+      return null;
+    }
+    function normalisasiTanggalHutang(value) {
+      if(!value) return "";
+      const d=parseTanggalHutang(value);
+      return d ? d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0") : String(value);
+    }
+    function ringkasanHutang() {
+      const daftar=globalData.hutang || [], pembayaran=globalData.pembayaranHutang || [];
+      return daftar.map(h => {
+        const paid=pembayaran.filter(p=>String(p.HutangID)===String(h.HutangID)).reduce((sum,p)=>sum+Number(p.JumlahBayar||0),0);
+        const total=Number(h.JumlahHutang||0), sisa=Math.max(0,total-paid);
+        const tempo=parseTanggalHutang(h.JatuhTempo), today=new Date(); today.setHours(0,0,0,0);
+        const telat=sisa>0 && tempo && tempo<today;
+        return {...h, _dibayar:paid, _sisa:sisa, _status:sisa<=0?"lunas":telat?"terlambat":"belum"};
+      });
+    }
+    function renderHutang() {
+      const rows=ringkasanHutang(), tbody=document.getElementById("tabelHutangBody");
+      if(!tbody) return;
+      const total=rows.reduce((s,h)=>s+h._sisa,0), belum=rows.filter(h=>h._sisa>0), telat=rows.filter(h=>h._status==="terlambat");
+      document.getElementById("hutangTotalSisa").textContent=rupiahHutang(total);
+      document.getElementById("hutangBelumLunas").textContent=belum.length+" pelanggan";
+      document.getElementById("hutangTerlambat").textContent=telat.length+" hutang";
+      document.getElementById("dashboardTotalHutang").textContent=rupiahHutang(total);
+      document.getElementById("dashboardHutangCount").textContent=belum.length+" hutang belum lunas";
+      const cari=(document.getElementById("hutangCari")?.value||"").toLowerCase().trim(), filter=document.getElementById("hutangFilter")?.value||"semua";
+      const filtered=rows.filter(h=>{
+        const text=[h.NamaPelanggan,h.NomorHP,h.Keterangan].join(" ").toLowerCase();
+        return (!cari||text.includes(cari))&&(filter==="semua"||(filter==="belum"&&h._sisa>0)||(filter==="lunas"&&h._sisa<=0)||(filter==="terlambat"&&h._status==="terlambat"));
+      }).reverse();
+      tbody.innerHTML="";
+      if(!filtered.length) tbody.innerHTML='<tr><td colspan="7" class="p-4 text-center text-slate-400">Belum ada data hutang yang cocok.</td></tr>';
+      filtered.forEach(h=>{
+        const cls=h._status==="lunas"?"bg-emerald-100 text-emerald-700":h._status==="terlambat"?"bg-rose-100 text-rose-700":"bg-amber-100 text-amber-800";
+        const label=h._status==="lunas"?"Lunas":h._status==="terlambat"?"Terlambat":"Belum lunas";
+        const tr=document.createElement("tr"); tr.className="border-b";
+        tr.innerHTML=`<td class="p-3 font-semibold">${h.NamaPelanggan||"-"}<br><span class="text-xs text-slate-400">${h.NomorHP||""}<br>${h.Keterangan||""}</span></td><td class="p-3">${tanggalHutangTampil(h.TanggalHutang)}</td><td class="p-3">${rupiahHutang(h.JumlahHutang)}</td><td class="p-3">${rupiahHutang(h._dibayar)}</td><td class="p-3 font-bold">${rupiahHutang(h._sisa)}</td><td class="p-3">${tanggalHutangTampil(h.JatuhTempo)}</td><td class="p-3"><span class="rounded-full px-2 py-1 text-xs font-semibold ${cls}">${label}</span></td>`;
+        tbody.appendChild(tr);
+      });
+      const sel=document.getElementById("bayarHutangID"), selected=sel.value;
+      sel.innerHTML='<option value="">Pilih pelanggan</option>';
+      rows.filter(h=>h._sisa>0).forEach(h=>{const o=document.createElement("option");o.value=h.HutangID;o.textContent=h.NamaPelanggan+" — sisa "+rupiahHutang(h._sisa);sel.appendChild(o);});
+      if(rows.some(h=>String(h.HutangID)===String(selected)&&h._sisa>0)) sel.value=selected;
+      const payBody=document.getElementById("riwayatHutangBody"); payBody.innerHTML="";
+      const pays=(globalData.pembayaranHutang||[]).slice().reverse();
+      if(!pays.length) payBody.innerHTML='<tr><td colspan="4" class="p-3 text-center text-slate-400">Belum ada pembayaran.</td></tr>';
+      pays.forEach(p=>{const h=(globalData.hutang||[]).find(x=>String(x.HutangID)===String(p.HutangID));const tr=document.createElement("tr");tr.className="border-b";tr.innerHTML=`<td class="p-2">${tanggalHutangTampil(p.TanggalBayar)}</td><td class="p-2">${h?h.NamaPelanggan:"(data hutang tidak ditemukan)"}</td><td class="p-2 font-semibold">${rupiahHutang(p.JumlahBayar)}</td><td class="p-2">${p.Catatan||"-"}</td>`;payBody.appendChild(tr);});
+    }
+    async function simpanHutang(e) {
+      e.preventDefault();
+      const jumlah=Number(document.getElementById("hutangJumlah").value);
+      if(!(jumlah>0)){alert("Jumlah hutang harus lebih dari 0.");return;}
+      const data={NamaPelanggan:document.getElementById("hutangNama").value.trim(),NomorHP:document.getElementById("hutangHP").value.trim(),TanggalHutang:document.getElementById("hutangTanggal").value,JatuhTempo:document.getElementById("hutangTempo").value,JumlahHutang:jumlah,Keterangan:document.getElementById("hutangKet").value.trim()};
+      showLoading();
+      try {
+        const res=await fetchAPI({action:"createHutangPelanggan",data});
+        if(res.status!=="success") throw new Error(res.message||"Gagal menyimpan hutang");
+        document.querySelector('#tab-hutang form').reset();
+        document.getElementById("hutangTanggal").value=tanggalInputHariIni();
+        await muatDataHutang();
+        alert("Hutang pelanggan berhasil disimpan.");
+      } catch(err){alert("Gagal menyimpan hutang: "+err.message);}
+      finally{hideLoading();}
+    }
+    async function simpanPembayaranHutang(e) {
+      e.preventDefault();
+      const id=document.getElementById("bayarHutangID").value, jumlah=Number(document.getElementById("bayarHutangJumlah").value);
+      const row=ringkasanHutang().find(h=>String(h.HutangID)===String(id));
+      if(!row){alert("Pilih hutang pelanggan terlebih dahulu.");return;}
+      if(!(jumlah>0)||jumlah>row._sisa){alert("Jumlah pembayaran harus lebih dari 0 dan tidak boleh melebihi sisa hutang ("+rupiahHutang(row._sisa)+").");return;}
+      const data={HutangID:id,TanggalBayar:document.getElementById("bayarHutangTanggal").value,JumlahBayar:jumlah,Catatan:document.getElementById("bayarHutangKet").value.trim()};
+      showLoading();
+      try {
+        const res=await fetchAPI({action:"bayarHutangPelanggan",data});
+        if(res.status!=="success") throw new Error(res.message||"Gagal menyimpan pembayaran");
+        document.getElementById("bayarHutangJumlah").value="";document.getElementById("bayarHutangKet").value="";
+        await muatDataHutang();
+        alert("Pembayaran berhasil dicatat dan sisa hutang diperbarui.");
+      } catch(err){alert("Gagal menyimpan pembayaran: "+err.message);}
+      finally{hideLoading();}
+    }
+    async function muatDataHutang() {
+      const res=await fetch(SCRIPT_URL+"?action=getDataAll");
+      if(!res.ok) throw new Error("Gagal mengambil data dari Apps Script");
+      globalData=await res.json(); renderHutang();
     }
 
     function bukaModalTambahTeknisi() { document.getElementById("modalTambahTeknisi").classList.remove("hidden"); }
