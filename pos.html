@@ -201,36 +201,41 @@
       #tab-dashboard p.mt-1.text-xs { font-size: .65rem !important; line-height: .9rem !important; }
     }
 
+  
 
-
-    /* Infinity Gadget theme refresh: charcoal + red + white. CSS only; app logic unchanged. */
-    body { background-color: #f5f6f8 !important; }
-    header.bg-slate-900 { background-color: #303038 !important; }
-    #quickSearchInput:focus { border-color: #ef4444 !important; --tw-ring-color: #ef4444 !important; }
-    #tab-dashboard .dashboard-welcome {
-      background: linear-gradient(112deg, #29292f 0%, #76151c 54%, #d71920 100%) !important;
-      border-color: rgba(239,68,68,.28) !important;
-      box-shadow: 0 14px 32px -24px rgba(185,28,28,.55) !important;
+    /* INFINITY GADGET THEME: merah, putih, charcoal — visual only */
+    :root { color-scheme: light; }
+    body { background:#f5f6f8 !important; }
+    header.bg-slate-900, header { background:#303038 !important; }
+    .dashboard-welcome {
+      background:linear-gradient(115deg,#292930 0%,#8f151b 58%,#d71920 100%) !important;
+      border-color:rgba(215,25,32,.24) !important;
+      box-shadow:0 12px 28px -20px rgba(120,15,20,.45) !important;
     }
-    #tab-dashboard .dashboard-welcome .text-cyan-200,
-    #tab-dashboard .dashboard-welcome .text-cyan-300,
-    #tab-dashboard .dashboard-welcome .text-cyan-100 { color: #ffd6d8 !important; }
-    #tab-dashboard .dashboard-card:after { background: linear-gradient(180deg,#f87171,#b91c1c) !important; }
-    #tab-dashboard .dashboard-shortcut:hover { border-color: #fca5a5 !important; box-shadow: 0 10px 20px -16px rgba(185,28,28,.45) !important; }
-    /* Red replaces cyan only where cyan is used as a UI accent. */
-    .text-cyan-300, .text-cyan-400, .text-cyan-500, .text-cyan-600, .text-cyan-700,
-    .hover\:text-cyan-300:hover { color: #d71920 !important; }
-    .bg-cyan-50 { background-color: #fff1f2 !important; }
-    .bg-cyan-100 { background-color: #ffe4e6 !important; }
-    .border-cyan-100, .border-cyan-200, .border-cyan-300, .border-cyan-400 { border-color: #fecaca !important; }
-    .hover\:bg-cyan-50:hover { background-color: #fff1f2 !important; }
-    .hover\:border-cyan-300:hover { border-color: #f87171 !important; }
-    .focus\:border-cyan-500:focus { border-color: #ef4444 !important; }
-    .focus\:ring-cyan-500:focus { --tw-ring-color: #ef4444 !important; }
-    .tab-btn-mobile.text-cyan-600 { color: #c81e25 !important; }
-    .tab-btn-mobile:focus-visible, .tab-btn:focus-visible { outline: 2px solid #ef4444; outline-offset: 2px; }
-    @media (max-width: 767px) {
-      nav.md\:hidden.fixed.bottom-0 { border-top-color: #e5e7eb !important; background: #fff !important; }
+    .tab-btn.text-cyan-700, .tab-btn.bg-cyan-50 {
+      color:#c91820 !important; background:#fff0f0 !important;
+    }
+    .tab-btn:hover { background:#fff1f1 !important; color:#b8171e !important; }
+    .dashboard-card:after { background:linear-gradient(180deg,#ef4444,#b91c1c) !important; }
+    .dashboard-shortcut:hover { border-color:#fca5a5 !important; box-shadow:0 10px 20px -16px rgba(185,28,28,.45) !important; }
+    .bg-cyan-600, .hover\:bg-cyan-700:hover { background-color:#c91d25 !important; }
+    .text-cyan-600, .text-cyan-700, .text-cyan-800 { color:#c91d25 !important; }
+    .bg-cyan-50 { background-color:#fff1f1 !important; }
+    .border-cyan-100, .border-cyan-200 { border-color:#fecaca !important; }
+    .from-cyan-600 { --tw-gradient-from:#c91d25 var(--tw-gradient-from-position) !important; }
+    .to-blue-600 { --tw-gradient-to:#8f151b var(--tw-gradient-to-position) !important; }
+    .border-l-cyan-500, .border-l-cyan-400 { border-left-color:#d71920 !important; }
+    .text-cyan-500 { color:#dc2626 !important; }
+    button.bg-cyan-600, a.bg-cyan-600 { background:#c91d25 !important; }
+    button.bg-cyan-600:hover, a.bg-cyan-600:hover { background:#a9161d !important; }
+    #tab-dashboard .dashboard-card { background:#fff !important; }
+    #tab-dashboard .dashboard-card > div:first-child span { background:#fff1f1 !important; color:#c91d25 !important; }
+    #tab-dashboard .dashboard-shortcut > span:first-child { background:#fff1f1 !important; color:#c91d25 !important; }
+    #tab-dashboard .dashboard-shortcut { background:#fff !important; }
+    @media (max-width:767px) {
+      header.bg-slate-900, header { background:#303038 !important; }
+      nav, .bottom-nav { background:#fff !important; }
+      .tab-btn.text-cyan-700, .tab-btn.bg-cyan-50 { background:#fff0f0 !important; color:#c91d25 !important; }
     }
 
   </style>
