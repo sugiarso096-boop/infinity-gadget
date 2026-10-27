@@ -429,15 +429,15 @@
       <div class="bg-white p-4 sm:p-6 sm:rounded-xl shadow-sm border-y sm:border border-gray-200">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
           <h2 class="font-bold text-lg text-slate-800"><i class="fa-solid fa-boxes-stacked mr-2 text-cyan-600"></i>Stok & Sparepart</h2>
-          <div class="flex w-full sm:w-auto gap-2">
-            <div class="relative w-full sm:w-64">
+          <div class="flex w-full sm:w-auto flex-wrap gap-2">
+            <div class="relative w-full sm:w-64 flex-none">
               <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
               <input type="text" id="stokCari" oninput="renderStok()" placeholder="Cari nama, ID..." class="w-full border border-gray-300 rounded-lg py-2 pl-9 pr-9 text-sm focus:ring-1 focus:ring-cyan-500 outline-none transition bg-gray-50">
               <button onclick="bukaScanner('stok')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-cyan-600 transition" title="Scan Barcode"><i class="fa-solid fa-camera text-sm"></i></button>
             </div>
-            <button onclick="bukaModalBarangMasuk()" class="bg-emerald-600 text-white text-sm px-3 py-2 rounded-lg font-medium hover:bg-emerald-700 flex-shrink-0"><i class="fa-solid fa-box-open mr-1"></i> Barang Masuk</button>
-            <button onclick="toggleStokMinim()" class="bg-amber-100 text-amber-800 border border-amber-200 text-sm px-3 py-2 rounded-lg font-semibold hover:bg-amber-200 flex-shrink-0"><i class="fa-solid fa-triangle-exclamation mr-1"></i> <span id="labelStokMinim">Stok Minim</span></button>
-            <button onclick="bukaModalTambahStok()" class="bg-cyan-600 text-white text-sm px-3 py-2 rounded-lg font-medium hover:bg-cyan-700 flex-shrink-0"><i class="fa-solid fa-plus mr-1"></i> Tambah</button>
+            <button onclick="bukaModalBarangMasuk()" class="bg-emerald-600 text-white text-xs sm:text-sm px-2 sm:px-3 py-2 rounded-lg font-medium hover:bg-emerald-700 flex-1 min-w-[135px] sm:flex-none text-center justify-center whitespace-nowrap"><i class="fa-solid fa-box-open mr-1"></i> Barang Masuk</button>
+            <button onclick="toggleStokMinim()" class="bg-amber-100 text-amber-800 border border-amber-200 text-xs sm:text-sm px-2 sm:px-3 py-2 rounded-lg font-semibold hover:bg-amber-200 flex-1 min-w-[125px] sm:flex-none text-center justify-center whitespace-nowrap"><i class="fa-solid fa-triangle-exclamation mr-1"></i> <span id="labelStokMinim">Stok Minim</span></button>
+            <button onclick="bukaModalTambahStok()" class="bg-cyan-600 text-white text-xs sm:text-sm px-2 sm:px-3 py-2 rounded-lg font-medium hover:bg-cyan-700 flex-1 min-w-[100px] sm:flex-none text-center justify-center whitespace-nowrap"><i class="fa-solid fa-plus mr-1"></i> Tambah</button>
           </div>
         </div>
         <div class="overflow-x-auto w-full">
