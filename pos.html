@@ -201,6 +201,38 @@
       #tab-dashboard p.mt-1.text-xs { font-size: .65rem !important; line-height: .9rem !important; }
     }
 
+
+
+    /* Infinity Gadget theme refresh: charcoal + red + white. CSS only; app logic unchanged. */
+    body { background-color: #f5f6f8 !important; }
+    header.bg-slate-900 { background-color: #303038 !important; }
+    #quickSearchInput:focus { border-color: #ef4444 !important; --tw-ring-color: #ef4444 !important; }
+    #tab-dashboard .dashboard-welcome {
+      background: linear-gradient(112deg, #29292f 0%, #76151c 54%, #d71920 100%) !important;
+      border-color: rgba(239,68,68,.28) !important;
+      box-shadow: 0 14px 32px -24px rgba(185,28,28,.55) !important;
+    }
+    #tab-dashboard .dashboard-welcome .text-cyan-200,
+    #tab-dashboard .dashboard-welcome .text-cyan-300,
+    #tab-dashboard .dashboard-welcome .text-cyan-100 { color: #ffd6d8 !important; }
+    #tab-dashboard .dashboard-card:after { background: linear-gradient(180deg,#f87171,#b91c1c) !important; }
+    #tab-dashboard .dashboard-shortcut:hover { border-color: #fca5a5 !important; box-shadow: 0 10px 20px -16px rgba(185,28,28,.45) !important; }
+    /* Red replaces cyan only where cyan is used as a UI accent. */
+    .text-cyan-300, .text-cyan-400, .text-cyan-500, .text-cyan-600, .text-cyan-700,
+    .hover\:text-cyan-300:hover { color: #d71920 !important; }
+    .bg-cyan-50 { background-color: #fff1f2 !important; }
+    .bg-cyan-100 { background-color: #ffe4e6 !important; }
+    .border-cyan-100, .border-cyan-200, .border-cyan-300, .border-cyan-400 { border-color: #fecaca !important; }
+    .hover\:bg-cyan-50:hover { background-color: #fff1f2 !important; }
+    .hover\:border-cyan-300:hover { border-color: #f87171 !important; }
+    .focus\:border-cyan-500:focus { border-color: #ef4444 !important; }
+    .focus\:ring-cyan-500:focus { --tw-ring-color: #ef4444 !important; }
+    .tab-btn-mobile.text-cyan-600 { color: #c81e25 !important; }
+    .tab-btn-mobile:focus-visible, .tab-btn:focus-visible { outline: 2px solid #ef4444; outline-offset: 2px; }
+    @media (max-width: 767px) {
+      nav.md\:hidden.fixed.bottom-0 { border-top-color: #e5e7eb !important; background: #fff !important; }
+    }
+
   </style>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 overflow-x-hidden">
