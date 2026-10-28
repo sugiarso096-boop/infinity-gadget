@@ -245,6 +245,36 @@
       .tab-btn.text-cyan-700, .tab-btn.bg-cyan-50 { background:#fff0f0 !important; color:#c91d25 !important; }
     }
 
+
+    /* Warna kartu laba sesuai konsep merah-putih-charcoal */
+    .kartu-laba-operasional {
+      background: linear-gradient(118deg, #991b1b 0%, #dc2626 58%, #ef1728 100%) !important;
+      border: 1px solid rgba(153, 27, 27, .22) !important;
+      color: #fff !important;
+    }
+    .kartu-laba-bersih {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background: linear-gradient(118deg, #29292f 0%, #4b252b 48%, #b91c1c 100%) !important;
+      border: 1px solid rgba(153, 27, 27, .28) !important;
+      color: #fff !important;
+    }
+    .kartu-laba-bersih::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      left: -5%; right: -5%; bottom: -34px;
+      height: 78px;
+      background: linear-gradient(100deg, #991b1b, #ef1728);
+      transform: skewY(-8deg);
+      border-radius: 55% 0 0 0;
+      opacity: .96;
+    }
+    .kartu-laba-bersih > * { position: relative; z-index: 1; }
+    .kartu-laba-bersih p { color: rgba(255,255,255,.92) !important; }
+    .kartu-laba-bersih h3 { color: #fff !important; }
+    .kartu-laba-bersih .fa-vault { color: #fff !important; }
   </style>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 overflow-x-hidden">
@@ -380,7 +410,7 @@
       </div>
 
       <div class="admin-only hidden grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-        <div class="bg-gradient-to-r from-emerald-500 to-teal-500 p-5 rounded-xl shadow-md text-white">
+        <div class="kartu-laba-operasional p-5 rounded-xl shadow-md text-white">
           <div class="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p class="text-sm font-medium opacity-90"><i class="fa-solid fa-wallet mr-2"></i>Laba Operasional (Gaji/Listrik)</p>
@@ -408,10 +438,10 @@
             </div>
           </div>
         </div>
-        <div class="kartu-laba-bersih bg-white p-5 rounded-xl shadow-md border border-red-100 text-slate-800">
-          <p class="text-sm font-semibold text-slate-600"><i class="fa-solid fa-vault mr-2 text-red-600"></i>Laba Bersih Toko (Uang Dingin)</p>
-          <h3 id="statLabaToko" class="text-2xl sm:text-3xl font-bold mt-2 text-red-700">Rp 0</h3>
-          <p class="text-xs mt-2 text-slate-500">*Dihitung dari Servis & Sparepart (Setelah bayar Teknisi)</p>
+        <div class="kartu-laba-bersih p-5 rounded-xl shadow-md text-white">
+          <p class="text-sm font-semibold text-white"><i class="fa-solid fa-vault mr-2"></i>Laba Bersih Toko (Uang Dingin)</p>
+          <h3 id="statLabaToko" class="text-2xl sm:text-3xl font-bold mt-2 text-white">Rp 0</h3>
+          <p class="text-xs mt-2 text-white">*Dihitung dari Servis & Sparepart (Setelah bayar Teknisi)</p>
         </div>
       </div>
     </section>
