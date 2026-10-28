@@ -203,6 +203,13 @@
 
   
 
+    /* Kartu Laba Bersih: putih dengan aksen merah, kontras jelas */
+    #tab-dashboard .kartu-laba-bersih { background:#ffffff !important; color:#1f2937 !important; border:1px solid #fecaca !important; }
+    #tab-dashboard .kartu-laba-bersih > p:first-child { color:#475569 !important; opacity:1 !important; }
+    #tab-dashboard .kartu-laba-bersih > p:first-child i { color:#c91d25 !important; }
+    #tab-dashboard .kartu-laba-bersih #statLabaToko { color:#b91c1c !important; }
+    #tab-dashboard .kartu-laba-bersih > p:last-child { color:#64748b !important; opacity:1 !important; }
+
     /* INFINITY GADGET THEME: merah, putih, charcoal — visual only */
     :root { color-scheme: light; }
     body { background:#f5f6f8 !important; }
@@ -401,10 +408,10 @@
             </div>
           </div>
         </div>
-        <div class="bg-gradient-to-r from-cyan-600 to-blue-600 p-5 rounded-xl shadow-md text-white">
-          <p class="text-sm font-medium opacity-90"><i class="fa-solid fa-vault mr-2"></i>Laba Bersih Toko (Uang Dingin)</p>
-          <h3 id="statLabaToko" class="text-2xl sm:text-3xl font-bold mt-2">Rp 0</h3>
-          <p class="text-xs mt-2 opacity-80">*Dihitung dari Servis & Sparepart (Setelah bayar Teknisi)</p>
+        <div class="kartu-laba-bersih bg-white p-5 rounded-xl shadow-md border border-red-100 text-slate-800">
+          <p class="text-sm font-semibold text-slate-600"><i class="fa-solid fa-vault mr-2 text-red-600"></i>Laba Bersih Toko (Uang Dingin)</p>
+          <h3 id="statLabaToko" class="text-2xl sm:text-3xl font-bold mt-2 text-red-700">Rp 0</h3>
+          <p class="text-xs mt-2 text-slate-500">*Dihitung dari Servis & Sparepart (Setelah bayar Teknisi)</p>
         </div>
       </div>
     </section>
