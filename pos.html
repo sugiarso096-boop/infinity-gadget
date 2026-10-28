@@ -203,12 +203,32 @@
 
   
 
-    /* Kartu Laba Bersih: putih dengan aksen merah, kontras jelas */
-    #tab-dashboard .kartu-laba-bersih { background:#ffffff !important; color:#1f2937 !important; border:1px solid #fecaca !important; }
-    #tab-dashboard .kartu-laba-bersih > p:first-child { color:#475569 !important; opacity:1 !important; }
-    #tab-dashboard .kartu-laba-bersih > p:first-child i { color:#c91d25 !important; }
-    #tab-dashboard .kartu-laba-bersih #statLabaToko { color:#b91c1c !important; }
-    #tab-dashboard .kartu-laba-bersih > p:last-child { color:#64748b !important; opacity:1 !important; }
+    /* Kartu Laba Bersih: charcoal dengan aksen gelombang merah tipis */
+    #tab-dashboard .kartu-laba-bersih {
+      position:relative !important;
+      isolation:isolate;
+      overflow:hidden !important;
+      background:linear-gradient(135deg,#303038 0%,#3b3035 58%,#4a252b 100%) !important;
+      color:#ffffff !important;
+      border:1px solid #5a3439 !important;
+      box-shadow:0 8px 20px -14px rgba(70,10,15,.45) !important;
+    }
+    #tab-dashboard .kartu-laba-bersih::after {
+      content:"";
+      position:absolute;
+      z-index:-1;
+      pointer-events:none;
+      left:0; right:0; bottom:0;
+      height:13%;
+      min-height:10px;
+      background:linear-gradient(100deg,#a9141c 0%,#d71920 58%,#ef2933 100%);
+      clip-path:polygon(0 72%,18% 48%,42% 63%,66% 28%,84% 42%,100% 8%,100% 100%,0 100%);
+    }
+    #tab-dashboard .kartu-laba-bersih > p:first-child { color:#ffffff !important; opacity:1 !important; }
+    #tab-dashboard .kartu-laba-bersih > p:first-child i { color:#ff525b !important; }
+    #tab-dashboard .kartu-laba-bersih #statLabaToko { color:#ff5962 !important; }
+    #tab-dashboard .kartu-laba-bersih > p:last-child { color:#e5e7eb !important; opacity:1 !important; }
+    #tab-dashboard .kartu-laba-bersih > * { position:relative; z-index:1; }
 
     /* INFINITY GADGET THEME: merah, putih, charcoal — visual only */
     :root { color-scheme: light; }
