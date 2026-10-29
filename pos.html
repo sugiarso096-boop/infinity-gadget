@@ -1048,13 +1048,13 @@
           isAdmin = true; document.getElementById("btnAdminMode").innerHTML = `<i class="fa-solid fa-unlock mr-1"></i> <span class="hidden sm:inline ml-1">Mode Admin</span>`;
           document.getElementById("btnAdminMode").className = "bg-emerald-600 hover:bg-emerald-700 text-[10px] sm:text-xs px-2 py-1.5 sm:px-3 rounded font-medium transition text-white flex items-center";
           document.querySelectorAll(".admin-only, .admin-only-col").forEach(el => el.classList.remove("hidden"));
-          renderDashboard(); renderStok(); alert("Mode Admin Berhasil Diaktifkan!");
+          renderDashboard(); renderStok(); /* Notifikasi sukses dihilangkan. */
         } else { alert("PIN Salah!"); }
       } else {
         isAdmin = false; document.getElementById("btnAdminMode").innerHTML = `<i class="fa-solid fa-lock mr-1"></i> <span class="hidden sm:inline ml-1">Mode Karyawan</span>`;
         document.getElementById("btnAdminMode").className = "bg-amber-600 hover:bg-amber-700 text-[10px] sm:text-xs px-2 py-1.5 sm:px-3 rounded font-medium transition text-white flex items-center";
         document.querySelectorAll(".admin-only, .admin-only-col").forEach(el => el.classList.add("hidden"));
-        renderDashboard(); renderStok(); switchTab('dashboard'); alert("Kembali ke Mode Karyawan.");
+        renderDashboard(); renderStok(); switchTab('dashboard'); /* Notifikasi sukses dihilangkan. */
       }
     }
 
@@ -1348,7 +1348,7 @@
         const item = (globalData.sparepart || []).find(x => String(x.ID || x.IDPart || '') === String(id));
         if (item) item.Persamaan = persamaan;
         tutupModalPersamaan(); renderStok(); renderPosList();
-        alert('Persamaan LCD berhasil disimpan.');
+        // Notifikasi sukses dihilangkan.
       } else {
         alert((res && (res.message || res.result)) || 'Persamaan gagal disimpan. Periksa koneksi dan deployment Apps Script.');
       }
@@ -1360,7 +1360,7 @@
         e.preventDefault(); showLoading(); 
         let data = { id: document.getElementById("editId").value, jenis: document.getElementById("editJenis").value, hargaModal: document.getElementById("editModal").value, hargaJual: document.getElementById("editJual").value }; 
         let res = await fetchAPI({ action: "updateHargaBarang", data: data });
-        hideLoading(); if(res.result === "Sukses") { alert("Harga Update!"); tutupModalEdit(); loadAppData(); } else { alert(res.result || res.message); } 
+        hideLoading(); if(res.result === "Sukses") { /* Notifikasi sukses dihilangkan. */ tutupModalEdit(); loadAppData(); } else { alert(res.result || res.message); } 
     }
 
     function renderPosList() {
@@ -1451,7 +1451,7 @@
         const checkoutId = 'POS-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
         const res = await fetchAPI({ action: "prosesCheckoutPOS", cart: keranjang.map(k => ({id:String(k.id), nama:k.nama, jenis:k.jenis, qty:Number(k.qty)})), keuangan: transaksiArray, checkoutId: checkoutId });
         if (res.status === "success") {
-          alert(res.result || "Transaksi berhasil disimpan dan stok diperbarui!");
+          // Notifikasi sukses dihilangkan agar transaksi tidak meminta klik OK.
           keranjang = [];
           renderKeranjang();
           loadAppData();
@@ -1472,7 +1472,7 @@
       let keteranganFinal = nomor ? ket + " (" + nomor + ")" : ket;
       let objKeuangan = { Tanggal: tgl, Jenis: "Penjualan " + jenis, Keterangan: keteranganFinal, Masuk: jual, Keluar: modal }; 
       let res = await fetchAPI({ action: "saveData", sheetName: "Keuangan", data: objKeuangan });
-      hideLoading(); if(res.status === "success") { alert("Transaksi " + jenis + " Disimpan!"); document.getElementById("ppobKet").value = ""; document.getElementById("ppobNomor").value = ""; document.getElementById("ppobModal").value = ""; document.getElementById("ppobJual").value = ""; loadAppData(); } else { alert("Gagal: " + res.message); }
+      hideLoading(); if(res.status === "success") { document.getElementById("ppobKet").value = ""; document.getElementById("ppobNomor").value = ""; document.getElementById("ppobModal").value = ""; document.getElementById("ppobJual").value = ""; loadAppData(); } else { alert("Gagal: " + res.message); }
     }
     
 
@@ -1519,7 +1519,7 @@
       try {
         const res = await fetchAPI({action:'tambahStokBarang', data:{jenis:document.getElementById('bmJenis').value, id:select.value, qty:qty, catatan:document.getElementById('bmCatatan').value}});
         if (res.status === 'success') {
-          alert(res.result || 'Barang masuk berhasil disimpan.');
+          // Notifikasi sukses dihilangkan.
           tutupModalBarangMasuk();
           await loadAppData();
         } else { alert('Gagal menambah stok: ' + (res.message || res.result || 'Kesalahan tidak diketahui')); }
@@ -1549,7 +1549,7 @@
     }
     async function kirimBarangFinal(data, fotoUrl) { 
         let res = await fetchAPI({ action: "tambahBarangBaru", data: data, fotoUrl: fotoUrl });
-        hideLoading(); if(res.status === "success") { alert("Barang Ditambahkan!"); tutupModalTambahStok(); loadAppData(); } else { alert("Gagal: " + res.message); }
+        hideLoading(); if(res.status === "success") { tutupModalTambahStok(); loadAppData(); } else { alert("Gagal: " + res.message); }
     }
 
     function setNotaOtomatis() {
@@ -1646,7 +1646,7 @@
         const res = await fetchAPI({ action: "saveData", sheetName: "Servis", data: dataServis });
         hideLoading();
         if (res.status === "success") {
-          alert("Nota servis berhasil disimpan beserta data garansi.");
+          // Notifikasi sukses dihilangkan.
           document.getElementById("formServis").reset();
           document.getElementById("srvLamaGaransi").value = 30;
           toggleLamaGaransi();
@@ -1778,7 +1778,7 @@
         document.querySelector('#tab-hutang form').reset();
         document.getElementById("hutangTanggal").value=tanggalInputHariIni();
         await muatDataHutang();
-        alert("Hutang pelanggan berhasil disimpan.");
+        // Notifikasi sukses dihilangkan.
       } catch(err){alert("Gagal menyimpan hutang: "+err.message);}
       finally{hideLoading();}
     }
@@ -1820,7 +1820,7 @@
       let res = await fetchAPI({ action: "saveData", sheetName: "Teknisi", data: obj });
       hideLoading();
       if (res.status === "success") {
-        alert("Teknisi berhasil ditambahkan!");
+        // Notifikasi sukses dihilangkan.
         document.getElementById("formNamaTeknisi").value = "";
         tutupModalTambahTeknisi();
         document.getElementById("cekKasTanggal").value = tanggalHariIniInput();
@@ -1897,7 +1897,7 @@
         e.preventDefault(); showLoading(); 
         let obj = { ID: "KAS-" + Date.now(), Tanggal: new Date().toLocaleDateString('id-ID'), IDTeknisi: document.getElementById("kasbonTeknisi").value, JumlahKasbon: Number(document.getElementById("kasbonJumlah").value), Keterangan: document.getElementById("kasbonKet").value }; 
         let res = await fetchAPI({ action: "saveData", sheetName: "Kasbon", data: obj });
-        hideLoading(); if(res.status === "success") { alert("Kasbon Dicatat!"); loadAppData(); } else { alert("Gagal: " + res.message); } 
+        hideLoading(); if(res.status === "success") { loadAppData(); } else { alert("Gagal: " + res.message); } 
     }
 
     function tanggalHariIniInput() {
@@ -1944,7 +1944,7 @@
       showLoading();
       const res = await fetchAPI({ action: 'saveCekKas', data: { Tanggal: tanggal, SaldoAwal: saldo, PenjualanTunai: penjualan, MasukLain: masuk, KeluarTunai: keluar, KasSeharusnya: seharusnya, UangFisik: fisik, Selisih: selisih, Catatan: document.getElementById('cekKasCatatan').value.trim() } });
       hideLoading();
-      if (res.status === 'success') { alert('Cek kas berhasil disimpan ke Google Spreadsheet.'); }
+      if (res.status === 'success') { /* Notifikasi sukses dihilangkan. */ }
       else { alert('Gagal menyimpan cek kas: ' + (res.message || 'Periksa Code.gs dan sheet CekKas.')); }
     }
 
