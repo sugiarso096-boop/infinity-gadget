@@ -418,7 +418,7 @@
         </div>
 
         <div class="flex items-center justify-end w-auto order-2 sm:order-3">
-          <button id="btnAdminMode" onclick="toggleAdminMode()" class="bg-amber-600 hover:bg-amber-700 text-[10px] sm:text-xs px-2 py-1.5 sm:px-3 rounded font-medium transition text-white flex items-center">
+          <button id="btnAdminMode" onclick="window.toggleAdminMode()" class="bg-amber-600 hover:bg-amber-700 text-[10px] sm:text-xs px-2 py-1.5 sm:px-3 rounded font-medium transition text-white flex items-center">
             <i class="fa-solid fa-lock"></i> <span class="hidden sm:inline ml-1">Mode Karyawan</span>
           </button>
         </div>
@@ -1057,6 +1057,8 @@
         renderDashboard(); renderStok(); switchTab('dashboard'); /* Notifikasi sukses dihilangkan. */
       }
     }
+    // Pastikan fungsi dapat dipanggil langsung dari tombol HTML.
+    window.toggleAdminMode = toggleAdminMode;
 
     let filterStokMenipisAktif = false;
 
@@ -1596,7 +1598,7 @@
       let nota = document.getElementById("editStatusNota").value; let statusBaru = document.getElementById("editStatusPilihan").value; let idSparepart = "";
       if (statusBaru === "Selesai" || statusBaru === "Diambil") { idSparepart = document.getElementById("editStatusSparepart").value; }
       let res = await fetchAPI({ action: "updateStatusServis", nota: nota, status: statusBaru, idSparepart: idSparepart });
-      hideLoading(); if(res.status === "success" && res.result && res.result.startsWith("Sukses")) { alert(res.result); tutupModalEditStatus(); loadAppData(); } else { alert(res.result || res.message); }
+      hideLoading(); if(res.status === "success" && res.result && res.result.startsWith("Sukses")) { tutupModalEditStatus(); loadAppData(); } else { alert(res.result || res.message); }
     }
 
     function toggleLamaGaransi() {
