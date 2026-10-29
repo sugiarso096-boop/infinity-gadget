@@ -295,6 +295,95 @@
     .kartu-laba-bersih p { color: rgba(255,255,255,.92) !important; }
     .kartu-laba-bersih h3 { color: #fff !important; }
     .kartu-laba-bersih .fa-vault { color: #fff !important; }
+  
+
+    /* STOCK TABLE REFRESH: visual-only styling aligned to the approved mockup */
+    #tab-stok > .stock-panel {
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 18px !important;
+      box-shadow: 0 8px 24px rgba(15,23,42,.055) !important;
+      overflow: hidden;
+    }
+    #tab-stok .stock-toolbar-title { color:#1f2937 !important; }
+    #tab-stok .stock-table-wrap {
+      border: 1px solid #edf0f4;
+      border-radius: 12px;
+      overflow-x: auto;
+      background: #fff;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 #f8fafc;
+    }
+    #tab-stok table.stock-table {
+      width: 100%;
+      min-width: 900px;
+      border-collapse: separate;
+      border-spacing: 0;
+      color: #334155;
+      background: #fff;
+    }
+    #tab-stok table.stock-table thead {
+      background: #eef1f5 !important;
+      color: #344054 !important;
+    }
+    #tab-stok table.stock-table thead th {
+      padding: 15px 14px !important;
+      background: #eef1f5 !important;
+      color: #344054 !important;
+      font-size: 11px !important;
+      font-weight: 800 !important;
+      letter-spacing: .035em;
+      white-space: nowrap;
+      border-bottom: 1px solid #e1e6ed;
+    }
+    #tab-stok table.stock-table tbody tr {
+      background: #fff;
+      transition: background .15s ease;
+    }
+    #tab-stok table.stock-table tbody tr:nth-child(even) { background: #f7f8fa; }
+    #tab-stok table.stock-table tbody tr:hover { background: #fff1f2 !important; }
+    #tab-stok table.stock-table tbody td {
+      padding: 15px 14px !important;
+      border-bottom: 1px solid #e8edf2;
+      vertical-align: middle;
+      line-height: 1.45;
+    }
+    #tab-stok table.stock-table tbody tr:last-child td { border-bottom: 0; }
+    #tab-stok table.stock-table tbody td:first-child {
+      font-weight: 800;
+      color: #1e293b;
+      white-space: nowrap;
+    }
+    #tab-stok table.stock-table tbody td:nth-child(2) { color:#1f2937; font-weight:600; min-width:160px; }
+    #tab-stok table.stock-table tbody td:nth-child(4) { min-width:220px; color:#334155; }
+    #tab-stok table.stock-table tbody td:nth-child(6) { color:#059669; font-weight:800; white-space:nowrap; }
+    #tab-stok .stock-brand-badge {
+      display:inline-flex; align-items:center; border:1px solid #dce4ef;
+      background:#f1f5f9; color:#334155; border-radius:999px;
+      padding:3px 9px; font-size:10px; font-weight:800; white-space:nowrap;
+    }
+    #tab-stok .stock-low { color:#dc2626 !important; font-weight:800 !important; }
+    #tab-stok .stock-normal { color:#334155; font-weight:600; }
+    #tab-stok .stock-photo-cell { width:76px; }
+    #tab-stok .stock-photo-cell .img-thumb {
+      width:44px; height:44px; border-radius:9px; border:1px solid #dfe5ec;
+      box-shadow:0 1px 3px rgba(15,23,42,.08);
+    }
+    #tab-stok .stock-action-btn {
+      border-radius:999px !important; padding:7px 10px !important;
+      font-size:11px !important; font-weight:700 !important;
+      border:1px solid #d6dde6; transition:all .15s ease;
+    }
+    #tab-stok .stock-action-price { background:#fff !important; color:#b91c1c !important; border-color:#fecaca !important; }
+    #tab-stok .stock-action-persamaan { background:#fff !important; color:#b91c1c !important; border-color:#fecaca !important; }
+    #tab-stok .stock-action-btn:hover { background:#fff1f2 !important; border-color:#fda4af !important; }
+    @media (max-width: 640px) {
+      #tab-stok > .stock-panel { padding:12px !important; border-radius:14px !important; }
+      #tab-stok table.stock-table { min-width:850px; }
+      #tab-stok table.stock-table thead th,
+      #tab-stok table.stock-table tbody td { padding:12px 10px !important; }
+      #tab-stok .stock-photo-cell .img-thumb { width:40px; height:40px; }
+    }
+
   </style>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 overflow-x-hidden">
@@ -525,9 +614,9 @@
 
     <!-- TAB 3: STOK BARANG -->
     <section id="tab-stok" class="tab-content hidden space-y-4 sm:mt-0 mt-3">
-      <div class="bg-white p-4 sm:p-6 sm:rounded-xl shadow-sm border-y sm:border border-gray-200">
+      <div class="stock-panel bg-white p-4 sm:p-6 sm:rounded-xl shadow-sm border-y sm:border border-gray-200">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
-          <h2 class="font-bold text-lg text-slate-800"><i class="fa-solid fa-boxes-stacked mr-2 text-cyan-600"></i>Stok & Sparepart</h2>
+          <h2 class="stock-toolbar-title font-bold text-lg text-slate-800"><i class="fa-solid fa-boxes-stacked mr-2 text-rose-600"></i>Stok & Sparepart</h2>
           <div class="flex w-full sm:w-auto flex-wrap gap-2">
             <div class="relative w-full sm:w-64 flex-none">
               <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
@@ -539,8 +628,8 @@
             <button onclick="bukaModalTambahStok()" class="bg-cyan-600 text-white text-xs sm:text-sm px-2 sm:px-3 py-2 rounded-lg font-medium hover:bg-cyan-700 flex-1 min-w-[100px] sm:flex-none text-center justify-center whitespace-nowrap"><i class="fa-solid fa-plus mr-1"></i> Tambah</button>
           </div>
         </div>
-        <div class="overflow-x-auto w-full">
-          <table class="w-full text-left text-sm text-gray-600">
+        <div class="stock-table-wrap w-full">
+          <table class="stock-table w-full text-left text-sm text-gray-600">
             <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
               <tr><th class="p-3">ID/SKU</th><th class="p-3">Nama Barang</th><th class="p-3">Kategori</th><th class="p-3">Persamaan</th><th class="p-3 admin-only-col hidden">Harga Modal</th><th class="p-3">Harga Jual</th><th class="p-3">Stok</th><th class="p-3">Foto</th><th class="p-3 admin-only-col hidden">Aksi</th></tr>
             </thead>
@@ -570,8 +659,8 @@
           <div class="md:col-span-2"><label class="block text-xs font-medium mb-1">Foto HP (Opsional)</label><input type="file" id="srvFoto" accept="image/*" class="w-full border rounded-lg p-1.5 text-sm bg-white"></div>
           <div class="md:col-span-2"><button type="submit" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition w-full sm:w-auto">Simpan Nota Servis</button></div>
         </form>
-        <div class="overflow-x-auto w-full">
-          <table class="w-full text-left text-sm text-gray-600">
+        <div class="stock-table-wrap w-full">
+          <table class="stock-table w-full text-left text-sm text-gray-600">
             <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
               <tr><th class="p-3">Nota</th><th class="p-3">Pelanggan / HP</th><th class="p-3">Kerusakan</th><th class="p-3">Biaya</th><th class="p-3">Teknisi</th><th class="p-3">Status</th><th class="p-3">Garansi</th><th class="p-3">Foto</th><th class="p-3">Aksi</th></tr>
             </thead>
@@ -679,8 +768,8 @@
     <section id="tab-keuangan" class="tab-content hidden space-y-4 sm:mt-0 mt-3">
       <div class="bg-white p-4 sm:p-6 sm:rounded-xl shadow-sm border-y sm:border border-gray-200">
         <h2 class="font-bold text-lg mb-4 text-slate-800"><i class="fa-solid fa-wallet mr-2 text-cyan-600"></i>Buku Kas Toko</h2>
-        <div class="overflow-x-auto w-full">
-          <table class="w-full text-left text-sm text-gray-600">
+        <div class="stock-table-wrap w-full">
+          <table class="stock-table w-full text-left text-sm text-gray-600">
             <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
               <tr><th class="p-3">Tanggal</th><th class="p-3">Jenis</th><th class="p-3">Keterangan</th><th class="p-3">Masuk (Rp)</th><th class="p-3">Keluar (Rp)</th></tr>
             </thead>
@@ -1221,16 +1310,17 @@
         if (filterStokMenipisAktif && stokSekarang > 3) return;
         if (keyword !== "" && !terms.every(t => textInfo.includes(t))) return;
 
-        let tr = document.createElement("tr"); tr.className = "border-b " + (isAksesoris ? "hover:bg-gray-50" : "hover:bg-cyan-50/30");
+        let tr = document.createElement("tr"); tr.className = "border-b " + (isAksesoris ? "stock-row-accessory" : "stock-row-sparepart");
         let nama = item.NamaBarang || item.NamaPart || '-';
-        let badge = isAksesoris ? `<span class="text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded ml-1">Aksesoris</span>` : `<span class="text-[10px] bg-cyan-100 text-cyan-800 px-1.5 py-0.5 rounded ml-1">${item.Kualitas || 'OG'}</span>`;
+        let badge = isAksesoris ? `<span class="stock-brand-badge ml-1">Aksesoris</span>` : `<span class="stock-brand-badge ml-1">${item.Kualitas || 'OG'}</span>`;
         let kategori = item.Kategori || item.Brand || '-';
         let persamaan = isAksesoris ? `<span class="text-xs text-gray-400">-</span>` : `<span class="text-xs text-cyan-700 font-medium">Persamaan: ${item.Persamaan || '-'}</span>`;
         let idItem = item.ID || item.IDPart || '-'; let fotoHtml = buatFotoHtml(item.FotoUrl, nama);
 
-        const aksiHarga = `<button onclick="bukaModalEdit('${idItem}', '${isAksesoris ? 'Aksesoris' : 'Sparepart'}', ${item.HargaModal || 0}, ${item.HargaJual || 0})" class="bg-amber-100 text-amber-700 hover:bg-amber-200 px-2 py-1 rounded text-xs font-bold"><i class="fa-solid fa-pen"></i> Harga</button>`;
-        const aksiPersamaan = !isAksesoris ? `<button onclick="bukaModalPersamaan('${encodeURIComponent(String(idItem))}')" class="bg-cyan-100 text-cyan-700 hover:bg-cyan-200 px-2 py-1 rounded text-xs font-bold mt-1"><i class="fa-solid fa-link"></i> Persamaan</button>` : '';
-        tr.innerHTML = `<td class="p-3 font-medium">${idItem}</td><td class="p-3 font-semibold text-slate-800">${nama} ${badge}</td><td class="p-3">${kategori}</td><td class="p-3">${persamaan}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'} font-semibold text-rose-600">Rp ${(item.HargaModal || 0).toLocaleString()}</td><td class="p-3 font-semibold text-emerald-600">Rp ${(item.HargaJual || 0).toLocaleString()}</td><td class="p-3">${item.Stok || 0}</td><td class="p-3">${fotoHtml}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'}"><div class="flex flex-col items-start gap-1">${aksiHarga}${aksiPersamaan}</div></td>`;
+        const aksiHarga = `<button onclick="bukaModalEdit('${idItem}', '${isAksesoris ? 'Aksesoris' : 'Sparepart'}', ${item.HargaModal || 0}, ${item.HargaJual || 0})" class="stock-action-btn stock-action-price"><i class="fa-solid fa-pen"></i> Harga</button>`;
+        const aksiPersamaan = !isAksesoris ? `<button onclick="bukaModalPersamaan('${encodeURIComponent(String(idItem))}')" class="stock-action-btn stock-action-persamaan mt-1"><i class="fa-solid fa-link"></i> Persamaan</button>` : '';
+        const stokHtml = stokSekarang <= 3 ? `<span class="stock-low">${stokSekarang}</span>` : `<span class="stock-normal">${stokSekarang}</span>`;
+        tr.innerHTML = `<td class="p-3 font-medium">${idItem}</td><td class="p-3 font-semibold text-slate-800">${nama} ${badge}</td><td class="p-3">${kategori}</td><td class="p-3">${persamaan}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'} font-semibold text-rose-600">Rp ${(item.HargaModal || 0).toLocaleString()}</td><td class="p-3 font-semibold text-emerald-600">Rp ${(item.HargaJual || 0).toLocaleString('id-ID')}</td><td class="p-3 text-center">${stokHtml}</td><td class="p-3 stock-photo-cell">${fotoHtml}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'}"><div class="flex flex-col items-start gap-1">${aksiHarga}${aksiPersamaan}</div></td>`;
         tbody.appendChild(tr);
       };
       (globalData.aksesoris || []).forEach(item => processItem(item, true)); (globalData.sparepart || []).forEach(item => processItem(item, false));
