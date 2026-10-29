@@ -1795,7 +1795,7 @@
         if(res.status!=="success") throw new Error(res.message||"Gagal menyimpan pembayaran");
         document.getElementById("bayarHutangJumlah").value="";document.getElementById("bayarHutangKet").value="";
         await muatDataHutang();
-        alert("Pembayaran berhasil dicatat dan sisa hutang diperbarui.");
+        // Notifikasi sukses dihilangkan agar tidak perlu klik OK setiap pembayaran.
       } catch(err){alert("Gagal menyimpan pembayaran: "+err.message);}
       finally{hideLoading();}
     }
