@@ -690,15 +690,16 @@
     </div>
   </div>
 
-  <!-- MODAL EDIT HARGA BARANG -->
+  <!-- MODAL EDIT DATA BARANG -->
   <div id="modalEditHarga" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl max-w-sm w-full p-6 shadow-xl space-y-4">
-      <div class="flex justify-between items-center border-b pb-3"><h3 class="font-bold text-lg text-slate-800">Edit Harga Barang</h3><button onclick="tutupModalEdit()" class="text-gray-400 hover:text-gray-600 font-bold text-lg">&times;</button></div>
+      <div class="flex justify-between items-center border-b pb-3"><h3 class="font-bold text-lg text-slate-800">Edit Data Barang</h3><button type="button" onclick="tutupModalEdit()" class="text-gray-400 hover:text-gray-600 font-bold text-lg">&times;</button></div>
       <form onsubmit="simpanEditHarga(event)" class="space-y-3">
         <input type="hidden" id="editId"><input type="hidden" id="editJenis">
-        <div><label class="block text-xs font-medium text-gray-700 mb-1">Revisi Harga Modal (Rp)</label><input type="number" id="editModal" required class="w-full border rounded-lg p-2 text-sm bg-white"></div>
-        <div><label class="block text-xs font-medium text-gray-700 mb-1">Revisi Harga Jual (Rp)</label><input type="number" id="editJual" required class="w-full border rounded-lg p-2 text-sm bg-white"></div>
-        <div class="flex justify-end space-x-2 pt-3"><button type="button" onclick="tutupModalEdit()" class="px-4 py-2 border rounded-lg text-sm">Batal</button><button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-semibold">Update Harga</button></div>
+        <div><label class="block text-xs font-medium text-gray-700 mb-1">Nama Barang</label><input type="text" id="editNama" required maxlength="120" class="w-full border rounded-lg p-2 text-sm bg-white"></div>
+        <div><label class="block text-xs font-medium text-gray-700 mb-1">Harga Modal (Rp)</label><input type="number" id="editModal" min="0" required class="w-full border rounded-lg p-2 text-sm bg-white"></div>
+        <div><label class="block text-xs font-medium text-gray-700 mb-1">Harga Jual (Rp)</label><input type="number" id="editJual" min="0" required class="w-full border rounded-lg p-2 text-sm bg-white"></div>
+        <div class="flex justify-end space-x-2 pt-3"><button type="button" onclick="tutupModalEdit()" class="px-4 py-2 border rounded-lg text-sm">Batal</button><button type="submit" class="px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-semibold">Simpan Perubahan</button></div>
       </form>
     </div>
   </div>
@@ -873,13 +874,13 @@
           isAdmin = true; document.getElementById("btnAdminMode").innerHTML = `<i class="fa-solid fa-unlock mr-1"></i> <span class="hidden sm:inline ml-1">Mode Admin</span>`;
           document.getElementById("btnAdminMode").className = "bg-emerald-600 hover:bg-emerald-700 text-[10px] sm:text-xs px-2 py-1.5 sm:px-3 rounded font-medium transition text-white flex items-center";
           document.querySelectorAll(".admin-only, .admin-only-col").forEach(el => el.classList.remove("hidden"));
-          renderDashboard(); renderStok();
+          renderDashboard(); renderStok(); alert("Mode Admin Berhasil Diaktifkan!");
         } else { alert("PIN Salah!"); }
       } else {
         isAdmin = false; document.getElementById("btnAdminMode").innerHTML = `<i class="fa-solid fa-lock mr-1"></i> <span class="hidden sm:inline ml-1">Mode Karyawan</span>`;
         document.getElementById("btnAdminMode").className = "bg-amber-600 hover:bg-amber-700 text-[10px] sm:text-xs px-2 py-1.5 sm:px-3 rounded font-medium transition text-white flex items-center";
         document.querySelectorAll(".admin-only, .admin-only-col").forEach(el => el.classList.add("hidden"));
-        renderDashboard(); renderStok(); switchTab('dashboard');
+        renderDashboard(); renderStok(); switchTab('dashboard'); alert("Kembali ke Mode Karyawan.");
       }
     }
 
@@ -1142,19 +1143,33 @@
         let persamaan = isAksesoris ? `<span class="text-xs text-gray-400">-</span>` : `<span class="text-xs text-cyan-700 font-medium">Persamaan: ${item.Persamaan || '-'}</span>`;
         let idItem = item.ID || item.IDPart || '-'; let fotoHtml = buatFotoHtml(item.FotoUrl, nama);
 
-        tr.innerHTML = `<td class="p-3 font-medium">${idItem}</td><td class="p-3 font-semibold text-slate-800">${nama} ${badge}</td><td class="p-3">${kategori}</td><td class="p-3">${persamaan}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'} font-semibold text-rose-600">Rp ${(item.HargaModal || 0).toLocaleString()}</td><td class="p-3 font-semibold text-emerald-600">Rp ${(item.HargaJual || 0).toLocaleString()}</td><td class="p-3">${item.Stok || 0}</td><td class="p-3">${fotoHtml}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'}"><button onclick="bukaModalEdit('${idItem}', '${isAksesoris ? 'Aksesoris' : 'Sparepart'}', ${item.HargaModal || 0}, ${item.HargaJual || 0})" class="bg-amber-100 text-amber-700 hover:bg-amber-200 px-2 py-1 rounded text-xs font-bold"><i class="fa-solid fa-pen"></i> Edit</button></td>`;
+        tr.innerHTML = `<td class="p-3 font-medium">${idItem}</td><td class="p-3 font-semibold text-slate-800">${nama} ${badge}</td><td class="p-3">${kategori}</td><td class="p-3">${persamaan}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'} font-semibold text-rose-600">Rp ${(item.HargaModal || 0).toLocaleString()}</td><td class="p-3 font-semibold text-emerald-600">Rp ${(item.HargaJual || 0).toLocaleString()}</td><td class="p-3">${item.Stok || 0}</td><td class="p-3">${fotoHtml}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'}"><button onclick="bukaModalEdit('${idItem}', '${isAksesoris ? 'Aksesoris' : 'Sparepart'}', ${item.HargaModal || 0}, ${item.HargaJual || 0}, decodeURIComponent('${encodeURIComponent(nama)}'))" class="bg-amber-100 text-amber-700 hover:bg-amber-200 px-2 py-1 rounded text-xs font-bold"><i class="fa-solid fa-pen"></i> Edit</button></td>`;
         tbody.appendChild(tr);
       };
       (globalData.aksesoris || []).forEach(item => processItem(item, true)); (globalData.sparepart || []).forEach(item => processItem(item, false));
     }
 
-    function bukaModalEdit(id, jenis, modalLama, jualLama) { document.getElementById("editId").value = id; document.getElementById("editJenis").value = jenis; document.getElementById("editModal").value = modalLama; document.getElementById("editJual").value = jualLama; document.getElementById("modalEditHarga").classList.remove("hidden"); }
+    function bukaModalEdit(id, jenis, modalLama, jualLama, namaLama) {
+      document.getElementById("editId").value = id;
+      document.getElementById("editJenis").value = jenis;
+      document.getElementById("editNama").value = namaLama || "";
+      document.getElementById("editModal").value = modalLama;
+      document.getElementById("editJual").value = jualLama;
+      document.getElementById("modalEditHarga").classList.remove("hidden");
+    }
     function tutupModalEdit() { document.getElementById("modalEditHarga").classList.add("hidden"); }
-    async function simpanEditHarga(e) { 
-        e.preventDefault(); showLoading(); 
-        let data = { id: document.getElementById("editId").value, jenis: document.getElementById("editJenis").value, hargaModal: document.getElementById("editModal").value, hargaJual: document.getElementById("editJual").value }; 
+    async function simpanEditHarga(e) {
+      e.preventDefault();
+      const nama = document.getElementById("editNama").value.trim();
+      if (!nama) { alert("Nama barang wajib diisi."); return; }
+      showLoading();
+      try {
+        let data = { id: document.getElementById("editId").value, jenis: document.getElementById("editJenis").value, nama: nama, hargaModal: document.getElementById("editModal").value, hargaJual: document.getElementById("editJual").value };
         let res = await fetchAPI({ action: "updateHargaBarang", data: data });
-        hideLoading(); if(res.result === "Sukses") { tutupModalEdit(); loadAppData(); } else { alert(res.result || res.message); } 
+        hideLoading();
+        if (res.result === "Sukses") { tutupModalEdit(); await loadAppData(); }
+        else { alert(res.result || res.message || "Gagal menyimpan perubahan."); }
+      } catch (err) { hideLoading(); alert("Gagal menyimpan: " + (err.message || err)); }
     }
 
     function renderPosList() {
@@ -1266,7 +1281,7 @@
       let keteranganFinal = nomor ? ket + " (" + nomor + ")" : ket;
       let objKeuangan = { Tanggal: tgl, Jenis: "Penjualan " + jenis, Keterangan: keteranganFinal, Masuk: jual, Keluar: modal }; 
       let res = await fetchAPI({ action: "saveData", sheetName: "Keuangan", data: objKeuangan });
-      hideLoading(); if(res.status === "success") { document.getElementById("ppobKet").value = ""; document.getElementById("ppobNomor").value = ""; document.getElementById("ppobModal").value = ""; document.getElementById("ppobJual").value = ""; loadAppData(); } else { alert("Gagal: " + res.message); }
+      hideLoading(); if(res.status === "success") { alert("Transaksi " + jenis + " Disimpan!"); document.getElementById("ppobKet").value = ""; document.getElementById("ppobNomor").value = ""; document.getElementById("ppobModal").value = ""; document.getElementById("ppobJual").value = ""; loadAppData(); } else { alert("Gagal: " + res.message); }
     }
     
 
@@ -1313,6 +1328,7 @@
       try {
         const res = await fetchAPI({action:'tambahStokBarang', data:{jenis:document.getElementById('bmJenis').value, id:select.value, qty:qty, catatan:document.getElementById('bmCatatan').value}});
         if (res.status === 'success') {
+          alert(res.result || 'Barang masuk berhasil disimpan.');
           tutupModalBarangMasuk();
           await loadAppData();
         } else { alert('Gagal menambah stok: ' + (res.message || res.result || 'Kesalahan tidak diketahui')); }
@@ -1342,7 +1358,7 @@
     }
     async function kirimBarangFinal(data, fotoUrl) { 
         let res = await fetchAPI({ action: "tambahBarangBaru", data: data, fotoUrl: fotoUrl });
-        hideLoading(); if(res.status === "success") { tutupModalTambahStok(); loadAppData(); } else { alert("Gagal: " + res.message); }
+        hideLoading(); if(res.status === "success") { alert("Barang Ditambahkan!"); tutupModalTambahStok(); loadAppData(); } else { alert("Gagal: " + res.message); }
     }
 
     function setNotaOtomatis() {
@@ -1389,7 +1405,7 @@
       let nota = document.getElementById("editStatusNota").value; let statusBaru = document.getElementById("editStatusPilihan").value; let idSparepart = "";
       if (statusBaru === "Selesai" || statusBaru === "Diambil") { idSparepart = document.getElementById("editStatusSparepart").value; }
       let res = await fetchAPI({ action: "updateStatusServis", nota: nota, status: statusBaru, idSparepart: idSparepart });
-      hideLoading(); if(res.status === "success" && res.result && res.result.startsWith("Sukses")) { tutupModalEditStatus(); loadAppData(); } else { alert(res.result || res.message); }
+      hideLoading(); if(res.status === "success" && res.result && res.result.startsWith("Sukses")) { alert(res.result); tutupModalEditStatus(); loadAppData(); } else { alert(res.result || res.message); }
     }
 
     function toggleLamaGaransi() {
@@ -1439,6 +1455,7 @@
         const res = await fetchAPI({ action: "saveData", sheetName: "Servis", data: dataServis });
         hideLoading();
         if (res.status === "success") {
+          alert("Nota servis berhasil disimpan beserta data garansi.");
           document.getElementById("formServis").reset();
           document.getElementById("srvLamaGaransi").value = 30;
           toggleLamaGaransi();
@@ -1570,6 +1587,7 @@
         document.querySelector('#tab-hutang form').reset();
         document.getElementById("hutangTanggal").value=tanggalInputHariIni();
         await muatDataHutang();
+        alert("Hutang pelanggan berhasil disimpan.");
       } catch(err){alert("Gagal menyimpan hutang: "+err.message);}
       finally{hideLoading();}
     }
@@ -1586,6 +1604,7 @@
         if(res.status!=="success") throw new Error(res.message||"Gagal menyimpan pembayaran");
         document.getElementById("bayarHutangJumlah").value="";document.getElementById("bayarHutangKet").value="";
         await muatDataHutang();
+        alert("Pembayaran berhasil dicatat dan sisa hutang diperbarui.");
       } catch(err){alert("Gagal menyimpan pembayaran: "+err.message);}
       finally{hideLoading();}
     }
@@ -1610,6 +1629,7 @@
       let res = await fetchAPI({ action: "saveData", sheetName: "Teknisi", data: obj });
       hideLoading();
       if (res.status === "success") {
+        alert("Teknisi berhasil ditambahkan!");
         document.getElementById("formNamaTeknisi").value = "";
         tutupModalTambahTeknisi();
         document.getElementById("cekKasTanggal").value = tanggalHariIniInput();
@@ -1734,7 +1754,7 @@
         e.preventDefault(); showLoading(); 
         let obj = { ID: "KAS-" + Date.now(), Tanggal: new Date().toLocaleDateString('id-ID'), IDTeknisi: document.getElementById("kasbonTeknisi").value, JumlahKasbon: Number(document.getElementById("kasbonJumlah").value), Keterangan: document.getElementById("kasbonKet").value }; 
         let res = await fetchAPI({ action: "saveData", sheetName: "Kasbon", data: obj });
-        hideLoading(); if(res.status === "success") { loadAppData(); } else { alert("Gagal: " + res.message); } 
+        hideLoading(); if(res.status === "success") { alert("Kasbon Dicatat!"); loadAppData(); } else { alert("Gagal: " + res.message); } 
     }
 
     function tanggalHariIniInput() {
@@ -1781,7 +1801,7 @@
       showLoading();
       const res = await fetchAPI({ action: 'saveCekKas', data: { Tanggal: tanggal, SaldoAwal: saldo, PenjualanTunai: penjualan, MasukLain: masuk, KeluarTunai: keluar, KasSeharusnya: seharusnya, UangFisik: fisik, Selisih: selisih, Catatan: document.getElementById('cekKasCatatan').value.trim() } });
       hideLoading();
-      if (res.status === 'success') { /* tersimpan tanpa popup */ }
+      if (res.status === 'success') { alert('Cek kas berhasil disimpan ke Google Spreadsheet.'); }
       else { alert('Gagal menyimpan cek kas: ' + (res.message || 'Periksa Code.gs dan sheet CekKas.')); }
     }
 
