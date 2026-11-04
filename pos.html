@@ -384,13 +384,6 @@
       #tab-stok .stock-photo-cell .img-thumb { width:40px; height:40px; }
     }
 
-  
-    /* Notifikasi non-blocking: menggantikan popup browser di seluruh modul */
-    #ig-toast-container { position:fixed; right:18px; bottom:22px; z-index:99999; display:flex; flex-direction:column; gap:8px; pointer-events:none; width:min(360px,calc(100vw - 28px)); }
-    .ig-toast { padding:12px 15px; border-radius:12px; color:#fff; background:#b91c1c; box-shadow:0 10px 28px rgba(15,23,42,.22); font-size:13px; line-height:1.45; animation:igToastIn .18s ease-out; overflow-wrap:anywhere; }
-    .ig-toast.ig-info { background:#334155; }
-    @keyframes igToastIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-    @media(max-width:640px) { #ig-toast-container { right:12px; bottom:82px; width:calc(100vw - 24px); } }
   </style>
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 overflow-x-hidden">
@@ -871,6 +864,19 @@
     </div>
   </div>
 
+  <!-- MODAL EDIT NAMA BARANG -->
+  <div id="modalEditNamaBarang" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-sm w-full p-6 shadow-xl space-y-4">
+      <div class="flex justify-between items-center border-b pb-3"><div><h3 class="font-bold text-lg text-slate-800">Edit Nama Barang</h3><p id="editNamaInfo" class="text-xs text-slate-500 mt-1"></p></div><button type="button" onclick="tutupModalNamaBarang()" class="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button></div>
+      <form onsubmit="simpanNamaBarang(event)" class="space-y-3">
+        <input type="hidden" id="editNamaId"><input type="hidden" id="editNamaJenis">
+        <label class="block text-sm font-medium text-gray-700">Nama barang baru</label>
+        <input type="text" id="editNamaIsi" maxlength="150" required class="w-full border border-slate-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-cyan-500 outline-none" placeholder="Masukkan nama barang">
+        <div class="flex justify-end gap-2 pt-2"><button type="button" onclick="tutupModalNamaBarang()" class="px-4 py-2 border rounded-lg text-sm">Batal</button><button type="submit" class="px-4 py-2 bg-cyan-600 text-white rounded-lg text-sm font-semibold">Simpan Nama</button></div>
+      </form>
+    </div>
+  </div>
+
   <!-- MODAL EDIT PERSAMAAN LCD -->
   <div id="modalEditPersamaan" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl max-w-md w-full p-5 shadow-xl space-y-4">
@@ -934,36 +940,6 @@
   </div>
 
   <script>
-    // Popup alert browser diganti notifikasi kecil yang tidak mengunci layar.
-    // Pesan sukses disembunyikan; validasi dan error tetap terlihat tanpa tombol OK.
-    (function () {
-      function tampilkanToast(pesan) {
-        let wadah = document.getElementById('ig-toast-container');
-        if (!wadah) {
-          wadah = document.createElement('div');
-          wadah.id = 'ig-toast-container';
-          wadah.setAttribute('aria-live', 'polite');
-          wadah.setAttribute('aria-atomic', 'false');
-          document.body.appendChild(wadah);
-        }
-        const item = document.createElement('div');
-        item.className = 'ig-toast';
-        item.textContent = pesan;
-        wadah.appendChild(item);
-        window.setTimeout(function () {
-          item.style.transition = 'opacity .2s, transform .2s';
-          item.style.opacity = '0';
-          item.style.transform = 'translateY(6px)';
-          window.setTimeout(function () { item.remove(); }, 220);
-        }, 3800);
-      }
-      window.alert = function (pesan) {
-        const teks = String(pesan == null ? '' : pesan).trim();
-        if (/^(sukses|berhasil|success)\b/i.test(teks) || /\b(berhasil disimpan|berhasil dicatat|berhasil diperbarui|transaksi tersimpan)\b/i.test(teks)) return;
-        tampilkanToast(teks || 'Ada pemberitahuan dari aplikasi.');
-      };
-    })();
-
     // URL PENGHUBUNG GOOGLE APPS SCRIPT API
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxjAyMq9dKRzgOVQCGJs-aRFaP8uJdfVJ6G4h_X0UxSWyYbq3eIAdXziBVLkBqFxN9u/exec";
     
@@ -1356,10 +1332,11 @@
         let persamaan = isAksesoris ? `<span class="text-xs text-gray-400">-</span>` : `<span class="text-xs text-cyan-700 font-medium">Persamaan: ${item.Persamaan || '-'}</span>`;
         let idItem = item.ID || item.IDPart || '-'; let fotoHtml = buatFotoHtml(item.FotoUrl, nama);
 
+        const aksiNama = `<button onclick="bukaModalNamaBarang('${encodeURIComponent(String(idItem))}', '${isAksesoris ? 'Aksesoris' : 'Sparepart'}')" class="stock-action-btn stock-action-price"><i class="fa-solid fa-pen-to-square"></i> Nama</button>`;
         const aksiHarga = `<button onclick="bukaModalEdit('${idItem}', '${isAksesoris ? 'Aksesoris' : 'Sparepart'}', ${item.HargaModal || 0}, ${item.HargaJual || 0})" class="stock-action-btn stock-action-price"><i class="fa-solid fa-pen"></i> Harga</button>`;
         const aksiPersamaan = !isAksesoris ? `<button onclick="bukaModalPersamaan('${encodeURIComponent(String(idItem))}')" class="stock-action-btn stock-action-persamaan mt-1"><i class="fa-solid fa-link"></i> Persamaan</button>` : '';
         const stokHtml = stokSekarang <= 3 ? `<span class="stock-low">${stokSekarang}</span>` : `<span class="stock-normal">${stokSekarang}</span>`;
-        tr.innerHTML = `<td class="p-3 font-medium">${idItem}</td><td class="p-3 font-semibold text-slate-800">${nama} ${badge}</td><td class="p-3">${kategori}</td><td class="p-3">${persamaan}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'} font-semibold text-rose-600">Rp ${(item.HargaModal || 0).toLocaleString()}</td><td class="p-3 font-semibold text-emerald-600">Rp ${(item.HargaJual || 0).toLocaleString('id-ID')}</td><td class="p-3 text-center">${stokHtml}</td><td class="p-3 stock-photo-cell">${fotoHtml}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'}"><div class="flex flex-col items-start gap-1">${aksiHarga}${aksiPersamaan}</div></td>`;
+        tr.innerHTML = `<td class="p-3 font-medium">${idItem}</td><td class="p-3 font-semibold text-slate-800">${nama} ${badge}</td><td class="p-3">${kategori}</td><td class="p-3">${persamaan}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'} font-semibold text-rose-600">Rp ${(item.HargaModal || 0).toLocaleString()}</td><td class="p-3 font-semibold text-emerald-600">Rp ${(item.HargaJual || 0).toLocaleString('id-ID')}</td><td class="p-3 text-center">${stokHtml}</td><td class="p-3 stock-photo-cell">${fotoHtml}</td><td class="p-3 admin-only-col ${isAdmin ? '' : 'hidden'}"><div class="flex flex-col items-start gap-1">${aksiNama}${aksiHarga}${aksiPersamaan}</div></td>`;
         tbody.appendChild(tr);
       };
       (globalData.aksesoris || []).forEach(item => processItem(item, true)); (globalData.sparepart || []).forEach(item => processItem(item, false));
@@ -1390,6 +1367,38 @@
         // Notifikasi sukses dihilangkan.
       } else {
         alert((res && (res.message || res.result)) || 'Persamaan gagal disimpan. Periksa koneksi dan deployment Apps Script.');
+      }
+    }
+
+    function bukaModalNamaBarang(encodedId, jenis) {
+      const id = decodeURIComponent(encodedId);
+      const sumber = jenis === 'Sparepart' ? (globalData.sparepart || []) : (globalData.aksesoris || []);
+      const item = sumber.find(x => String(x.ID || x.IDPart || '') === String(id));
+      if (!item) { alert('Barang tidak ditemukan. Muat ulang data lalu coba lagi.'); return; }
+      document.getElementById('editNamaId').value = id;
+      document.getElementById('editNamaJenis').value = jenis;
+      document.getElementById('editNamaInfo').textContent = id + ' • ' + jenis;
+      document.getElementById('editNamaIsi').value = item.NamaBarang || item.NamaPart || '';
+      document.getElementById('modalEditNamaBarang').classList.remove('hidden');
+    }
+    function tutupModalNamaBarang() { document.getElementById('modalEditNamaBarang').classList.add('hidden'); }
+    async function simpanNamaBarang(e) {
+      e.preventDefault();
+      const id = document.getElementById('editNamaId').value;
+      const jenis = document.getElementById('editNamaJenis').value;
+      const nama = document.getElementById('editNamaIsi').value.trim();
+      if (!id || !nama) { alert('Nama barang wajib diisi.'); return; }
+      showLoading();
+      const res = await fetchAPI({ action: 'updateNamaBarang', data: { id, jenis, nama } });
+      hideLoading();
+      if (res && res.status === 'success' && res.result === 'Sukses') {
+        const sumber = jenis === 'Sparepart' ? (globalData.sparepart || []) : (globalData.aksesoris || []);
+        const item = sumber.find(x => String(x.ID || x.IDPart || '') === String(id));
+        if (item) { item.NamaBarang = nama; item.NamaPart = nama; }
+        tutupModalNamaBarang();
+        renderStok(); renderPosList();
+      } else {
+        alert((res && (res.message || res.result)) || 'Nama barang gagal disimpan.');
       }
     }
 
