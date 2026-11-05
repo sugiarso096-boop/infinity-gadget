@@ -975,26 +975,35 @@
       } catch (e) { console.error(e); return { status: "error", message: e.message }; }
     }
 
-    function loadAppData() {
+    let appDataLoading = false;
+    async function loadAppData() {
+      // Cegah permintaan awal berjalan bertumpuk dan membuat overlay terlihat terus.
+      if (appDataLoading) return;
+      appDataLoading = true;
       showLoading();
-      fetch(SCRIPT_URL + "?action=getDataAll")
-        .then(res => {
-          if(!res.ok) throw new Error("Terjadi masalah jaringan atau API diblokir oleh Google.");
-          return res.text();
-        })
-        .then(text => {
-            try {
-              let data = JSON.parse(text);
-              if (data.error) throw new Error(data.error);
-              globalData = data;
-              renderDashboard(); renderStok(); renderServis(); renderGaransi(); renderGajiKasbon(); renderKeuangan(); renderPosList(); hitungCekKas(); renderHutang();
-              hideLoading();
-            } catch(e) {
-              alert("Gagal membaca database! Pastikan Bos sudah menekan tombol 'Deployment Baru' (Siapa Saja) di Google Script.\n\nPesan sistem: " + e.message);
-              hideLoading();
-            }
-        })
-        .catch(err => { console.error(err); alert("Koneksi gagal terhubung ke Google Script: " + err.message); hideLoading(); });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 25000);
+      try {
+        const res = await fetch(SCRIPT_URL + "?action=getDataAll", { method: "GET", cache: "no-store", signal: controller.signal });
+        if (!res.ok) throw new Error("Google Script merespons HTTP " + res.status + ".");
+        const text = await res.text();
+        let data;
+        try { data = JSON.parse(text); }
+        catch (_) { throw new Error("Respons Google Script bukan JSON. Periksa URL Web App dan akses deployment (Siapa saja)."); }
+        if (data.error) throw new Error(data.error);
+        globalData = data;
+        renderDashboard(); renderStok(); renderServis(); renderGaransi(); renderGajiKasbon(); renderKeuangan(); renderPosList(); hitungCekKas(); renderHutang();
+      } catch (err) {
+        console.error("loadAppData:", err);
+        const pesan = err.name === "AbortError"
+          ? "Koneksi ke Google Script lebih dari 25 detik. Periksa koneksi internet, status Google Script, dan deployment Web App."
+          : "Gagal memuat data: " + err.message;
+        alert(pesan);
+      } finally {
+        clearTimeout(timeoutId);
+        appDataLoading = false;
+        hideLoading();
+      }
     }
 
     function getDriveImageUrl(url) {
